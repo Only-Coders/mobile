@@ -28,7 +28,7 @@ class _AuthFormState extends State<AuthForm> {
     return Container(
       child: Form(
         key: formKey,
-        autovalidateMode: AutovalidateMode.always,
+        autovalidateMode: AutovalidateMode.onUserInteraction,
         child: Column(
           children: [
             TextFormField(
@@ -91,7 +91,7 @@ class _AuthFormState extends State<AuthForm> {
               height: 45,
               child: ElevatedButton(
                 onPressed: () async {
-                  if (formKey.currentState.validate()) {
+                  if (formKey.currentState.validate() && !isLoading) {
                     setState(() {
                       isLoading = true;
                     });
