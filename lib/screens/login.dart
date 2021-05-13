@@ -17,7 +17,7 @@ class _LoginState extends State<Login> {
       BuildContext context, String email, String password) async {
     try {
       await _auth.login(email, password);
-      Navigator.pushNamed(context, "/onboard");
+      Navigator.pushReplacementNamed(context, "/onboard");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         _toast.showError(context, "No se encontro un usuario con ese correo");
