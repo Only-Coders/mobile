@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/auth_form.dart';
-import 'package:mobile/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/components/toast.dart';
+import 'package:mobile/services/fb_auth.dart';
 
 class Register extends StatelessWidget {
-  final _auth = AuthService(FirebaseAuth.instance);
+  final _auth = FBAuthService(FirebaseAuth.instance);
   final _toast = Toast();
 
   Future<void> register(

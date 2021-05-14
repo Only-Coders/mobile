@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobile/screens/onboard/general_information_first_step.dart';
 import 'package:mobile/screens/onboard/general_information_second_step.dart';
 import 'package:im_stepper/stepper.dart';
+import 'package:mobile/screens/onboard/register_model.dart';
+import 'package:provider/provider.dart';
 
 class Onboard extends StatefulWidget {
   @override
@@ -35,7 +37,10 @@ class _OnboardState extends State<Onboard> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(18.0),
-                child: steps(),
+                child: Provider(
+                  create: (_) => RegisterModel(),
+                  child: steps(),
+                ),
               ),
               Positioned.fill(
                 bottom: 90,
@@ -70,7 +75,9 @@ class _OnboardState extends State<Onboard> {
   Widget steps() {
     switch (activeStep) {
       case 1:
-        return GeneralInformationSecondStep();
+        return GeneralInformationSecondStep(
+          increment: incrementActiveStep,
+        );
       case 2:
         return Text("Experiencia Laboral");
       case 3:

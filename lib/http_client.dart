@@ -15,7 +15,9 @@ class HttpClient {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           String token = await UserStorage.getToken();
-          options.headers["Authorization"] = "Bearer " + token;
+          if (token != null) {
+            options.headers["Authorization"] = "Bearer " + token;
+          }
           return handler.next(options);
         },
       ),

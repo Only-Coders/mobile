@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 class UserStorage {
@@ -8,6 +9,12 @@ class UserStorage {
   }
 
   static Future<String> getToken() async {
-    return await _storage.read(key: "token");
+    String token;
+    try {
+      token = await _storage.read(key: "token");
+    } catch (e) {
+      print("That key doesn't exists");
+    }
+    return token;
   }
 }

@@ -1,10 +1,20 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mobile/screens/onboard/register_model.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
+import 'package:provider/provider.dart';
+import 'package:mobile/components/toast.dart';
 
 class GeneralInformationSecondStep extends StatefulWidget {
+  final increment;
+
+  const GeneralInformationSecondStep({Key key, this.increment})
+      : super(key: key);
+
   @override
   _GeneralInformationSecondStepState createState() =>
       _GeneralInformationSecondStepState();
@@ -12,7 +22,14 @@ class GeneralInformationSecondStep extends StatefulWidget {
 
 class _GeneralInformationSecondStepState
     extends State<GeneralInformationSecondStep> {
+  final Toast _toast = Toast();
   File _image;
+  bool isLoading = false;
+  String platform = "GITHUB";
+  String description = "";
+  String imageURI = "";
+  String userName = "";
+  List<String> _platforms = ["GITHUB", "GITLAB", "BITBUCKET"];
 
   final imagePicker = ImagePicker();
 
@@ -27,7 +44,32 @@ class _GeneralInformationSecondStepState
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
         .ref()
         .child("images/" + path.basename(_image.path));
-    await ref.putFile(_image);
+    await ref.putFile(_image).whenComplete(() async {
+      String image = await ref.getDownloadURL();
+      setState(() {
+        imageURI = image;
+      });
+    });
+  }
+
+  Future register(BuildContext context) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      await uploadFile();
+      Provider.of<RegisterModel>(context, listen: false)
+          .setSecondStepData(imageURI, description, platform, userName);
+      await Provider.of<RegisterModel>(context, listen: false).register();
+      widget.increment();
+    } on DioError catch (e) {
+      _toast.showError(context, e.response.data["error"]);
+      Navigator.pushReplacementNamed(context, "/login");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -74,27 +116,64 @@ class _GeneralInformationSecondStepState
           SizedBox(
             height: 30,
           ),
-          TextField(
-            onChanged: (val) {
-              print(val);
-            },
-            decoration: InputDecoration(
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
+          Row(
+            children: [
+              Flexible(
+                flex: 2,
+                child: DropdownButton(
+                  items: _platforms.map((p) {
+                    return DropdownMenuItem(
+                      value: p,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [platformItem(p)],
+                      ),
+                    );
+                  }).toList(),
+                  underline: SizedBox(),
+                  value: platform,
+                  isExpanded: true,
+                  onChanged: (val) {
+                    setState(() {
+                      platform = val;
+                    });
+                  },
                 ),
               ),
-              labelText: "Perfil de git",
-              filled: true,
-            ),
+              SizedBox(
+                width: 10,
+              ),
+              Flexible(
+                flex: 6,
+                child: TextField(
+                  onChanged: (val) {
+                    userName = val;
+                  },
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5),
+                      borderSide: BorderSide(
+                        width: 0,
+                        style: BorderStyle.none,
+                      ),
+                    ),
+                    hintText: "ej: jose",
+                    labelText: "Perfil de git",
+                    filled: true,
+                  ),
+                ),
+              ),
+            ],
           ),
           SizedBox(
             height: 10,
           ),
           TextField(
-            onChanged: (val) {},
+            onChanged: (val) {
+              setState(() {
+                description = val;
+              });
+            },
             maxLines: 4,
             decoration: InputDecoration(
               floatingLabelBehavior: FloatingLabelBehavior.always,
@@ -110,18 +189,11 @@ class _GeneralInformationSecondStepState
             ),
           ),
           SizedBox(
-            height: 10,
-          ),
-          SizedBox(
-            height: 70,
+            height: 75,
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              skipButton(),
-              SizedBox(
-                width: 20,
-              ),
               nextButton(),
             ],
           )
@@ -130,29 +202,46 @@ class _GeneralInformationSecondStepState
     );
   }
 
+  Widget platformItem(String platform) {
+    switch (platform) {
+      case "GITHUB":
+        return SvgPicture.asset(
+          "assets/images/github.svg",
+          width: 30,
+        );
+      case "GITLAB":
+        return SvgPicture.asset(
+          "assets/images/gitlab.svg",
+          width: 30,
+        );
+      default:
+        return SvgPicture.asset(
+          "assets/images/bitbucket.svg",
+          width: 30,
+        );
+    }
+  }
+
   Widget nextButton() {
     return ElevatedButton(
-      child: Text('Siguiente'),
+      child: isLoading
+          ? SizedBox(
+              width: 25,
+              height: 25,
+              child: CircularProgressIndicator(
+                backgroundColor: Theme.of(context).primaryColor,
+                valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
+                strokeWidth: 3,
+              ),
+            )
+          : Text("Siguiente"),
       onPressed: () async {
-        await uploadFile();
+        if (!isLoading) await register(context);
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,
         textStyle: TextStyle(fontSize: 16),
         primary: Theme.of(context).primaryColor, // background
-      ),
-    );
-  }
-
-  Widget skipButton() {
-    return OutlinedButton(
-      child: Text(
-        'Omitir',
-        style: TextStyle(color: Theme.of(context).primaryColor),
-      ),
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(color: Theme.of(context).primaryColor),
       ),
     );
   }

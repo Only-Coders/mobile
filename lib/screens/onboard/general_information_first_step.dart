@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/country.dart';
+import 'package:mobile/screens/onboard/register_model.dart';
 import 'package:mobile/services/country.dart';
+import 'package:provider/provider.dart';
 
 class GeneralInformationFirstStep extends StatefulWidget {
   final increment;
@@ -192,18 +194,11 @@ class _GeneralInformationFirstStepState
                 ),
               ),
               SizedBox(
-                height: 5,
-              ),
-              SizedBox(
-                height: 70,
+                height: 75,
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  skipButton(),
-                  SizedBox(
-                    width: 20,
-                  ),
                   nextButton(),
                 ],
               )
@@ -229,10 +224,12 @@ class _GeneralInformationFirstStepState
             )
           : Text("Siguiente"),
       onPressed: () {
-        if (formKey.currentState.validate()) {
+        if (formKey.currentState.validate() && !isLoading) {
           setState(() {
             isLoading = true;
           });
+          Provider.of<RegisterModel>(context, listen: false)
+              .setFirstStepData(firstName, lastName, birthDate, country);
           widget.increment();
           setState(() {
             isLoading = false;
@@ -243,19 +240,6 @@ class _GeneralInformationFirstStepState
         elevation: 0,
         textStyle: TextStyle(fontSize: 16),
         primary: Theme.of(context).primaryColor, // background
-      ),
-    );
-  }
-
-  Widget skipButton() {
-    return OutlinedButton(
-      child: Text(
-        'Omitir',
-        style: TextStyle(color: Theme.of(context).primaryColor),
-      ),
-      onPressed: () {},
-      style: OutlinedButton.styleFrom(
-        side: BorderSide(color: Theme.of(context).primaryColor),
       ),
     );
   }

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/auth_form.dart';
-import 'package:mobile/services/auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/components/toast.dart';
+import 'package:mobile/services/fb_auth.dart';
+import 'package:mobile/services/auth.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -10,13 +11,15 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  final _auth = AuthService(FirebaseAuth.instance);
+  final _fbAuth = FBAuthService(FirebaseAuth.instance);
+  final _auth = AuthService();
   final _toast = Toast();
 
   Future<void> login(
       BuildContext context, String email, String password) async {
     try {
-      await _auth.login(email, password);
+      String fbToken = await _fbAuth.login(email, password);
+      await _auth.login(fbToken);
       Navigator.pushReplacementNamed(context, "/onboard");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
