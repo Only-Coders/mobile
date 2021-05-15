@@ -20,35 +20,24 @@ class _GeneralInformationFirstStepState
   CountryService _countryService = CountryService();
   String firstName = "";
   String lastName = "";
-  String birthDate = "";
+  DateTime birthDate;
   String country = "UY";
   List<Country> _countries = [];
   bool isLoading = false;
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  Future<Null> _selectDate(BuildContext context) async {
-    DateTime _datePicker = await showDatePicker(
-        context: context,
-        initialDate: DateTime.now(),
-        firstDate: DateTime(1900),
-        lastDate: DateTime(2050));
+  final _dateController = TextEditingController();
 
-    if (_datePicker != null) {
-      setState(() {
-        birthDate = _datePicker.toString();
-      });
-    }
+  @override
+  void dispose() {
+    _dateController.dispose();
+    super.dispose();
   }
 
   String parseDate(String date) {
-    if (date.isEmpty) {
-      return "";
-    } else {
-      String parsedDate = date.substring(0, 10);
-      List<String> splitedDate = parsedDate.split("-");
-      return '${splitedDate[2]}/${splitedDate[1]}/${splitedDate[0]}';
-    }
+    List<String> splitedDate = date.split("-");
+    return '${splitedDate[2]}/${splitedDate[1]}/${splitedDate[0]}';
   }
 
   Future<List<Country>> getCountries() async {
@@ -141,7 +130,19 @@ class _GeneralInformationFirstStepState
                     TextField(
                       readOnly: true,
                       onTap: () async {
-                        await _selectDate(context);
+                        DateTime date = await showDatePicker(
+                            context: context,
+                            initialDate:
+                                birthDate == null ? DateTime.now() : birthDate,
+                            firstDate: DateTime(1970),
+                            lastDate: DateTime(2022));
+                        if (date != null) {
+                          _dateController.text =
+                              parseDate(date.toString().substring(0, 10));
+                          setState(() {
+                            birthDate = date;
+                          });
+                        }
                       },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -152,7 +153,6 @@ class _GeneralInformationFirstStepState
                           ),
                         ),
                         labelText: "Fecha de Nacimiento",
-                        hintText: parseDate(birthDate),
                         filled: true,
                       ),
                     ),
@@ -228,8 +228,8 @@ class _GeneralInformationFirstStepState
           setState(() {
             isLoading = true;
           });
-          Provider.of<RegisterModel>(context, listen: false)
-              .setFirstStepData(firstName, lastName, birthDate, country);
+          Provider.of<RegisterModel>(context, listen: false).setFirstStepData(
+              firstName, lastName, birthDate.toIso8601String(), country);
           widget.increment();
           setState(() {
             isLoading = false;
