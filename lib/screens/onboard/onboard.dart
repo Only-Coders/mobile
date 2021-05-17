@@ -3,6 +3,7 @@ import 'package:mobile/screens/onboard/general_information_first_step.dart';
 import 'package:mobile/screens/onboard/general_information_second_step.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:mobile/screens/onboard/register_model.dart';
+import 'package:mobile/screens/onboard/work_experience.dart';
 import 'package:provider/provider.dart';
 
 class Onboard extends StatefulWidget {
@@ -31,42 +32,36 @@ class _OnboardState extends State<Onboard> {
         ),
       ),
       body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.fromLTRB(20, 0, 20, 10),
-          child: Stack(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(18.0),
-                child: Provider(
-                  create: (_) => RegisterModel(),
-                  child: steps(),
-                ),
-              ),
-              Positioned.fill(
-                bottom: 90,
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: DotStepper(
-                    dotCount: dotCount,
-                    dotRadius: 6,
-                    activeStep: activeStep,
-                    tappingEnabled: false,
-                    shape: Shape.circle,
-                    spacing: 10,
-                    indicator: Indicator.blink,
-                    fixedDotDecoration: FixedDotDecoration(
-                      color: Colors.grey.shade300,
-                    ),
-                    indicatorDecoration: IndicatorDecoration(
-                      strokeWidth: 2,
-                      strokeColor: Color(0xffFFEDE1),
-                      color: Colors.orange,
-                    ),
+        child: Stack(
+          alignment: AlignmentDirectional.bottomCenter,
+          children: [
+            Provider(
+              create: (_) => RegisterModel(),
+              child: steps(),
+            ),
+            Positioned(
+              bottom: 95,
+              child: Center(
+                child: DotStepper(
+                  dotCount: dotCount,
+                  dotRadius: 6,
+                  activeStep: activeStep,
+                  tappingEnabled: false,
+                  shape: Shape.circle,
+                  spacing: 10,
+                  indicator: Indicator.blink,
+                  fixedDotDecoration: FixedDotDecoration(
+                    color: Colors.grey.shade300,
+                  ),
+                  indicatorDecoration: IndicatorDecoration(
+                    strokeWidth: 2,
+                    strokeColor: Color(0xffFFEDE1),
+                    color: Colors.orange,
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -79,7 +74,9 @@ class _OnboardState extends State<Onboard> {
           increment: incrementActiveStep,
         );
       case 2:
-        return Text("Experiencia Laboral");
+        return WorkExperience(
+          increment: incrementActiveStep,
+        );
       case 3:
         return Text("Formacion Academica");
       case 4:

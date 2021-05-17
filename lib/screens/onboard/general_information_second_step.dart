@@ -75,81 +75,114 @@ class _GeneralInformationSecondStepState
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: MediaQuery.of(context).size.height - 80,
+      padding: EdgeInsets.all(25),
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            "Informacion General",
-            style: TextStyle(fontSize: 24),
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          Text(
-              "Ingresa tu información con la que deseas que los otros usuarios te vean."),
-          SizedBox(
-            height: 40,
-          ),
-          InkWell(
-            onTap: () async {
-              await getImage();
-            },
-            child: _image == null
-                ? CircleAvatar(
-                    radius: 55,
-                    backgroundColor: Theme.of(context).primaryColor,
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Colors.white,
-                      size: 38,
-                    ),
-                  )
-                : CircleAvatar(
-                    radius: 55,
-                    backgroundImage: FileImage(_image),
-                    child: Icon(
-                      Icons.camera_alt,
-                      color: Colors.white,
-                      size: 38,
-                    ),
-                  ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Row(
-            children: [
-              Flexible(
-                flex: 2,
-                child: DropdownButton(
-                  items: _platforms.map((p) {
-                    return DropdownMenuItem(
-                      value: p,
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [platformItem(p)],
+          Container(
+            child: Column(
+              children: [
+                Text(
+                  "Informacion General",
+                  style: TextStyle(fontSize: 24),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Text(
+                    "Ingresa tu información con la que deseas que los otros usuarios te vean."),
+                SizedBox(
+                  height: 40,
+                ),
+                InkWell(
+                  onTap: () async {
+                    await getImage();
+                  },
+                  child: _image == null
+                      ? CircleAvatar(
+                          radius: 55,
+                          backgroundColor: Theme.of(context).primaryColor,
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                            size: 38,
+                          ),
+                        )
+                      : CircleAvatar(
+                          radius: 55,
+                          backgroundImage: FileImage(_image),
+                          child: Icon(
+                            Icons.camera_alt,
+                            color: Colors.white,
+                            size: 38,
+                          ),
+                        ),
+                ),
+                SizedBox(
+                  height: 30,
+                ),
+                Row(
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: DropdownButton(
+                        items: _platforms.map((p) {
+                          return DropdownMenuItem(
+                            value: p,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [platformItem(p)],
+                            ),
+                          );
+                        }).toList(),
+                        underline: SizedBox(),
+                        value: platform,
+                        isExpanded: true,
+                        onChanged: (val) {
+                          setState(() {
+                            platform = val;
+                          });
+                        },
                       ),
-                    );
-                  }).toList(),
-                  underline: SizedBox(),
-                  value: platform,
-                  isExpanded: true,
+                    ),
+                    SizedBox(
+                      width: 10,
+                    ),
+                    Flexible(
+                      flex: 6,
+                      child: TextField(
+                        onChanged: (val) {
+                          userName = val;
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(5),
+                            borderSide: BorderSide(
+                              width: 0,
+                              style: BorderStyle.none,
+                            ),
+                          ),
+                          hintText: "ej: jose",
+                          labelText: "Perfil de git",
+                          filled: true,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
                   onChanged: (val) {
                     setState(() {
-                      platform = val;
+                      description = val;
                     });
                   },
-                ),
-              ),
-              SizedBox(
-                width: 10,
-              ),
-              Flexible(
-                flex: 6,
-                child: TextField(
-                  onChanged: (val) {
-                    userName = val;
-                  },
+                  maxLines: 4,
                   decoration: InputDecoration(
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
                       borderSide: BorderSide(
@@ -157,45 +190,20 @@ class _GeneralInformationSecondStepState
                         style: BorderStyle.none,
                       ),
                     ),
-                    hintText: "ej: jose",
-                    labelText: "Perfil de git",
+                    labelText: "Cuentanos sobre ti",
                     filled: true,
                   ),
                 ),
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 10,
-          ),
-          TextField(
-            onChanged: (val) {
-              setState(() {
-                description = val;
-              });
-            },
-            maxLines: 4,
-            decoration: InputDecoration(
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
-                ),
-              ),
-              labelText: "Cuentanos sobre ti",
-              filled: true,
+              ],
             ),
           ),
-          SizedBox(
-            height: 75,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            children: [
-              nextButton(),
-            ],
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                nextButton(),
+              ],
+            ),
           )
         ],
       ),
