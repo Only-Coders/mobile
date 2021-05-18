@@ -24,8 +24,8 @@ class HttpClient {
     );
   }
 
-  Future<Response> getRequest(String url) async {
-    return _dio.get(url);
+  Future<Response> getRequest(String url, [Map<String, dynamic> params]) async {
+    return _dio.get(url, queryParameters: params);
   }
 
   Future<Response> postRequest(String url, dynamic data) async {

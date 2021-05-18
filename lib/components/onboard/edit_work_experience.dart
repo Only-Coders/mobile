@@ -4,31 +4,51 @@ import 'package:mobile/models/workplace.dart';
 import 'package:mobile/services/work.dart';
 import "package:flutter_typeahead/flutter_typeahead.dart";
 
-class AddWorkExperience extends StatefulWidget {
-  final addWork;
+class EditWorkExperience extends StatefulWidget {
+  final updateWork;
+  final Work work;
+  final int index;
 
-  const AddWorkExperience({Key key, this.addWork}) : super(key: key);
+  const EditWorkExperience({Key key, this.work, this.updateWork, this.index})
+      : super(key: key);
 
   @override
-  _AddWorkExperienceState createState() => _AddWorkExperienceState();
+  _EditWorkExperienceState createState() => _EditWorkExperienceState();
 }
 
-class _AddWorkExperienceState extends State<AddWorkExperience> {
+class _EditWorkExperienceState extends State<EditWorkExperience> {
   final WorkService _workService = WorkService();
   String position = "";
   String workplace = "";
   String workplaceId = "";
   DateTime _startDate;
   DateTime _endDate;
+  final _positionController = TextEditingController();
   final _startDateController = TextEditingController();
   final _endDateController = TextEditingController();
+
   final TextEditingController _typeAheadController = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+  @override
+  void initState() {
+    setState(() {
+      workplace = widget.work.name;
+      workplaceId = widget.work.id;
+      position = widget.work.position;
+    });
+    _typeAheadController.text = widget.work.name;
+    _positionController.text = widget.work.position;
+    _startDateController.text = parseDate(widget.work.since);
+    _endDateController.text = parseDate(widget.work.until);
+    super.initState();
+  }
 
   @override
   void dispose() {
     _startDateController.dispose();
     _endDateController.dispose();
+    _positionController.dispose();
     _typeAheadController.dispose();
     super.dispose();
   }
@@ -41,7 +61,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Agregar experiencia'),
+      title: Text('Editar experiencia'),
       content: SingleChildScrollView(
         child: Container(
           width: 500,
@@ -52,7 +72,6 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
             child: Column(
               children: [
                 TypeAheadFormField<Workplace>(
-                  suggestionsCallback: _workService.getWorkplaces,
                   onSuggestionSelected: (Workplace suggestion) {
                     _typeAheadController.text = suggestion.name;
                     setState(() {
@@ -67,6 +86,12 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                   },
                   validator: (val) {
                     return val.isNotEmpty ? null : "Este campo es obligatorio";
+                  },
+                  suggestionsCallback: (String suggestion) {
+                    setState(() {
+                      workplace = suggestion;
+                    });
+                    return _workService.getWorkplaces(suggestion);
                   },
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _typeAheadController,
@@ -92,6 +117,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                       position = val;
                     });
                   },
+                  controller: _positionController,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -199,19 +225,23 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
           style: TextButton.styleFrom(primary: Colors.grey),
         ),
         TextButton(
-          onPressed: () async {
+          onPressed: () {
             Work work = Work.fromJson({
               "id": workplaceId,
               "name": workplace,
               "position": position,
-              "since": _startDate.toIso8601String(),
-              "until": _endDate.toIso8601String()
+              "since": _startDate == null
+                  ? widget.work.since
+                  : _startDate.toIso8601String(),
+              "until": _endDate == null
+                  ? widget.work.until
+                  : _endDate.toIso8601String(),
             });
-            widget.addWork(work);
+            widget.updateWork(work, widget.index);
             Navigator.pop(context);
           },
           child: Text(
-            'AGREGAR',
+            'EDITAR',
             style: TextStyle(
               color: Colors.orange,
             ),

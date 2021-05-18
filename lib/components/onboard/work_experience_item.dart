@@ -1,11 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:mobile/components/onboard/edit_work_experience.dart';
+import 'package:mobile/models/work.dart';
 
 class WorkExperienceItem extends StatelessWidget {
-  const WorkExperienceItem({Key key}) : super(key: key);
+  final Work work;
+  final int index;
+  final removeWork;
+  final updateWork;
+
+  const WorkExperienceItem(
+      {Key key, this.work, this.index, this.removeWork, this.updateWork})
+      : super(key: key);
+
+  String parseDate(String date) {
+    List<String> splitedDate = date.substring(0, 10).split("-");
+    return '${splitedDate[2]}/${splitedDate[1]}/${splitedDate[0]}';
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: EdgeInsets.only(top: 5, bottom: 5),
       width: double.infinity,
       child: Card(
         child: Padding(
@@ -14,48 +30,62 @@ class WorkExperienceItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Mercado Libre",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+                work.name,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               Text(
-                "Svelte full-stack developer",
-                style: TextStyle(color: Colors.grey.shade700),
-              ),
-              SizedBox(
-                height: 5,
-              ),
-              Text(
-                "02/02/2020  02/02/2020",
+                work.position,
                 style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
               ),
               SizedBox(
-                height: 5,
+                height: 2,
+              ),
+              Text(
+                "${parseDate(work.since)} - ${work.until.isEmpty ? "" : parseDate(work.until)}",
+                style: TextStyle(color: Colors.grey.shade700, fontSize: 10),
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OutlinedButton(
-                    child: Text("Editar"),
-                    onPressed: () {},
+                    child: Text("Eliminar"),
+                    onPressed: () {
+                      removeWork(work);
+                    },
                     style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.all(0),
                       elevation: 0,
-                      textStyle: TextStyle(fontSize: 14),
-                      primary: Theme.of(context).primaryColor, // background
-                      side: BorderSide(color: Theme.of(context).primaryColor),
+                      textStyle: TextStyle(fontSize: 12),
+                      primary: Theme.of(context).errorColor,
+                      // background
+                      side: BorderSide(color: Theme.of(context).errorColor),
                     ),
                   ),
                   SizedBox(
                     width: 10,
                   ),
                   OutlinedButton(
-                    child: Text("Eliminar"),
-                    onPressed: () {},
+                    child: Text("Editar"),
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => EditWorkExperience(
+                          work: work,
+                          index: index,
+                          updateWork: updateWork,
+                        ),
+                        barrierDismissible: true,
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
+                      padding: EdgeInsets.all(0),
                       elevation: 0,
-                      textStyle: TextStyle(fontSize: 14),
-                      primary: Theme.of(context).errorColor, // background
-                      side: BorderSide(color: Theme.of(context).errorColor),
+                      textStyle: TextStyle(fontSize: 12),
+                      primary: Theme.of(context).primaryColor,
+                      // background
+                      side: BorderSide(color: Theme.of(context).primaryColor),
                     ),
-                  )
+                  ),
                 ],
               )
             ],
