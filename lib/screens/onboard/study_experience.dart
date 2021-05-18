@@ -29,6 +29,12 @@ class _StudyExperienceState extends State<StudyExperience> {
     });
   }
 
+  void updateStudy(Study study, int index) {
+    setState(() {
+      studies[index] = study;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -107,7 +113,9 @@ class _StudyExperienceState extends State<StudyExperience> {
       children: studies
           .map((study) => new StudyExperienceItem(
                 study: study,
+                index: studies.indexOf(study),
                 removeStudy: removeStudy,
+                updateStudy: updateStudy,
               ))
           .toList(),
     );

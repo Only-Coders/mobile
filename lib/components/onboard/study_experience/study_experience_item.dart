@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/components/onboard/study_experience/edit_study_experience.dart';
 import 'package:mobile/models/study.dart';
 
 class StudyExperienceItem extends StatelessWidget {
   final Study study;
+  final int index;
   final removeStudy;
+  final updateStudy;
 
-  const StudyExperienceItem({Key key, this.study, this.removeStudy})
+  const StudyExperienceItem(
+      {Key key, this.study, this.removeStudy, this.updateStudy, this.index})
       : super(key: key);
 
   String parseDate(String date) {
@@ -61,7 +65,17 @@ class StudyExperienceItem extends StatelessWidget {
                   ),
                   OutlinedButton(
                     child: Text("Editar"),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => EditStudyExperience(
+                          study: study,
+                          index: index,
+                          updateStudy: updateStudy,
+                        ),
+                        barrierDismissible: true,
+                      );
+                    },
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.all(0),
                       elevation: 0,
