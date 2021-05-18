@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mobile/components/onboard/add_work_experience.dart';
-import 'package:mobile/components/onboard/work_experience_item.dart';
+import 'package:mobile/components/onboard/work_experience/add_work_experience.dart';
+import 'package:mobile/components/onboard/work_experience/work_experience_item.dart';
 import 'package:mobile/components/toast.dart';
 import 'package:mobile/models/work.dart';
 import 'package:mobile/services/work.dart';

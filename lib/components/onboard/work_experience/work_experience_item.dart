@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
-import 'package:mobile/components/onboard/edit_work_experience.dart';
+import 'package:mobile/components/onboard/work_experience/edit_work_experience.dart';
 import 'package:mobile/models/work.dart';
 
 class WorkExperienceItem extends StatelessWidget {
