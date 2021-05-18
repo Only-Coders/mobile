@@ -3,6 +3,7 @@ import 'package:mobile/screens/onboard/general_information_first_step.dart';
 import 'package:mobile/screens/onboard/general_information_second_step.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:mobile/screens/onboard/register_model.dart';
+import 'package:mobile/screens/onboard/study_experience.dart';
 import 'package:mobile/screens/onboard/work_experience.dart';
 import 'package:provider/provider.dart';
 
@@ -78,7 +79,9 @@ class _OnboardState extends State<Onboard> {
           increment: incrementActiveStep,
         );
       case 3:
-        return Text("Formacion Academica");
+        return StudyExperience(
+          increment: incrementActiveStep,
+        );
       case 4:
         return Text("Habilidades");
       case 5:
