@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/components/onboard/study_experience/add_study_experience.dart';
 import 'package:mobile/components/onboard/study_experience/study_experience_item.dart';
+import 'package:mobile/components/toast.dart';
 import 'package:mobile/models/study.dart';
+import 'package:mobile/services/study.dart';
 
 class StudyExperience extends StatefulWidget {
   final increment;
@@ -33,6 +35,25 @@ class _StudyExperienceState extends State<StudyExperience> {
     setState(() {
       studies[index] = study;
     });
+  }
+
+  Future<void> createStudies(BuildContext context) async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      StudyService _studyService = StudyService();
+      studies.forEach((study) async {
+        await _studyService.createStudy(study);
+      });
+      widget.increment();
+    } catch (error) {
+      Toast().showError(context, "Ups, algo salio mal :(");
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
   }
 
   @override
@@ -134,7 +155,9 @@ class _StudyExperienceState extends State<StudyExperience> {
               ),
             )
           : Text("Siguiente"),
-      onPressed: () async {},
+      onPressed: () async {
+        await createStudies(context);
+      },
       style: ElevatedButton.styleFrom(
         elevation: 0,
         textStyle: TextStyle(fontSize: 16),
