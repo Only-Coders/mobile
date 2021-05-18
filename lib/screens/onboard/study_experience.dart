@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mobile/components/onboard/study_experience/add_study_experience.dart';
+import 'package:mobile/components/onboard/study_experience/study_experience_item.dart';
 import 'package:mobile/models/study.dart';
 
 class StudyExperience extends StatefulWidget {
@@ -14,6 +16,12 @@ class StudyExperience extends StatefulWidget {
 class _StudyExperienceState extends State<StudyExperience> {
   bool isLoading = false;
   List<Study> studies = [];
+
+  void addStudy(Study study) {
+    setState(() {
+      studies.add(study);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +58,15 @@ class _StudyExperienceState extends State<StudyExperience> {
                   height: 25,
                 ),
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (_) => AddStudyExperience(
+                        addStudy: addStudy,
+                      ),
+                      barrierDismissible: true,
+                    );
+                  },
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -82,7 +98,9 @@ class _StudyExperienceState extends State<StudyExperience> {
   Widget listStudies() {
     return new ListView(
       shrinkWrap: true,
-      children: studies.map((work) => new Text("Study")).toList(),
+      children: studies
+          .map((study) => new StudyExperienceItem(study: study))
+          .toList(),
     );
   }
 
