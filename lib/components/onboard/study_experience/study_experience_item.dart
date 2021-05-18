@@ -3,8 +3,10 @@ import 'package:mobile/models/study.dart';
 
 class StudyExperienceItem extends StatelessWidget {
   final Study study;
+  final removeStudy;
 
-  const StudyExperienceItem({Key key, this.study}) : super(key: key);
+  const StudyExperienceItem({Key key, this.study, this.removeStudy})
+      : super(key: key);
 
   String parseDate(String date) {
     List<String> splitedDate = date.substring(0, 10).split("-");
@@ -42,7 +44,9 @@ class StudyExperienceItem extends StatelessWidget {
                 children: [
                   OutlinedButton(
                     child: Text("Eliminar"),
-                    onPressed: () {},
+                    onPressed: () {
+                      removeStudy(study);
+                    },
                     style: OutlinedButton.styleFrom(
                       padding: EdgeInsets.all(0),
                       elevation: 0,

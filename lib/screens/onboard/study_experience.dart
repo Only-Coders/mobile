@@ -23,6 +23,12 @@ class _StudyExperienceState extends State<StudyExperience> {
     });
   }
 
+  void removeStudy(Study study) {
+    setState(() {
+      studies.remove(study);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -99,7 +105,10 @@ class _StudyExperienceState extends State<StudyExperience> {
     return new ListView(
       shrinkWrap: true,
       children: studies
-          .map((study) => new StudyExperienceItem(study: study))
+          .map((study) => new StudyExperienceItem(
+                study: study,
+                removeStudy: removeStudy,
+              ))
           .toList(),
     );
   }
