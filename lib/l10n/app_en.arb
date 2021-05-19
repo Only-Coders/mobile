@@ -1,6 +1,14 @@
 {
-  "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+  "login": "Login",
+  "password": "Password",
+  "email": "Email",
+  "dontHaveAnAccount": "Don't have an account yet?",
+  "alreadyHaveAnAccount": "Already have an account?",
+  "register": "Register",
+  "invalidEmail": "Invalid email address",
+  "weakPassword": "Password must be greater than 6 characters",
+  "emailAlreadyInUse": "The email is already in use",
+  "serverError": "Something went wrong, please try later",
+  "userNotFound": "User not found",
+  "credentialsError": "Invalid credentials"
 }

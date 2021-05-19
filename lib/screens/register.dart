@@ -3,6 +3,7 @@ import 'package:mobile/components/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/components/toast.dart';
 import 'package:mobile/services/fb_auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Register extends StatelessWidget {
   final _auth = FBAuthService(FirebaseAuth.instance);
@@ -14,12 +15,13 @@ class Register extends StatelessWidget {
       await _auth.register(email, password);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
-        _toast.showError(context, "La contrasena debe ser mas segura");
+        _toast.showError(context, AppLocalizations.of(context).weakPassword);
       } else if (e.code == 'email-already-in-use') {
-        _toast.showError(context, "Ya existe una cuenta con ese correo");
+        _toast.showError(
+            context, AppLocalizations.of(context).emailAlreadyInUse);
       }
     } catch (e) {
-      _toast.showError(context, "Uh algo salio mal :(");
+      _toast.showError(context, AppLocalizations.of(context).serverError);
     }
   }
 
@@ -34,7 +36,7 @@ class Register extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    "Registrarse",
+                    AppLocalizations.of(context).register,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -51,7 +53,7 @@ class Register extends StatelessWidget {
                   height: 60,
                 ),
                 AuthForm(
-                  buttonText: "Registrarse",
+                  buttonText: AppLocalizations.of(context).register,
                   action: register,
                 ),
                 SizedBox(
@@ -60,7 +62,7 @@ class Register extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("¿Ya tienes cuenta?"),
+                    Text(AppLocalizations.of(context).alreadyHaveAnAccount),
                     SizedBox(
                       width: 5,
                     ),
@@ -69,7 +71,7 @@ class Register extends StatelessWidget {
                         Navigator.pushNamed(context, "/login");
                       },
                       child: Text(
-                        "Inicia Sesion",
+                        AppLocalizations.of(context).login,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

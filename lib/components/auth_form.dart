@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 typedef ActionCallback = Future<void> Function(
     BuildContext context, String email, String password);
@@ -14,14 +15,12 @@ class AuthForm extends StatefulWidget {
 }
 
 class _AuthFormState extends State<AuthForm> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  RegExp emailRegex = RegExp(
+      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
   String password = "";
   String email = "";
   bool isLoading = false;
-
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
-  RegExp emailRegex = RegExp(
-      r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,7 @@ class _AuthFormState extends State<AuthForm> {
               validator: (val) {
                 return emailRegex.hasMatch(val)
                     ? null
-                    : "Ingresa un correo valido";
+                    : AppLocalizations.of(context).invalidEmail;
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -50,7 +49,7 @@ class _AuthFormState extends State<AuthForm> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: "Correo electronico",
+                labelText: AppLocalizations.of(context).email,
                 prefixIcon: Icon(Icons.email),
                 filled: true,
               ),
@@ -68,7 +67,9 @@ class _AuthFormState extends State<AuthForm> {
               validator: (val) {
                 return val.length > 6
                     ? null
-                    : "Ingresa una contraseña mas segura";
+                    : AppLocalizations.of(context).login != widget.buttonText
+                        ? AppLocalizations.of(context).weakPassword
+                        : null;
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -78,7 +79,7 @@ class _AuthFormState extends State<AuthForm> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: "Contraseña",
+                labelText: AppLocalizations.of(context).password,
                 prefixIcon: Icon(Icons.lock),
                 filled: true,
               ),

@@ -1,3 +1,14 @@
 {
-  "helloWorld": "Hola Mundo!"
+  "login": "Iniciar Sesion",
+  "password": "Contraseña",
+  "email": "Correo electronico",
+  "dontHaveAnAccount": "¿Aún no tienes cuenta?",
+  "alreadyHaveAnAccount": "¿Ya tienes cuenta?",
+  "register": "Registrarse",
+  "invalidEmail": "Correo electronico invalido",
+  "weakPassword": "La contraseña debe ser mayor a 6 caracteres",
+  "emailAlreadyInUse": "El correo ya esta en uso",
+  "serverError": "Algo salio mal, intente mas tarde",
+  "userNotFound": "No se encontro un usuario",
+  "credentialsError": "Credenciales incorrectas"
 }

@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/components/toast.dart';
 import 'package:mobile/services/fb_auth.dart';
 import 'package:mobile/services/auth.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -23,13 +24,13 @@ class _LoginState extends State<Login> {
       Navigator.pushReplacementNamed(context, "/onboard");
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
-        _toast.showError(context, "No se encontro un usuario con ese correo");
+        _toast.showError(context, AppLocalizations.of(context).userNotFound);
       } else if (e.code == 'wrong-password') {
-        _toast.showError(context, "Credenciales incorrectas");
+        _toast.showError(
+            context, AppLocalizations.of(context).credentialsError);
       }
     } catch (e) {
-      print(e);
-      _toast.showError(context, "Uh algo salio mal :(");
+      _toast.showError(context, AppLocalizations.of(context).serverError);
     }
   }
 
@@ -44,7 +45,7 @@ class _LoginState extends State<Login> {
               children: [
                 Center(
                   child: Text(
-                    "Iniciar Sesion",
+                    AppLocalizations.of(context).login,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -61,7 +62,7 @@ class _LoginState extends State<Login> {
                   height: 60,
                 ),
                 AuthForm(
-                  buttonText: "Iniciar Sesion",
+                  buttonText: AppLocalizations.of(context).login,
                   action: login,
                 ),
                 SizedBox(
@@ -70,7 +71,7 @@ class _LoginState extends State<Login> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("¿Aún no tienes cuenta?"),
+                    Text(AppLocalizations.of(context).dontHaveAnAccount),
                     SizedBox(
                       width: 5,
                     ),
@@ -79,7 +80,7 @@ class _LoginState extends State<Login> {
                         Navigator.pushNamed(context, "/register");
                       },
                       child: Text(
-                        "Regístrate",
+                        AppLocalizations.of(context).register,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
