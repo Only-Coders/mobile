@@ -4,6 +4,7 @@ import 'package:mobile/models/country.dart';
 import 'package:mobile/screens/onboard/register_model.dart';
 import 'package:mobile/services/country.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class GeneralInformationFirstStep extends StatefulWidget {
   final increment;
@@ -51,7 +52,7 @@ class _GeneralInformationFirstStepState
   }
 
   String parseDate(String date) {
-    List<String> splitedDate = date.split("-");
+    List<String> splitedDate = date.substring(0, 10).split("-");
     return '${splitedDate[2]}/${splitedDate[1]}/${splitedDate[0]}';
   }
 
@@ -71,14 +72,14 @@ class _GeneralInformationFirstStepState
                       child: Column(
                         children: [
                           Text(
-                            "Informacion General",
+                            AppLocalizations.of(context).generalInformation,
                             style: TextStyle(fontSize: 24),
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          Text(
-                              "Ingresa tu información con la que deseas que los otros usuarios te vean."),
+                          Text(AppLocalizations.of(context)
+                              .generalInformationDescription),
                           SizedBox(
                             height: 60,
                           ),
@@ -97,7 +98,8 @@ class _GeneralInformationFirstStepState
                                   validator: (val) {
                                     return val.isNotEmpty
                                         ? null
-                                        : "Este campo es obligatorio";
+                                        : AppLocalizations.of(context)
+                                            .fieldRequired;
                                   },
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
@@ -107,7 +109,8 @@ class _GeneralInformationFirstStepState
                                         style: BorderStyle.none,
                                       ),
                                     ),
-                                    labelText: "Nombre",
+                                    labelText:
+                                        AppLocalizations.of(context).name,
                                     filled: true,
                                   ),
                                 ),
@@ -123,7 +126,8 @@ class _GeneralInformationFirstStepState
                                   validator: (val) {
                                     return val.isNotEmpty
                                         ? null
-                                        : "Este campo es obligatorio";
+                                        : AppLocalizations.of(context)
+                                            .fieldRequired;
                                   },
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
@@ -133,7 +137,8 @@ class _GeneralInformationFirstStepState
                                         style: BorderStyle.none,
                                       ),
                                     ),
-                                    labelText: "Apellido",
+                                    labelText:
+                                        AppLocalizations.of(context).lastName,
                                     filled: true,
                                   ),
                                 ),
@@ -152,8 +157,8 @@ class _GeneralInformationFirstStepState
                                         firstDate: DateTime(1970),
                                         lastDate: DateTime(2022));
                                     if (date != null) {
-                                      _dateController.text = parseDate(
-                                          date.toString().substring(0, 10));
+                                      _dateController.text =
+                                          parseDate(date.toString());
                                       setState(() {
                                         birthDate = date;
                                       });
@@ -167,7 +172,8 @@ class _GeneralInformationFirstStepState
                                         style: BorderStyle.none,
                                       ),
                                     ),
-                                    labelText: "Fecha de Nacimiento",
+                                    labelText:
+                                        AppLocalizations.of(context).birthDate,
                                     filled: true,
                                   ),
                                 ),
@@ -186,7 +192,8 @@ class _GeneralInformationFirstStepState
                                   validator: (val) {
                                     return val.isNotEmpty
                                         ? null
-                                        : "Este campo es obligatorio";
+                                        : AppLocalizations.of(context)
+                                            .fieldRequired;
                                   },
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
@@ -196,7 +203,8 @@ class _GeneralInformationFirstStepState
                                         style: BorderStyle.none,
                                       ),
                                     ),
-                                    labelText: "Pais",
+                                    labelText:
+                                        AppLocalizations.of(context).country,
                                     filled: true,
                                   ),
                                   value: country,
@@ -261,14 +269,17 @@ class _GeneralInformationFirstStepState
                 strokeWidth: 3,
               ),
             )
-          : Text("Siguiente"),
+          : Text(AppLocalizations.of(context).next),
       onPressed: () {
         if (formKey.currentState.validate() && !isLoading) {
           setState(() {
             isLoading = true;
           });
           Provider.of<RegisterModel>(context, listen: false).setFirstStepData(
-              firstName, lastName, birthDate.toIso8601String(), country);
+              firstName,
+              lastName,
+              birthDate == null ? birthDate : birthDate.toIso8601String(),
+              country);
           widget.increment();
           setState(() {
             isLoading = false;

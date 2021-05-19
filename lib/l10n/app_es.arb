@@ -10,5 +10,16 @@
   "emailAlreadyInUse": "El correo ya esta en uso",
   "serverError": "Algo salio mal, intente mas tarde",
   "userNotFound": "No se encontro un usuario",
-  "credentialsError": "Credenciales incorrectas"
+  "credentialsError": "Credenciales incorrectas",
+  "close": "Cerrar",
+  "generalInformation": "Informacion General",
+  "generalInformationDescription": "Ingresa tu información con la que deseas que los otros usuarios te vean",
+  "fieldRequired": "Este campo es obligatorio",
+  "name": "Nombre",
+  "lastName": "Apellido",
+  "birthDate": "Fecha de Nacimiento",
+  "country": "Pais",
+  "gitProfile": "Perfil de git",
+  "aboutYourSelf": "Cuentanos sobre ti",
+  "next": "Siguiente"
 }

@@ -8,6 +8,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
 import 'package:mobile/components/toast.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/services/auth.dart';
 
 class GeneralInformationSecondStep extends StatefulWidget {
   final increment;
@@ -23,6 +25,7 @@ class GeneralInformationSecondStep extends StatefulWidget {
 class _GeneralInformationSecondStepState
     extends State<GeneralInformationSecondStep> {
   final Toast _toast = Toast();
+  final _auth = AuthService();
   File _image;
   bool isLoading = false;
   String platform = "GITHUB";
@@ -34,10 +37,12 @@ class _GeneralInformationSecondStepState
   final imagePicker = ImagePicker();
 
   Future getImage() async {
-    final image = await imagePicker.getImage(source: ImageSource.camera);
-    setState(() {
-      _image = File(image.path);
-    });
+    final image = await imagePicker.getImage(
+        source: ImageSource.gallery, imageQuality: 25);
+    if (image != null)
+      setState(() {
+        _image = File(image.path);
+      });
   }
 
   Future uploadFile() async {
@@ -52,26 +57,6 @@ class _GeneralInformationSecondStepState
     });
   }
 
-  Future register(BuildContext context) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      await uploadFile();
-      Provider.of<RegisterModel>(context, listen: false)
-          .setSecondStepData(imageURI, description, platform, userName);
-      await Provider.of<RegisterModel>(context, listen: false).register();
-      widget.increment();
-    } on DioError catch (e) {
-      _toast.showError(context, e.response.data["error"]);
-      Navigator.pushReplacementNamed(context, "/login");
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -84,14 +69,14 @@ class _GeneralInformationSecondStepState
             child: Column(
               children: [
                 Text(
-                  "Informacion General",
+                  AppLocalizations.of(context).generalInformation,
                   style: TextStyle(fontSize: 24),
                 ),
                 SizedBox(
                   height: 10,
                 ),
                 Text(
-                    "Ingresa tu información con la que deseas que los otros usuarios te vean."),
+                    AppLocalizations.of(context).generalInformationDescription),
                 SizedBox(
                   height: 40,
                 ),
@@ -164,7 +149,7 @@ class _GeneralInformationSecondStepState
                             ),
                           ),
                           hintText: "ej: jose",
-                          labelText: "Perfil de git",
+                          labelText: AppLocalizations.of(context).gitProfile,
                           filled: true,
                         ),
                       ),
@@ -190,7 +175,7 @@ class _GeneralInformationSecondStepState
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Cuentanos sobre ti",
+                    labelText: AppLocalizations.of(context).aboutYourSelf,
                     filled: true,
                   ),
                 ),
@@ -242,9 +227,29 @@ class _GeneralInformationSecondStepState
                 strokeWidth: 3,
               ),
             )
-          : Text("Siguiente"),
+          : Text(AppLocalizations.of(context).next),
       onPressed: () async {
-        if (!isLoading) await register(context);
+        if (!isLoading) {
+          setState(() {
+            isLoading = true;
+          });
+          try {
+            if (imageURI.isNotEmpty) await uploadFile();
+            Provider.of<RegisterModel>(context, listen: false)
+                .setSecondStepData(imageURI, description,
+                    userName.isEmpty ? null : platform, userName);
+            await _auth
+                .register(Provider.of<RegisterModel>(context, listen: false));
+            widget.increment();
+          } on DioError catch (e) {
+            _toast.showError(context, e.response.data["error"]);
+            Navigator.pushReplacementNamed(context, "/login");
+          } finally {
+            setState(() {
+              isLoading = false;
+            });
+          }
+        }
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,

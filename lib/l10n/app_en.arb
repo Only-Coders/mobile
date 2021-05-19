@@ -10,5 +10,16 @@
   "emailAlreadyInUse": "The email is already in use",
   "serverError": "Something went wrong, please try later",
   "userNotFound": "User not found",
-  "credentialsError": "Invalid credentials"
+  "credentialsError": "Invalid credentials",
+  "close": "Close",
+  "generalInformation": "General Information",
+  "generalInformationDescription": "Please enter the information with which you want other users to see you with",
+  "fieldRequired": "This field is required",
+  "name": "Name",
+  "lastName": "Last Name",
+  "birthDate": "Birth Date",
+  "country": "Country",
+  "gitProfile": "Git profile",
+  "aboutYourSelf": "Tell us about yourself",
+  "next": "Next"
 }

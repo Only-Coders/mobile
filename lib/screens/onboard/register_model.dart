@@ -1,5 +1,3 @@
-import 'package:mobile/services/auth.dart';
-
 class RegisterModel {
   String firstName = "";
   String lastName = "";
@@ -24,10 +22,5 @@ class RegisterModel {
     this.description = description;
     this.platform = platform;
     this.userName = userName;
-  }
-
-  Future<void> register() async {
-    AuthService _auth = AuthService();
-    await _auth.register(this);
   }
 }

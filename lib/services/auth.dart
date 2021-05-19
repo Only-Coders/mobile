@@ -12,15 +12,17 @@ class AuthService {
     var user = {
       "birthDate": registerData.birthDate,
       "description": registerData.description,
-      "gitProfile": {
-        "platform": registerData.platform,
-        "userName": registerData.userName
-      },
       "firstName": registerData.firstName,
       "lastName": registerData.lastName,
       "imageURI": registerData.imageURI,
       "country": {"code": registerData.country}
     };
+    if (registerData.userName.isNotEmpty) {
+      user["gitProfile"] = {
+        "platform": registerData.platform,
+        "userName": registerData.userName
+      };
+    }
     var response = await _httpClient.postRequest("/api/auth/register", user);
     RegExp rgx = new RegExp(r'\w+=(?<token>.*); Path');
     Token data = Token.fromJson(response.data);

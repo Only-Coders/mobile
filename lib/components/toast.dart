@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Toast {
   void showError(BuildContext context, String message) {
@@ -21,7 +22,7 @@ class Toast {
         backgroundColor: Theme.of(context).errorColor,
         action: SnackBarAction(
           textColor: Colors.white,
-          label: 'CLOSE',
+          label: AppLocalizations.of(context).close,
           onPressed: scaffold.hideCurrentSnackBar,
         ),
       ),
@@ -48,7 +49,7 @@ class Toast {
         backgroundColor: Colors.green,
         action: SnackBarAction(
           textColor: Colors.white,
-          label: 'CLOSE',
+          label: AppLocalizations.of(context).close,
           onPressed: scaffold.hideCurrentSnackBar,
         ),
       ),
@@ -75,7 +76,7 @@ class Toast {
         backgroundColor: Colors.blue,
         action: SnackBarAction(
           textColor: Colors.white,
-          label: 'CLOSE',
+          label: AppLocalizations.of(context).close,
           onPressed: scaffold.hideCurrentSnackBar,
         ),
       ),
