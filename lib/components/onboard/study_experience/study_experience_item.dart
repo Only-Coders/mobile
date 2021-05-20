@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/onboard/study_experience/edit_study_experience.dart';
 import 'package:mobile/models/study.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudyExperienceItem extends StatelessWidget {
   final Study study;
@@ -47,7 +48,7 @@ class StudyExperienceItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OutlinedButton(
-                    child: Text("Eliminar"),
+                    child: Text(AppLocalizations.of(context).delete),
                     onPressed: () {
                       removeStudy(study);
                     },
@@ -64,7 +65,7 @@ class StudyExperienceItem extends StatelessWidget {
                     width: 10,
                   ),
                   OutlinedButton(
-                    child: Text("Editar"),
+                    child: Text(AppLocalizations.of(context).edit),
                     onPressed: () {
                       showDialog(
                         context: context,

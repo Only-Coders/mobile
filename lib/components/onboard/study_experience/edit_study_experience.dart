@@ -3,6 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile/models/institute.dart';
 import 'package:mobile/models/study.dart';
 import 'package:mobile/services/study.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditStudyExperience extends StatefulWidget {
   final int index;
@@ -60,7 +61,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Editar Formacion'),
+      title: Text(AppLocalizations.of(context).editAcademic),
       content: SingleChildScrollView(
         child: Container(
           width: 500,
@@ -84,7 +85,9 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                     );
                   },
                   validator: (val) {
-                    return val.isNotEmpty ? null : "Este campo es obligatorio";
+                    return val.isNotEmpty
+                        ? null
+                        : AppLocalizations.of(context).fieldRequired;
                   },
                   suggestionsCallback: (String suggestion) {
                     setState(() {
@@ -102,7 +105,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                           style: BorderStyle.none,
                         ),
                       ),
-                      labelText: "Nombre de Institucion",
+                      labelText: AppLocalizations.of(context).instituteName,
                       filled: true,
                     ),
                   ),
@@ -125,7 +128,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Titulo",
+                    labelText: AppLocalizations.of(context).degree,
                     filled: true,
                   ),
                 ),
@@ -136,7 +139,9 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                   readOnly: true,
                   controller: _startDateController,
                   validator: (val) {
-                    return val != null ? null : "Este campo es obligatorio";
+                    return val != null
+                        ? null
+                        : AppLocalizations.of(context).fieldRequired;
                   },
                   onTap: () async {
                     DateTime date = await showDatePicker(
@@ -161,7 +166,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Fecha de Inicio",
+                    labelText: AppLocalizations.of(context).startDate,
                     filled: true,
                   ),
                 ),
@@ -177,7 +182,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                     } else {
                       return _endDate.isAfter(_startDate)
                           ? null
-                          : "La fecha de fin debe ser mayor a la de inicio";
+                          : AppLocalizations.of(context).endDateValidation;
                     }
                   },
                   onTap: () async {
@@ -203,7 +208,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Fecha de Fin",
+                    labelText: AppLocalizations.of(context).endDate,
                     filled: true,
                   ),
                 ),
@@ -218,7 +223,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            'CANCELAR',
+            AppLocalizations.of(context).cancel.toUpperCase(),
             style: TextStyle(color: Colors.grey),
           ),
           style: TextButton.styleFrom(primary: Colors.grey),
@@ -240,7 +245,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            'EDITAR',
+            AppLocalizations.of(context).edit.toUpperCase(),
             style: TextStyle(
               color: Colors.orange,
             ),

@@ -36,5 +36,12 @@
   "editWorkExperience": "Editar experiencia",
   "skills": "Habilidades",
   "skillsDescription": "Agrega algunas de tus increíbles habilidades a tu perfil",
-  "addSkills": "Agrega habilidades"
+  "addSkills": "Agrega habilidades",
+  "academicExperience": "Formacion Academica",
+  "academicExperienceDescription": "Ingresa tus experiencias academicas para que todos sepan que conocimientos tienes!",
+  "addAcademic": "Agregar educacion",
+  "editAcademic": "Editar educacion",
+  "instituteName": "Nombre de instituto",
+  "degree": "Titulo",
+  "cancel": "Cancelar"
 }

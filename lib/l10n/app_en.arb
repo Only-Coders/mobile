@@ -36,5 +36,12 @@
   "editWorkExperience": "Edit experience",
   "skills": "Skills",
   "skillsDescription": "Add some of your amazing skills to your profile",
-  "addSkills": "Add skills"
+  "addSkills": "Add skills",
+  "academicExperience": "Academic Experience",
+  "academicExperienceDescription": "Tell us about your academic experience, so everyone can know how much you know!",
+  "addAcademic": "Add academic",
+  "editAcademic": "Edit academic",
+  "instituteName": "Institute name",
+  "degree": "Degree",
+  "cancel": "Cancel"
 }

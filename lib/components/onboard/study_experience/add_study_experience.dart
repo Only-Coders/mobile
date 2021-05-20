@@ -3,6 +3,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:mobile/models/institute.dart';
 import 'package:mobile/models/study.dart';
 import 'package:mobile/services/study.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddStudyExperience extends StatefulWidget {
   final addStudy;
@@ -41,7 +42,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Agregar Formacion'),
+      title: Text(AppLocalizations.of(context).addAcademic),
       content: SingleChildScrollView(
         child: Container(
           width: 500,
@@ -66,7 +67,9 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                     );
                   },
                   validator: (val) {
-                    return val.isNotEmpty ? null : "Este campo es obligatorio";
+                    return val.isNotEmpty
+                        ? null
+                        : AppLocalizations.of(context).fieldRequired;
                   },
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _typeAheadController,
@@ -78,7 +81,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                           style: BorderStyle.none,
                         ),
                       ),
-                      labelText: "Nombre de Institucion",
+                      labelText: AppLocalizations.of(context).instituteName,
                       filled: true,
                     ),
                   ),
@@ -100,7 +103,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Titulo",
+                    labelText: AppLocalizations.of(context).degree,
                     filled: true,
                   ),
                 ),
@@ -111,7 +114,9 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                   readOnly: true,
                   controller: _startDateController,
                   validator: (val) {
-                    return val != null ? null : "Este campo es obligatorio";
+                    return val != null
+                        ? null
+                        : AppLocalizations.of(context).fieldRequired;
                   },
                   onTap: () async {
                     DateTime date = await showDatePicker(
@@ -136,7 +141,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Fecha de Inicio",
+                    labelText: AppLocalizations.of(context).startDate,
                     filled: true,
                   ),
                 ),
@@ -152,7 +157,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                     } else {
                       return _endDate.isAfter(_startDate)
                           ? null
-                          : "La fecha de fin debe ser mayor a la de inicio";
+                          : AppLocalizations.of(context).endDateValidation;
                     }
                   },
                   onTap: () async {
@@ -178,7 +183,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Fecha de Fin",
+                    labelText: AppLocalizations.of(context).endDate,
                     filled: true,
                   ),
                 ),
@@ -193,7 +198,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            'CANCELAR',
+            AppLocalizations.of(context).cancel.toUpperCase(),
             style: TextStyle(color: Colors.grey),
           ),
           style: TextButton.styleFrom(primary: Colors.grey),
@@ -211,7 +216,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            'AGREGAR',
+            AppLocalizations.of(context).add.toUpperCase(),
             style: TextStyle(
               color: Colors.orange,
             ),

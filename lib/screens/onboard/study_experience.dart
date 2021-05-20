@@ -5,6 +5,7 @@ import 'package:mobile/components/onboard/study_experience/study_experience_item
 import 'package:mobile/components/toast.dart';
 import 'package:mobile/models/study.dart';
 import 'package:mobile/services/study.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StudyExperience extends StatefulWidget {
   final increment;
@@ -16,6 +17,8 @@ class StudyExperience extends StatefulWidget {
 }
 
 class _StudyExperienceState extends State<StudyExperience> {
+  final StudyService _studyService = StudyService();
+  final Toast _toast = Toast();
   bool isLoading = false;
   List<Study> studies = [];
 
@@ -38,17 +41,17 @@ class _StudyExperienceState extends State<StudyExperience> {
   }
 
   Future<void> createStudies(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
     try {
-      setState(() {
-        isLoading = true;
+      var futures = studies.map((study) {
+        return _studyService.createStudy(study);
       });
-      StudyService _studyService = StudyService();
-      studies.forEach((study) async {
-        await _studyService.createStudy(study);
-      });
+      await Future.wait(futures);
       widget.increment();
     } catch (error) {
-      Toast().showError(context, "Ups, algo salio mal :(");
+      _toast.showError(context, AppLocalizations.of(context).serverError);
     } finally {
       setState(() {
         isLoading = false;
@@ -68,13 +71,14 @@ class _StudyExperienceState extends State<StudyExperience> {
             child: Column(
               children: [
                 Text(
-                  "Formacion Academica",
+                  AppLocalizations.of(context).academicExperience,
                   style: TextStyle(fontSize: 24),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text("Ingresa datos relacionados a tu educacion."),
+                Text(
+                    AppLocalizations.of(context).academicExperienceDescription),
                 SizedBox(
                   height: 25,
                 ),
@@ -107,7 +111,7 @@ class _StudyExperienceState extends State<StudyExperience> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Agregar formacion"),
+                      Text(AppLocalizations.of(context).addAcademic),
                     ],
                   ),
                   style: TextButton.styleFrom(primary: Colors.grey),
@@ -154,7 +158,7 @@ class _StudyExperienceState extends State<StudyExperience> {
                 strokeWidth: 3,
               ),
             )
-          : Text("Siguiente"),
+          : Text(AppLocalizations.of(context).next),
       onPressed: () async {
         await createStudies(context);
       },
