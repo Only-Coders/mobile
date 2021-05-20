@@ -33,5 +33,8 @@
   "endDateValidation": "Start date must be earlier than end date",
   "delete": "Delete",
   "edit": "Edit",
-  "editWorkExperience": "Edit experience"
+  "editWorkExperience": "Edit experience",
+  "skills": "Skills",
+  "skillsDescription": "Add some of your amazing skills to your profile",
+  "addSkills": "Add skills"
 }
