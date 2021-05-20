@@ -12,6 +12,7 @@
   "userNotFound": "No se encontro un usuario",
   "credentialsError": "Credenciales incorrectas",
   "close": "Cerrar",
+  "add": "Agregar",
   "generalInformation": "Informacion General",
   "generalInformationDescription": "Ingresa tu información con la que deseas que los otros usuarios te vean",
   "fieldRequired": "Este campo es obligatorio",
@@ -21,5 +22,16 @@
   "country": "Pais",
   "gitProfile": "Perfil de git",
   "aboutYourSelf": "Cuentanos sobre ti",
-  "next": "Siguiente"
+  "next": "Siguiente",
+  "workExperience": "Experiencia Laboral",
+  "workExperienceDescription": "Cuentanos sobre tus experiencias laborales para que los reclutadores sepan mas de ti!",
+  "addWorkExperience": "Agregar experiencia",
+  "workName": "Nombre de trabajo",
+  "position": "Posicion",
+  "startDate": "Fecha de Inicio",
+  "endDate": "Fecha de Fin",
+  "endDateValidation": "La fecha de fin debe ser mayor a la de inicio",
+  "delete": "Eliminar",
+  "edit": "Editar",
+  "editWorkExperience": "Editar experiencia"
 }

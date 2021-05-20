@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:mobile/components/onboard/work_experience/edit_work_experience.dart';
 import 'package:mobile/models/work.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkExperienceItem extends StatelessWidget {
   final Work work;
@@ -48,7 +49,7 @@ class WorkExperienceItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OutlinedButton(
-                    child: Text("Eliminar"),
+                    child: Text(AppLocalizations.of(context).delete),
                     onPressed: () {
                       removeWork(work);
                     },
@@ -65,7 +66,7 @@ class WorkExperienceItem extends StatelessWidget {
                     width: 10,
                   ),
                   OutlinedButton(
-                    child: Text("Editar"),
+                    child: Text(AppLocalizations.of(context).edit),
                     onPressed: () {
                       showDialog(
                         context: context,

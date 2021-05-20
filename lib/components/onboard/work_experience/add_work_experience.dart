@@ -3,6 +3,7 @@ import 'package:mobile/models/work.dart';
 import 'package:mobile/models/workplace.dart';
 import 'package:mobile/services/work.dart';
 import "package:flutter_typeahead/flutter_typeahead.dart";
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AddWorkExperience extends StatefulWidget {
   final addWork;
@@ -14,16 +15,16 @@ class AddWorkExperience extends StatefulWidget {
 }
 
 class _AddWorkExperienceState extends State<AddWorkExperience> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final _startDateController = TextEditingController();
+  final _endDateController = TextEditingController();
+  final TextEditingController _typeAheadController = TextEditingController();
   final WorkService _workService = WorkService();
   String position = "";
   String workplace = "";
   String workplaceId = "";
   DateTime _startDate;
   DateTime _endDate;
-  final _startDateController = TextEditingController();
-  final _endDateController = TextEditingController();
-  final TextEditingController _typeAheadController = TextEditingController();
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
@@ -41,7 +42,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Agregar experiencia'),
+      title: Text(AppLocalizations.of(context).addWorkExperience),
       content: SingleChildScrollView(
         child: Container(
           width: 500,
@@ -66,7 +67,9 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                     );
                   },
                   validator: (val) {
-                    return val.isNotEmpty ? null : "Este campo es obligatorio";
+                    return val.isNotEmpty
+                        ? null
+                        : AppLocalizations.of(context).fieldRequired;
                   },
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _typeAheadController,
@@ -78,7 +81,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                           style: BorderStyle.none,
                         ),
                       ),
-                      labelText: "Nombre de trabajo",
+                      labelText: AppLocalizations.of(context).workName,
                       filled: true,
                     ),
                   ),
@@ -100,7 +103,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Posicion",
+                    labelText: AppLocalizations.of(context).position,
                     filled: true,
                   ),
                 ),
@@ -111,7 +114,9 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                   readOnly: true,
                   controller: _startDateController,
                   validator: (val) {
-                    return val != null ? null : "Este campo es obligatorio";
+                    return val != null
+                        ? null
+                        : AppLocalizations.of(context).fieldRequired;
                   },
                   onTap: () async {
                     DateTime date = await showDatePicker(
@@ -136,7 +141,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Fecha de Inicio",
+                    labelText: AppLocalizations.of(context).startDate,
                     filled: true,
                   ),
                 ),
@@ -152,7 +157,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                     } else {
                       return _endDate.isAfter(_startDate)
                           ? null
-                          : "La fecha de fin debe ser mayor a la de inicio";
+                          : AppLocalizations.of(context).endDateValidation;
                     }
                   },
                   onTap: () async {
@@ -178,7 +183,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: "Fecha de Fin",
+                    labelText: AppLocalizations.of(context).endDate,
                     filled: true,
                   ),
                 ),
@@ -193,7 +198,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            'CANCELAR',
+            AppLocalizations.of(context).close.toUpperCase(),
             style: TextStyle(color: Colors.grey),
           ),
           style: TextButton.styleFrom(primary: Colors.grey),
@@ -211,7 +216,7 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            'AGREGAR',
+            AppLocalizations.of(context).add.toUpperCase(),
             style: TextStyle(
               color: Colors.orange,
             ),

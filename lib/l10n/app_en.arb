@@ -12,6 +12,7 @@
   "userNotFound": "User not found",
   "credentialsError": "Invalid credentials",
   "close": "Close",
+  "add": "Add",
   "generalInformation": "General Information",
   "generalInformationDescription": "Please enter the information with which you want other users to see you with",
   "fieldRequired": "This field is required",
@@ -21,5 +22,16 @@
   "country": "Country",
   "gitProfile": "Git profile",
   "aboutYourSelf": "Tell us about yourself",
-  "next": "Next"
+  "next": "Next",
+  "workExperience": "Work Experience",
+  "workExperienceDescription": "Tell us about your work experiences so recruiters can know more about you!",
+  "addWorkExperience": "Add experience",
+  "workName": "Work Name",
+  "position": "Position",
+  "startDate": "Start Date",
+  "endDate": "End Date",
+  "endDateValidation": "Start date must be earlier than end date",
+  "delete": "Delete",
+  "edit": "Edit",
+  "editWorkExperience": "Edit experience"
 }

@@ -5,6 +5,7 @@ import 'package:mobile/components/onboard/work_experience/work_experience_item.d
 import 'package:mobile/components/toast.dart';
 import 'package:mobile/models/work.dart';
 import 'package:mobile/services/work.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkExperience extends StatefulWidget {
   final increment;
@@ -17,6 +18,8 @@ class WorkExperience extends StatefulWidget {
 
 class _WorkExperienceState extends State<WorkExperience> {
   bool isLoading = false;
+  final WorkService _workService = WorkService();
+  final Toast _toast = Toast();
   List<Work> works = [];
 
   void addWork(Work work) {
@@ -32,44 +35,9 @@ class _WorkExperienceState extends State<WorkExperience> {
   }
 
   void updateWork(Work work, int index) {
-    print(work);
-    print(index);
     setState(() {
       works[index] = work;
     });
-  }
-
-  Future<void> register(BuildContext context) async {
-    try {
-      setState(() {
-        isLoading = true;
-      });
-      WorkService _workService = WorkService();
-      works.forEach((work) async {
-        await _workService.createWork(work);
-      });
-      widget.increment();
-    } catch (error) {
-      Toast().showError(context, "Ups, algo salio mal :(");
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
-    }
-  }
-
-  Widget listWorks() {
-    return new ListView(
-      shrinkWrap: true,
-      children: works
-          .map((work) => new WorkExperienceItem(
-                work: work,
-                index: works.indexOf(work),
-                removeWork: removeWork,
-                updateWork: updateWork,
-              ))
-          .toList(),
-    );
   }
 
   @override
@@ -84,14 +52,13 @@ class _WorkExperienceState extends State<WorkExperience> {
             child: Column(
               children: [
                 Text(
-                  "Experiencia Laboral",
+                  AppLocalizations.of(context).workExperience,
                   style: TextStyle(fontSize: 24),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                    "Ingresa tus experiencias laborales para que los usuarios se comuniquen contigo."),
+                Text(AppLocalizations.of(context).workExperienceDescription),
                 SizedBox(
                   height: 25,
                 ),
@@ -124,7 +91,7 @@ class _WorkExperienceState extends State<WorkExperience> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text("Agregar experiencia"),
+                      Text(AppLocalizations.of(context).addWorkExperience),
                     ],
                   ),
                   style: TextButton.styleFrom(primary: Colors.grey),
@@ -145,6 +112,20 @@ class _WorkExperienceState extends State<WorkExperience> {
     );
   }
 
+  Widget listWorks() {
+    return new ListView(
+      shrinkWrap: true,
+      children: works
+          .map((work) => new WorkExperienceItem(
+                work: work,
+                index: works.indexOf(work),
+                removeWork: removeWork,
+                updateWork: updateWork,
+              ))
+          .toList(),
+    );
+  }
+
   Widget nextButton() {
     return ElevatedButton(
       child: isLoading
@@ -157,9 +138,24 @@ class _WorkExperienceState extends State<WorkExperience> {
                 strokeWidth: 3,
               ),
             )
-          : Text("Siguiente"),
+          : Text(AppLocalizations.of(context).next),
       onPressed: () async {
-        await register(context);
+        setState(() {
+          isLoading = true;
+        });
+        try {
+          var futures = works.map((work) {
+            return _workService.createWork(work);
+          });
+          await Future.wait(futures);
+          widget.increment();
+        } catch (error) {
+          _toast.showError(context, AppLocalizations.of(context).serverError);
+        } finally {
+          setState(() {
+            isLoading = false;
+          });
+        }
       },
       style: ElevatedButton.styleFrom(
         elevation: 0,
