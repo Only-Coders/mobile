@@ -43,5 +43,9 @@
   "editAcademic": "Editar educacion",
   "instituteName": "Nombre de instituto",
   "degree": "Titulo",
-  "cancel": "Cancelar"
+  "cancel": "Cancelar",
+  "tags": "Temas",
+  "tagsDescription": "Sigue temas para mantenerte informado sobre lo que te gusta",
+  "followsTags": " personas siguen este tema",
+  "follow": "Follow"
 }

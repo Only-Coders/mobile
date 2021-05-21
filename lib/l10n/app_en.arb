@@ -43,5 +43,9 @@
   "editAcademic": "Edit academic",
   "instituteName": "Institute name",
   "degree": "Degree",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "tags": "Tags",
+  "tagsDescription": "Follow tags to stay informed about what you like",
+  "followsTags": " persons follows this tag",
+  "follow": "Seguir"
 }
