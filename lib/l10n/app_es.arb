@@ -47,5 +47,7 @@
   "tags": "Temas",
   "tagsDescription": "Sigue temas para mantenerte informado sobre lo que te gusta",
   "followsTags": " personas siguen este tema",
-  "follow": "Follow"
+  "follow": "Follow",
+  "suggestedContacts": "Contact Network",
+  "suggestedContactsDescription": "Add people to your network of contacts or follows to find out about the latest trends"
 }

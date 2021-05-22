@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/work.dart';
+import 'package:mobile/models/work_position.dart';
 import 'package:mobile/models/workplace.dart';
 import 'package:mobile/services/work.dart';
 import "package:flutter_typeahead/flutter_typeahead.dart";
@@ -205,15 +205,19 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
         ),
         TextButton(
           onPressed: () async {
-            Work work = Work.fromJson({
-              "id": workplaceId,
-              "name": workplace,
-              "position": position,
-              "since": _startDate.toIso8601String(),
-              "until": _endDate.toIso8601String()
-            });
-            widget.addWork(work);
-            Navigator.pop(context);
+            if (formKey.currentState.validate()) {
+              WorkPosition work = WorkPosition.fromJson({
+                "workplace": {
+                  "id": workplaceId,
+                  "name": workplace,
+                },
+                "position": position,
+                "since": _startDate.toIso8601String(),
+                "until": _endDate == null ? null : _endDate.toIso8601String(),
+              });
+              widget.addWork(work);
+              Navigator.pop(context);
+            }
           },
           child: Text(
             AppLocalizations.of(context).add.toUpperCase(),

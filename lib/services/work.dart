@@ -1,5 +1,5 @@
 import 'package:mobile/http_client.dart';
-import "package:mobile/models/work.dart";
+import "package:mobile/models/work_position.dart";
 import 'package:mobile/models/workplace.dart';
 
 class WorkService {
@@ -15,9 +15,9 @@ class WorkService {
         .toList();
   }
 
-  Future<void> createWork(Work work) async {
+  Future<void> createWork(WorkPosition work) async {
     var workJson = work.toJson();
-    if (work.id.isEmpty) workJson.remove("id");
+    if (work.workplace.id.isEmpty) workJson.remove("id");
     await _httpClient.postRequest("/api/users/workplaces", workJson);
   }
 }

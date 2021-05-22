@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/models/work.dart';
+import 'package:mobile/models/work_position.dart';
 import 'package:mobile/models/workplace.dart';
 import 'package:mobile/services/work.dart';
 import "package:flutter_typeahead/flutter_typeahead.dart";
@@ -7,7 +7,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditWorkExperience extends StatefulWidget {
   final updateWork;
-  final Work work;
+  final WorkPosition work;
   final int index;
 
   const EditWorkExperience({Key key, this.work, this.updateWork, this.index})
@@ -33,14 +33,17 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
   @override
   void initState() {
     setState(() {
-      workplace = widget.work.name;
-      workplaceId = widget.work.id;
+      workplace = widget.work.workplace.name;
+      workplaceId = widget.work.workplace.id;
       position = widget.work.position;
+      _startDate = DateTime.parse(widget.work.since);
+      _endDate = DateTime.parse(widget.work.until);
     });
-    _typeAheadController.text = widget.work.name;
+    _typeAheadController.text = widget.work.workplace.name;
     _positionController.text = widget.work.position;
     _startDateController.text = parseDate(widget.work.since);
-    _endDateController.text = parseDate(widget.work.until);
+    _endDateController.text =
+        widget.work.until != null ? parseDate(widget.work.until) : null;
     super.initState();
   }
 
@@ -177,7 +180,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                   readOnly: true,
                   controller: _endDateController,
                   validator: (val) {
-                    if (_endDate == null) {
+                    if (_endDate == null || _startDate == null) {
                       return null;
                     } else {
                       return _endDate.isAfter(_startDate)
@@ -230,19 +233,23 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
         ),
         TextButton(
           onPressed: () {
-            Work work = Work.fromJson({
-              "id": workplaceId,
-              "name": workplace,
-              "position": position,
-              "since": _startDate == null
-                  ? widget.work.since
-                  : _startDate.toIso8601String(),
-              "until": _endDate == null
-                  ? widget.work.until
-                  : _endDate.toIso8601String(),
-            });
-            widget.updateWork(work, widget.index);
-            Navigator.pop(context);
+            if (formKey.currentState.validate()) {
+              WorkPosition work = WorkPosition.fromJson({
+                "workplace": {
+                  "id": workplaceId,
+                  "name": workplace,
+                },
+                "position": position,
+                "since": _startDate == null
+                    ? widget.work.since
+                    : _startDate.toIso8601String(),
+                "until": _endDate == null
+                    ? widget.work.until
+                    : _endDate.toIso8601String(),
+              });
+              widget.updateWork(work, widget.index);
+              Navigator.pop(context);
+            }
           },
           child: Text(
             AppLocalizations.of(context).edit.toUpperCase(),

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:mobile/components/onboard/work_experience/edit_work_experience.dart';
-import 'package:mobile/models/work.dart';
+import 'package:mobile/models/work_position.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class WorkExperienceItem extends StatelessWidget {
-  final Work work;
+  final WorkPosition work;
   final int index;
   final removeWork;
   final updateWork;
@@ -31,7 +31,7 @@ class WorkExperienceItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                work.name,
+                work.workplace.name,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               Text(
@@ -42,7 +42,7 @@ class WorkExperienceItem extends StatelessWidget {
                 height: 2,
               ),
               Text(
-                "${parseDate(work.since)} - ${work.until.isEmpty ? "" : parseDate(work.until)}",
+                "${parseDate(work.since)} - ${work.until == null ? "Actual" : parseDate(work.until)}",
                 style: TextStyle(color: Colors.grey.shade700, fontSize: 10),
               ),
               Row(

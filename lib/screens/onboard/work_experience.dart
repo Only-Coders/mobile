@@ -3,7 +3,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/components/onboard/work_experience/add_work_experience.dart';
 import 'package:mobile/components/onboard/work_experience/work_experience_item.dart';
 import 'package:mobile/components/toast.dart';
-import 'package:mobile/models/work.dart';
+import 'package:mobile/models/work_position.dart';
 import 'package:mobile/services/work.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -20,21 +20,21 @@ class _WorkExperienceState extends State<WorkExperience> {
   bool isLoading = false;
   final WorkService _workService = WorkService();
   final Toast _toast = Toast();
-  List<Work> works = [];
+  List<WorkPosition> works = [];
 
-  void addWork(Work work) {
+  void addWork(WorkPosition work) {
     setState(() {
       works.add(work);
     });
   }
 
-  void removeWork(Work work) {
+  void removeWork(WorkPosition work) {
     setState(() {
       works.remove(work);
     });
   }
 
-  void updateWork(Work work, int index) {
+  void updateWork(WorkPosition work, int index) {
     setState(() {
       works[index] = work;
     });

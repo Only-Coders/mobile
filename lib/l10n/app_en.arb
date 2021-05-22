@@ -47,5 +47,7 @@
   "tags": "Tags",
   "tagsDescription": "Follow tags to stay informed about what you like",
   "followsTags": " persons follows this tag",
-  "follow": "Seguir"
+  "follow": "Seguir",
+  "suggestedContacts": "Red de Contactos",
+  "suggestedContactsDescription": "Agrega personas a tu red de contactos o síguelas para enterarte de las ultimas tendencias"
 }
