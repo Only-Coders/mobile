@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/screens/onboard/general_information_first_step.dart';
 import 'package:mobile/screens/onboard/general_information_second_step.dart';
 import 'package:im_stepper/stepper.dart';
-import 'package:mobile/screens/onboard/register_model.dart';
+import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/screens/onboard/study_experience.dart';
 import 'package:mobile/screens/onboard/suggested_contacts.dart';
 import 'package:mobile/screens/onboard/tags.dart';

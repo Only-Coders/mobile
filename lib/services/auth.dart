@@ -1,6 +1,6 @@
 import 'package:mobile/http_client.dart';
 import 'package:mobile/models/token.dart';
-import 'package:mobile/screens/onboard/register_model.dart';
+import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/storage.dart';
 
 class AuthService {

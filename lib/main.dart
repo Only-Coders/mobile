@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/screens/login.dart';
+import 'package:mobile/screens/auth/login.dart';
 import 'package:mobile/screens/onboard/onboard.dart';
-import 'package:mobile/screens/register.dart';
+import 'package:mobile/screens/auth/register.dart';
 import "package:firebase_core/firebase_core.dart";
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

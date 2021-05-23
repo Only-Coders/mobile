@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/components/onboard/work_experience/add_work_experience.dart';
 import 'package:mobile/components/onboard/work_experience/work_experience_item.dart';
-import 'package:mobile/components/toast.dart';
+import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/models/work_position.dart';
 import 'package:mobile/services/work.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

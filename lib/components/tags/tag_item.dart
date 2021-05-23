@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobile/components/toast.dart';
+import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/models/tag.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/services/tag.dart';

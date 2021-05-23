@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:mobile/models/country.dart';
-import 'package:mobile/screens/onboard/register_model.dart';
+import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/services/country.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

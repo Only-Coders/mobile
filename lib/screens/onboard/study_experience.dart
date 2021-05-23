@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/components/onboard/study_experience/add_study_experience.dart';
 import 'package:mobile/components/onboard/study_experience/study_experience_item.dart';
-import 'package:mobile/components/toast.dart';
+import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/models/study.dart';
 import 'package:mobile/services/study.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

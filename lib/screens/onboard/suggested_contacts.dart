@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mobile/components/contact_item.dart';
+import 'package:mobile/components/contacts/contact_item.dart';
 import 'package:mobile/models/contact.dart';
 import 'package:mobile/services/contact.dart';
 

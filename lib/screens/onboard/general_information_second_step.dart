@@ -1,13 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mobile/screens/onboard/register_model.dart';
+import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
-import 'package:mobile/components/toast.dart';
+import 'package:mobile/components/generic/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/services/auth.dart';
 
