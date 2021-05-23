@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/screens/auth/login.dart';
+import 'package:mobile/screens/feed/feed.dart';
 import 'package:mobile/screens/onboard/onboard.dart';
 import 'package:mobile/screens/auth/register.dart';
 import "package:firebase_core/firebase_core.dart";
@@ -34,11 +35,12 @@ class App extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       routes: {
+        "/feed": (context) => Feed(),
         "/login": (context) => Login(),
         "/register": (context) => Register(),
         "/onboard": (context) => Onboard()
       },
-      home: Login(),
+      home: Feed(),
     );
   }
 }
