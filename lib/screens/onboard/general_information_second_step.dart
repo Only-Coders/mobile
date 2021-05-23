@@ -59,6 +59,72 @@ class _GeneralInformationSecondStepState
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
+    Widget nextButton() {
+      return ElevatedButton(
+        child: isLoading
+            ? SizedBox(
+                width: 25,
+                height: 25,
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
+                  strokeWidth: 3,
+                ),
+              )
+            : Text(t.next),
+        onPressed: () async {
+          if (!isLoading) {
+            setState(() {
+              isLoading = true;
+            });
+            try {
+              if (imageURI.isNotEmpty) await uploadFile();
+              Provider.of<RegisterModel>(context, listen: false)
+                  .setSecondStepData(imageURI, description,
+                      userName.isEmpty ? null : platform, userName);
+              await _auth
+                  .register(Provider.of<RegisterModel>(context, listen: false));
+              widget.increment();
+            } on DioError catch (e) {
+              _toast.showError(context, e.response.data["error"]);
+              Navigator.pushReplacementNamed(context, "/login");
+            } finally {
+              setState(() {
+                isLoading = false;
+              });
+            }
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: TextStyle(fontSize: 16),
+          primary: Theme.of(context).primaryColor, // background
+        ),
+      );
+    }
+
+    Widget platformItem(String platform) {
+      switch (platform) {
+        case "GITHUB":
+          return SvgPicture.asset(
+            "assets/images/github.svg",
+            width: 30,
+          );
+        case "GITLAB":
+          return SvgPicture.asset(
+            "assets/images/gitlab.svg",
+            width: 30,
+          );
+        default:
+          return SvgPicture.asset(
+            "assets/images/bitbucket.svg",
+            width: 30,
+          );
+      }
+    }
+
     return Container(
       height: MediaQuery.of(context).size.height - 80,
       padding: EdgeInsets.all(25),
@@ -69,14 +135,13 @@ class _GeneralInformationSecondStepState
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context).generalInformation,
+                  t.generalInformation,
                   style: TextStyle(fontSize: 24),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                    AppLocalizations.of(context).generalInformationDescription),
+                Text(t.generalInformationDescription),
                 SizedBox(
                   height: 40,
                 ),
@@ -149,7 +214,7 @@ class _GeneralInformationSecondStepState
                             ),
                           ),
                           hintText: "ej: jose",
-                          labelText: AppLocalizations.of(context).gitProfile,
+                          labelText: t.gitProfile,
                           filled: true,
                         ),
                       ),
@@ -175,7 +240,7 @@ class _GeneralInformationSecondStepState
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: AppLocalizations.of(context).aboutYourSelf,
+                    labelText: t.aboutYourSelf,
                     filled: true,
                   ),
                 ),
@@ -191,70 +256,6 @@ class _GeneralInformationSecondStepState
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget platformItem(String platform) {
-    switch (platform) {
-      case "GITHUB":
-        return SvgPicture.asset(
-          "assets/images/github.svg",
-          width: 30,
-        );
-      case "GITLAB":
-        return SvgPicture.asset(
-          "assets/images/gitlab.svg",
-          width: 30,
-        );
-      default:
-        return SvgPicture.asset(
-          "assets/images/bitbucket.svg",
-          width: 30,
-        );
-    }
-  }
-
-  Widget nextButton() {
-    return ElevatedButton(
-      child: isLoading
-          ? SizedBox(
-              width: 25,
-              height: 25,
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-                valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
-                strokeWidth: 3,
-              ),
-            )
-          : Text(AppLocalizations.of(context).next),
-      onPressed: () async {
-        if (!isLoading) {
-          setState(() {
-            isLoading = true;
-          });
-          try {
-            if (imageURI.isNotEmpty) await uploadFile();
-            Provider.of<RegisterModel>(context, listen: false)
-                .setSecondStepData(imageURI, description,
-                    userName.isEmpty ? null : platform, userName);
-            await _auth
-                .register(Provider.of<RegisterModel>(context, listen: false));
-            widget.increment();
-          } on DioError catch (e) {
-            _toast.showError(context, e.response.data["error"]);
-            Navigator.pushReplacementNamed(context, "/login");
-          } finally {
-            setState(() {
-              isLoading = false;
-            });
-          }
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        textStyle: TextStyle(fontSize: 16),
-        primary: Theme.of(context).primaryColor, // background
       ),
     );
   }

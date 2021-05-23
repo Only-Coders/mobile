@@ -41,8 +41,10 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).addAcademic),
+      title: Text(t.addAcademic),
       content: SingleChildScrollView(
         child: Container(
           width: 500,
@@ -67,9 +69,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                     );
                   },
                   validator: (val) {
-                    return val.isNotEmpty
-                        ? null
-                        : AppLocalizations.of(context).fieldRequired;
+                    return val.isNotEmpty ? null : t.fieldRequired;
                   },
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _typeAheadController,
@@ -81,7 +81,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                           style: BorderStyle.none,
                         ),
                       ),
-                      labelText: AppLocalizations.of(context).instituteName,
+                      labelText: t.instituteName,
                       filled: true,
                     ),
                   ),
@@ -103,7 +103,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: AppLocalizations.of(context).degree,
+                    labelText: t.degree,
                     filled: true,
                   ),
                 ),
@@ -114,9 +114,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                   readOnly: true,
                   controller: _startDateController,
                   validator: (val) {
-                    return val != null
-                        ? null
-                        : AppLocalizations.of(context).fieldRequired;
+                    return val != null ? null : t.fieldRequired;
                   },
                   onTap: () async {
                     DateTime date = await showDatePicker(
@@ -141,7 +139,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: AppLocalizations.of(context).startDate,
+                    labelText: t.startDate,
                     filled: true,
                   ),
                 ),
@@ -157,7 +155,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                     } else {
                       return _endDate.isAfter(_startDate)
                           ? null
-                          : AppLocalizations.of(context).endDateValidation;
+                          : t.endDateValidation;
                     }
                   },
                   onTap: () async {
@@ -183,7 +181,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: AppLocalizations.of(context).endDate,
+                    labelText: t.endDate,
                     filled: true,
                   ),
                 ),
@@ -198,7 +196,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            AppLocalizations.of(context).cancel.toUpperCase(),
+            t.cancel.toUpperCase(),
             style: TextStyle(color: Colors.grey),
           ),
           style: TextButton.styleFrom(primary: Colors.grey),
@@ -216,7 +214,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            AppLocalizations.of(context).add.toUpperCase(),
+            t.add.toUpperCase(),
             style: TextStyle(
               color: Colors.orange,
             ),

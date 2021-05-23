@@ -40,6 +40,36 @@ class _SuggestedContactsState extends State<SuggestedContacts> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
+    Widget listTags() {
+      return SizedBox(
+        height: 325,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: new Column(
+            children: contacts
+                .map((c) => ContactItem(contact: c, remove: removeContact))
+                .toList(),
+          ),
+        ),
+      );
+    }
+
+    Widget finishButton() {
+      return ElevatedButton(
+        child: Text(t.finish),
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, "/login");
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: TextStyle(fontSize: 16),
+          primary: Theme.of(context).primaryColor, // background
+        ),
+      );
+    }
+
     return FutureBuilder(
         future: getContacts,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -54,14 +84,13 @@ class _SuggestedContactsState extends State<SuggestedContacts> {
                         child: Column(
                           children: [
                             Text(
-                              AppLocalizations.of(context).suggestedContacts,
+                              t.suggestedContacts,
                               style: TextStyle(fontSize: 24),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            Text(AppLocalizations.of(context)
-                                .suggestedContactsDescription),
+                            Text(t.suggestedContactsDescription),
                             SizedBox(
                               height: 35,
                             ),
@@ -78,7 +107,7 @@ class _SuggestedContactsState extends State<SuggestedContacts> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            nextButton(),
+                            finishButton(),
                           ],
                         ),
                       )
@@ -107,33 +136,5 @@ class _SuggestedContactsState extends State<SuggestedContacts> {
                   ),
                 );
         });
-  }
-
-  Widget listTags() {
-    return SizedBox(
-      height: 325,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: new Column(
-          children: contacts
-              .map((c) => ContactItem(contact: c, remove: removeContact))
-              .toList(),
-        ),
-      ),
-    );
-  }
-
-  Widget nextButton() {
-    return ElevatedButton(
-      child: Text(AppLocalizations.of(context).finish),
-      onPressed: () {
-        Navigator.pushReplacementNamed(context, "/login");
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        textStyle: TextStyle(fontSize: 16),
-        primary: Theme.of(context).primaryColor, // background
-      ),
-    );
   }
 }

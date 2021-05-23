@@ -42,6 +42,39 @@ class _TagsState extends State<Tags> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
+    Widget listTags() {
+      return SizedBox(
+        height: 325,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: new Column(
+            children: tags
+                .map((t) => TagItem(
+                      tag: t,
+                      removeTag: removeTag,
+                    ))
+                .toList(),
+          ),
+        ),
+      );
+    }
+
+    Widget nextButton() {
+      return ElevatedButton(
+        child: Text(t.next),
+        onPressed: () {
+          widget.increment();
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: TextStyle(fontSize: 16),
+          primary: Theme.of(context).primaryColor, // background
+        ),
+      );
+    }
+
     return FutureBuilder(
         future: getTags,
         builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -56,13 +89,13 @@ class _TagsState extends State<Tags> {
                         child: Column(
                           children: [
                             Text(
-                              AppLocalizations.of(context).tags,
+                              t.tags,
                               style: TextStyle(fontSize: 24),
                             ),
                             SizedBox(
                               height: 10,
                             ),
-                            Text(AppLocalizations.of(context).tagsDescription),
+                            Text(t.tagsDescription),
                             SizedBox(
                               height: 35,
                             ),
@@ -108,36 +141,5 @@ class _TagsState extends State<Tags> {
                   ),
                 );
         });
-  }
-
-  Widget listTags() {
-    return SizedBox(
-      height: 325,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: new Column(
-          children: tags
-              .map((t) => TagItem(
-                    tag: t,
-                    removeTag: removeTag,
-                  ))
-              .toList(),
-        ),
-      ),
-    );
-  }
-
-  Widget nextButton() {
-    return ElevatedButton(
-      child: Text(AppLocalizations.of(context).next),
-      onPressed: () {
-        widget.increment();
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        textStyle: TextStyle(fontSize: 16),
-        primary: Theme.of(context).primaryColor, // background
-      ),
-    );
   }
 }

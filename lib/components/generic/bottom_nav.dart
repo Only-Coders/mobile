@@ -11,6 +11,8 @@ class _BottomNavState extends State<BottomNav> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Container(
       child: BottomNavigationBar(
         currentIndex: _currentIndex,
@@ -27,19 +29,19 @@ class _BottomNavState extends State<BottomNav> {
         },
         items: [
           BottomNavigationBarItem(
-            label: AppLocalizations.of(context).home,
+            label: t.home,
             icon: Icon(Icons.home),
           ),
           BottomNavigationBarItem(
-            label: AppLocalizations.of(context).newPost,
+            label: t.newPost,
             icon: Icon(Icons.add_box),
           ),
           BottomNavigationBarItem(
-            label: AppLocalizations.of(context).notifications,
+            label: t.notifications,
             icon: Icon(Icons.notifications),
           ),
           BottomNavigationBarItem(
-            label: AppLocalizations.of(context).profile,
+            label: t.profile,
             icon: Icon(Icons.person),
           ),
         ],

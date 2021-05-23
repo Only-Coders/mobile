@@ -61,6 +61,46 @@ class _StudyExperienceState extends State<StudyExperience> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
+    Widget listStudies() {
+      return new ListView(
+        shrinkWrap: true,
+        children: studies
+            .map((study) => new StudyExperienceItem(
+                  study: study,
+                  index: studies.indexOf(study),
+                  removeStudy: removeStudy,
+                  updateStudy: updateStudy,
+                ))
+            .toList(),
+      );
+    }
+
+    Widget nextButton() {
+      return ElevatedButton(
+        child: isLoading
+            ? SizedBox(
+                width: 25,
+                height: 25,
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
+                  strokeWidth: 3,
+                ),
+              )
+            : Text(t.next),
+        onPressed: () async {
+          await createStudies(context);
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: TextStyle(fontSize: 16),
+          primary: Theme.of(context).primaryColor, // background
+        ),
+      );
+    }
+
     return Container(
       height: MediaQuery.of(context).size.height - 80,
       padding: EdgeInsets.all(25),
@@ -71,14 +111,13 @@ class _StudyExperienceState extends State<StudyExperience> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context).academicExperience,
+                  t.academicExperience,
                   style: TextStyle(fontSize: 24),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text(
-                    AppLocalizations.of(context).academicExperienceDescription),
+                Text(t.academicExperienceDescription),
                 SizedBox(
                   height: 25,
                 ),
@@ -111,7 +150,7 @@ class _StudyExperienceState extends State<StudyExperience> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(AppLocalizations.of(context).addAcademic),
+                      Text(t.addAcademic),
                     ],
                   ),
                   style: TextButton.styleFrom(primary: Colors.grey),
@@ -128,44 +167,6 @@ class _StudyExperienceState extends State<StudyExperience> {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget listStudies() {
-    return new ListView(
-      shrinkWrap: true,
-      children: studies
-          .map((study) => new StudyExperienceItem(
-                study: study,
-                index: studies.indexOf(study),
-                removeStudy: removeStudy,
-                updateStudy: updateStudy,
-              ))
-          .toList(),
-    );
-  }
-
-  Widget nextButton() {
-    return ElevatedButton(
-      child: isLoading
-          ? SizedBox(
-              width: 25,
-              height: 25,
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-                valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
-                strokeWidth: 3,
-              ),
-            )
-          : Text(AppLocalizations.of(context).next),
-      onPressed: () async {
-        await createStudies(context);
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        textStyle: TextStyle(fontSize: 16),
-        primary: Theme.of(context).primaryColor, // background
       ),
     );
   }

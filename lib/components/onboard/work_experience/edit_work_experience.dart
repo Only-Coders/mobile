@@ -63,8 +63,10 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return AlertDialog(
-      title: Text(AppLocalizations.of(context).editWorkExperience),
+      title: Text(t.editWorkExperience),
       content: SingleChildScrollView(
         child: Container(
           width: 500,
@@ -88,9 +90,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                     );
                   },
                   validator: (val) {
-                    return val.isNotEmpty
-                        ? null
-                        : AppLocalizations.of(context).fieldRequired;
+                    return val.isNotEmpty ? null : t.fieldRequired;
                   },
                   suggestionsCallback: (String suggestion) {
                     setState(() {
@@ -108,7 +108,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                           style: BorderStyle.none,
                         ),
                       ),
-                      labelText: AppLocalizations.of(context).workName,
+                      labelText: t.workName,
                       filled: true,
                     ),
                   ),
@@ -131,7 +131,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: AppLocalizations.of(context).position,
+                    labelText: t.position,
                     filled: true,
                   ),
                 ),
@@ -142,9 +142,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                   readOnly: true,
                   controller: _startDateController,
                   validator: (val) {
-                    return val != null
-                        ? null
-                        : AppLocalizations.of(context).fieldRequired;
+                    return val != null ? null : t.fieldRequired;
                   },
                   onTap: () async {
                     DateTime date = await showDatePicker(
@@ -169,7 +167,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: AppLocalizations.of(context).startDate,
+                    labelText: t.startDate,
                     filled: true,
                   ),
                 ),
@@ -185,7 +183,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                     } else {
                       return _endDate.isAfter(_startDate)
                           ? null
-                          : AppLocalizations.of(context).endDateValidation;
+                          : t.endDateValidation;
                     }
                   },
                   onTap: () async {
@@ -211,7 +209,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                         style: BorderStyle.none,
                       ),
                     ),
-                    labelText: AppLocalizations.of(context).endDate,
+                    labelText: t.endDate,
                     filled: true,
                   ),
                 ),
@@ -226,7 +224,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
             Navigator.pop(context);
           },
           child: Text(
-            AppLocalizations.of(context).close.toUpperCase(),
+            t.close.toUpperCase(),
             style: TextStyle(color: Colors.grey),
           ),
           style: TextButton.styleFrom(primary: Colors.grey),
@@ -252,7 +250,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
             }
           },
           child: Text(
-            AppLocalizations.of(context).edit.toUpperCase(),
+            t.edit.toUpperCase(),
             style: TextStyle(
               color: Colors.orange,
             ),

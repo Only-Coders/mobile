@@ -20,6 +20,8 @@ class StudyExperienceItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Container(
       padding: EdgeInsets.only(top: 5, bottom: 5),
       width: double.infinity,
@@ -48,7 +50,7 @@ class StudyExperienceItem extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   OutlinedButton(
-                    child: Text(AppLocalizations.of(context).delete),
+                    child: Text(t.delete),
                     onPressed: () {
                       removeStudy(study);
                     },
@@ -65,7 +67,7 @@ class StudyExperienceItem extends StatelessWidget {
                     width: 10,
                   ),
                   OutlinedButton(
-                    child: Text(AppLocalizations.of(context).edit),
+                    child: Text(t.edit),
                     onPressed: () {
                       showDialog(
                         context: context,

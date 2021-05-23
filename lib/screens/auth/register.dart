@@ -27,6 +27,8 @@ class Register extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -36,7 +38,7 @@ class Register extends StatelessWidget {
               children: [
                 Center(
                   child: Text(
-                    AppLocalizations.of(context).register,
+                    t.register,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -53,7 +55,7 @@ class Register extends StatelessWidget {
                   height: 60,
                 ),
                 AuthForm(
-                  buttonText: AppLocalizations.of(context).register,
+                  buttonText: t.register,
                   action: register,
                 ),
                 SizedBox(
@@ -62,7 +64,7 @@ class Register extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppLocalizations.of(context).alreadyHaveAnAccount),
+                    Text(t.alreadyHaveAnAccount),
                     SizedBox(
                       width: 5,
                     ),
@@ -71,7 +73,7 @@ class Register extends StatelessWidget {
                         Navigator.pushNamed(context, "/login");
                       },
                       child: Text(
-                        AppLocalizations.of(context).login,
+                        t.login,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),

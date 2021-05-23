@@ -24,6 +24,8 @@ class _AuthFormState extends State<AuthForm> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Container(
       child: Form(
         key: formKey,
@@ -37,9 +39,7 @@ class _AuthFormState extends State<AuthForm> {
                 });
               },
               validator: (val) {
-                return emailRegex.hasMatch(val)
-                    ? null
-                    : AppLocalizations.of(context).invalidEmail;
+                return emailRegex.hasMatch(val) ? null : t.invalidEmail;
               },
               decoration: InputDecoration(
                 border: OutlineInputBorder(
@@ -49,7 +49,7 @@ class _AuthFormState extends State<AuthForm> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: AppLocalizations.of(context).email,
+                labelText: t.email,
                 prefixIcon: Icon(Icons.email),
                 filled: true,
               ),
@@ -67,8 +67,8 @@ class _AuthFormState extends State<AuthForm> {
               validator: (val) {
                 return val.length > 6
                     ? null
-                    : AppLocalizations.of(context).login != widget.buttonText
-                        ? AppLocalizations.of(context).weakPassword
+                    : t.login != widget.buttonText
+                        ? t.weakPassword
                         : null;
               },
               decoration: InputDecoration(
@@ -79,7 +79,7 @@ class _AuthFormState extends State<AuthForm> {
                     style: BorderStyle.none,
                   ),
                 ),
-                labelText: AppLocalizations.of(context).password,
+                labelText: t.password,
                 prefixIcon: Icon(Icons.lock),
                 filled: true,
               ),

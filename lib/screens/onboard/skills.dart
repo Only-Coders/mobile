@@ -48,6 +48,85 @@ class _SkillsState extends State<Skills> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
+    Widget listSkills() {
+      return SizedBox(
+        height: 230,
+        child: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          child: new Wrap(
+            children: skills
+                .map((s) => Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                      child: Chip(
+                        shape: RoundedRectangleBorder(
+                          side: BorderSide(
+                              color: Colors.green.shade400, width: 1),
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                        backgroundColor: Colors.grey.shade50,
+                        deleteIcon: Icon(
+                          Icons.close_rounded,
+                          color: Colors.green.shade400,
+                          size: 15,
+                        ),
+                        label: Text(
+                          s.name,
+                          style: TextStyle(color: Colors.green.shade400),
+                        ),
+                        onDeleted: () {
+                          setState(() {
+                            skills.remove(s);
+                          });
+                        },
+                      ),
+                    ))
+                .toList(),
+          ),
+        ),
+      );
+    }
+
+    Widget nextButton() {
+      return ElevatedButton(
+        child: isLoading
+            ? SizedBox(
+                width: 25,
+                height: 25,
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
+                  strokeWidth: 3,
+                ),
+              )
+            : Text(t.next),
+        onPressed: () async {
+          setState(() {
+            isLoading = true;
+          });
+          try {
+            var futures = skills.map((skill) {
+              return _skillService.createSkill(skill);
+            });
+            await Future.wait(futures);
+            widget.increment();
+          } catch (error) {
+            _toast.showError(context, t.serverError);
+          } finally {
+            setState(() {
+              isLoading = false;
+            });
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: TextStyle(fontSize: 16),
+          primary: Theme.of(context).primaryColor, // background
+        ),
+      );
+    }
+
     return Container(
       height: MediaQuery.of(context).size.height - 80,
       padding: EdgeInsets.all(25),
@@ -58,13 +137,13 @@ class _SkillsState extends State<Skills> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context).skills,
+                  t.skills,
                   style: TextStyle(fontSize: 24),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text(AppLocalizations.of(context).skillsDescription),
+                Text(t.skillsDescription),
                 SizedBox(
                   height: 35,
                 ),
@@ -93,7 +172,7 @@ class _SkillsState extends State<Skills> {
                             controller: _typeAheadController,
                             decoration: InputDecoration(
                               isDense: true,
-                              labelText: AppLocalizations.of(context).addSkills,
+                              labelText: t.addSkills,
                             ),
                           ),
                         ),
@@ -137,83 +216,6 @@ class _SkillsState extends State<Skills> {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget listSkills() {
-    return SizedBox(
-      height: 230,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: new Wrap(
-          children: skills
-              .map((s) => Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Chip(
-                      shape: RoundedRectangleBorder(
-                        side:
-                            BorderSide(color: Colors.green.shade400, width: 1),
-                        borderRadius: BorderRadius.circular(15),
-                      ),
-                      backgroundColor: Colors.grey.shade50,
-                      deleteIcon: Icon(
-                        Icons.close_rounded,
-                        color: Colors.green.shade400,
-                        size: 15,
-                      ),
-                      label: Text(
-                        s.name,
-                        style: TextStyle(color: Colors.green.shade400),
-                      ),
-                      onDeleted: () {
-                        setState(() {
-                          skills.remove(s);
-                        });
-                      },
-                    ),
-                  ))
-              .toList(),
-        ),
-      ),
-    );
-  }
-
-  Widget nextButton() {
-    return ElevatedButton(
-      child: isLoading
-          ? SizedBox(
-              width: 25,
-              height: 25,
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-                valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
-                strokeWidth: 3,
-              ),
-            )
-          : Text(AppLocalizations.of(context).next),
-      onPressed: () async {
-        setState(() {
-          isLoading = true;
-        });
-        try {
-          var futures = skills.map((skill) {
-            return _skillService.createSkill(skill);
-          });
-          await Future.wait(futures);
-          widget.increment();
-        } catch (error) {
-          _toast.showError(context, AppLocalizations.of(context).serverError);
-        } finally {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        textStyle: TextStyle(fontSize: 16),
-        primary: Theme.of(context).primaryColor, // background
       ),
     );
   }

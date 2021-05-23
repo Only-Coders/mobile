@@ -40,7 +40,7 @@ class App extends StatelessWidget {
         "/register": (context) => Register(),
         "/onboard": (context) => Onboard()
       },
-      home: Feed(),
+      home: Login(),
     );
   }
 }

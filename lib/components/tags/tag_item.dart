@@ -22,6 +22,8 @@ class TagItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Container(
       padding: EdgeInsets.only(top: 5, bottom: 5),
       width: double.infinity,
@@ -48,8 +50,7 @@ class TagItem extends StatelessWidget {
                         height: 10,
                       ),
                       Text(
-                        tag.followerQuantity.toString() +
-                            AppLocalizations.of(context).followsTags,
+                        tag.followerQuantity.toString() + t.followsTags,
                         style: TextStyle(
                             color: Colors.grey.shade700, fontSize: 12),
                       ),
@@ -64,7 +65,7 @@ class TagItem extends StatelessWidget {
                           color: Theme.of(context).primaryColor, width: 1),
                     ),
                     child: Text(
-                      AppLocalizations.of(context).follow,
+                      t.follow,
                       style: TextStyle(
                           fontSize: 12, color: Theme.of(context).primaryColor),
                     ),

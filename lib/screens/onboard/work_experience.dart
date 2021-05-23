@@ -42,6 +42,61 @@ class _WorkExperienceState extends State<WorkExperience> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
+    Widget listWorks() {
+      return new ListView(
+        shrinkWrap: true,
+        children: works
+            .map((work) => new WorkExperienceItem(
+                  work: work,
+                  index: works.indexOf(work),
+                  removeWork: removeWork,
+                  updateWork: updateWork,
+                ))
+            .toList(),
+      );
+    }
+
+    Widget nextButton() {
+      return ElevatedButton(
+        child: isLoading
+            ? SizedBox(
+                width: 25,
+                height: 25,
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
+                  strokeWidth: 3,
+                ),
+              )
+            : Text(t.next),
+        onPressed: () async {
+          setState(() {
+            isLoading = true;
+          });
+          try {
+            var futures = works.map((work) {
+              return _workService.createWork(work);
+            });
+            await Future.wait(futures);
+            widget.increment();
+          } catch (error) {
+            _toast.showError(context, t.serverError);
+          } finally {
+            setState(() {
+              isLoading = false;
+            });
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: TextStyle(fontSize: 16),
+          primary: Theme.of(context).primaryColor, // background
+        ),
+      );
+    }
+
     return Container(
       height: MediaQuery.of(context).size.height - 80,
       padding: EdgeInsets.all(25),
@@ -52,13 +107,13 @@ class _WorkExperienceState extends State<WorkExperience> {
             child: Column(
               children: [
                 Text(
-                  AppLocalizations.of(context).workExperience,
+                  t.workExperience,
                   style: TextStyle(fontSize: 24),
                 ),
                 SizedBox(
                   height: 10,
                 ),
-                Text(AppLocalizations.of(context).workExperienceDescription),
+                Text(t.workExperienceDescription),
                 SizedBox(
                   height: 25,
                 ),
@@ -91,7 +146,7 @@ class _WorkExperienceState extends State<WorkExperience> {
                       SizedBox(
                         width: 10,
                       ),
-                      Text(AppLocalizations.of(context).addWorkExperience),
+                      Text(t.addWorkExperience),
                     ],
                   ),
                   style: TextButton.styleFrom(primary: Colors.grey),
@@ -108,59 +163,6 @@ class _WorkExperienceState extends State<WorkExperience> {
             ),
           )
         ],
-      ),
-    );
-  }
-
-  Widget listWorks() {
-    return new ListView(
-      shrinkWrap: true,
-      children: works
-          .map((work) => new WorkExperienceItem(
-                work: work,
-                index: works.indexOf(work),
-                removeWork: removeWork,
-                updateWork: updateWork,
-              ))
-          .toList(),
-    );
-  }
-
-  Widget nextButton() {
-    return ElevatedButton(
-      child: isLoading
-          ? SizedBox(
-              width: 25,
-              height: 25,
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-                valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
-                strokeWidth: 3,
-              ),
-            )
-          : Text(AppLocalizations.of(context).next),
-      onPressed: () async {
-        setState(() {
-          isLoading = true;
-        });
-        try {
-          var futures = works.map((work) {
-            return _workService.createWork(work);
-          });
-          await Future.wait(futures);
-          widget.increment();
-        } catch (error) {
-          _toast.showError(context, AppLocalizations.of(context).serverError);
-        } finally {
-          setState(() {
-            isLoading = false;
-          });
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        textStyle: TextStyle(fontSize: 16),
-        primary: Theme.of(context).primaryColor, // background
       ),
     );
   }

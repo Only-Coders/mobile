@@ -58,6 +58,45 @@ class _GeneralInformationFirstStepState
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
+    Widget nextButton() {
+      return ElevatedButton(
+        child: isLoading
+            ? SizedBox(
+                width: 25,
+                height: 25,
+                child: CircularProgressIndicator(
+                  backgroundColor: Theme.of(context).primaryColor,
+                  valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
+                  strokeWidth: 3,
+                ),
+              )
+            : Text(t.next),
+        onPressed: () {
+          if (formKey.currentState.validate() && !isLoading) {
+            setState(() {
+              isLoading = true;
+            });
+            Provider.of<RegisterModel>(context, listen: false).setFirstStepData(
+                firstName,
+                lastName,
+                birthDate == null ? birthDate : birthDate.toIso8601String(),
+                country);
+            widget.increment();
+            setState(() {
+              isLoading = false;
+            });
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          elevation: 0,
+          textStyle: TextStyle(fontSize: 16),
+          primary: Theme.of(context).primaryColor, // background
+        ),
+      );
+    }
+
     return FutureBuilder(
       future: getCountries,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -72,14 +111,13 @@ class _GeneralInformationFirstStepState
                       child: Column(
                         children: [
                           Text(
-                            AppLocalizations.of(context).generalInformation,
+                            t.generalInformation,
                             style: TextStyle(fontSize: 24),
                           ),
                           SizedBox(
                             height: 10,
                           ),
-                          Text(AppLocalizations.of(context)
-                              .generalInformationDescription),
+                          Text(t.generalInformationDescription),
                           SizedBox(
                             height: 60,
                           ),
@@ -98,8 +136,7 @@ class _GeneralInformationFirstStepState
                                   validator: (val) {
                                     return val.isNotEmpty
                                         ? null
-                                        : AppLocalizations.of(context)
-                                            .fieldRequired;
+                                        : t.fieldRequired;
                                   },
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
@@ -109,8 +146,7 @@ class _GeneralInformationFirstStepState
                                         style: BorderStyle.none,
                                       ),
                                     ),
-                                    labelText:
-                                        AppLocalizations.of(context).name,
+                                    labelText: t.name,
                                     filled: true,
                                   ),
                                 ),
@@ -126,8 +162,7 @@ class _GeneralInformationFirstStepState
                                   validator: (val) {
                                     return val.isNotEmpty
                                         ? null
-                                        : AppLocalizations.of(context)
-                                            .fieldRequired;
+                                        : t.fieldRequired;
                                   },
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
@@ -137,8 +172,7 @@ class _GeneralInformationFirstStepState
                                         style: BorderStyle.none,
                                       ),
                                     ),
-                                    labelText:
-                                        AppLocalizations.of(context).lastName,
+                                    labelText: t.lastName,
                                     filled: true,
                                   ),
                                 ),
@@ -172,8 +206,7 @@ class _GeneralInformationFirstStepState
                                         style: BorderStyle.none,
                                       ),
                                     ),
-                                    labelText:
-                                        AppLocalizations.of(context).birthDate,
+                                    labelText: t.birthDate,
                                     filled: true,
                                   ),
                                 ),
@@ -192,8 +225,7 @@ class _GeneralInformationFirstStepState
                                   validator: (val) {
                                     return val.isNotEmpty
                                         ? null
-                                        : AppLocalizations.of(context)
-                                            .fieldRequired;
+                                        : t.fieldRequired;
                                   },
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
@@ -203,8 +235,7 @@ class _GeneralInformationFirstStepState
                                         style: BorderStyle.none,
                                       ),
                                     ),
-                                    labelText:
-                                        AppLocalizations.of(context).country,
+                                    labelText: t.country,
                                     filled: true,
                                   ),
                                   value: country,
@@ -254,43 +285,6 @@ class _GeneralInformationFirstStepState
                 ),
               );
       },
-    );
-  }
-
-  Widget nextButton() {
-    return ElevatedButton(
-      child: isLoading
-          ? SizedBox(
-              width: 25,
-              height: 25,
-              child: CircularProgressIndicator(
-                backgroundColor: Theme.of(context).primaryColor,
-                valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
-                strokeWidth: 3,
-              ),
-            )
-          : Text(AppLocalizations.of(context).next),
-      onPressed: () {
-        if (formKey.currentState.validate() && !isLoading) {
-          setState(() {
-            isLoading = true;
-          });
-          Provider.of<RegisterModel>(context, listen: false).setFirstStepData(
-              firstName,
-              lastName,
-              birthDate == null ? birthDate : birthDate.toIso8601String(),
-              country);
-          widget.increment();
-          setState(() {
-            isLoading = false;
-          });
-        }
-      },
-      style: ElevatedButton.styleFrom(
-        elevation: 0,
-        textStyle: TextStyle(fontSize: 16),
-        primary: Theme.of(context).primaryColor, // background
-      ),
     );
   }
 }

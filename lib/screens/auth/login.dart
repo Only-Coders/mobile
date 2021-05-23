@@ -36,6 +36,8 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
@@ -45,7 +47,7 @@ class _LoginState extends State<Login> {
               children: [
                 Center(
                   child: Text(
-                    AppLocalizations.of(context).login,
+                    t.login,
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                   ),
                 ),
@@ -62,7 +64,7 @@ class _LoginState extends State<Login> {
                   height: 60,
                 ),
                 AuthForm(
-                  buttonText: AppLocalizations.of(context).login,
+                  buttonText: t.login,
                   action: login,
                 ),
                 SizedBox(
@@ -71,7 +73,7 @@ class _LoginState extends State<Login> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(AppLocalizations.of(context).dontHaveAnAccount),
+                    Text(t.dontHaveAnAccount),
                     SizedBox(
                       width: 5,
                     ),
@@ -80,7 +82,7 @@ class _LoginState extends State<Login> {
                         Navigator.pushNamed(context, "/register");
                       },
                       child: Text(
-                        AppLocalizations.of(context).register,
+                        t.register,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
                         ),
