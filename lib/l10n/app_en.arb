@@ -56,5 +56,9 @@
   "cancelContactRequestMessage": "Contact request was canceled",
   "sendContactRequestMessage": "Contact request sent",
   "suggestedContacts": "Contact Network",
-  "suggestedContactsDescription": "Add people to your network of contacts or follows to find out about the latest trends"
+  "suggestedContactsDescription": "Add people to your network of contacts or follows to find out about the latest trends",
+  "notifications": "Notifications",
+  "newPost": "New Post",
+  "profile": "Profile",
+  "home": "Home"
 }

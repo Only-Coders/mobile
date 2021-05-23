@@ -56,5 +56,9 @@
   "cancelContactRequestMessage": "Se canceló la solicitud de contacto",
   "sendContactRequestMessage": "Se envio la solicitud de contacto",
   "suggestedContacts": "Red de Contactos",
-  "suggestedContactsDescription": "Agrega personas a tu red de contactos o síguelas para enterarte de las ultimas tendencias"
+  "suggestedContactsDescription": "Agrega personas a tu red de contactos o síguelas para enterarte de las ultimas tendencias",
+  "notifications": "Notificaciones",
+  "newPost": "Publicar",
+  "profile": "Perfil",
+  "home": "Inicio"
 }
