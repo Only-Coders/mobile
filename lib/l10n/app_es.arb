@@ -60,5 +60,11 @@
   "notifications": "Notificaciones",
   "newPost": "Publicar",
   "profile": "Perfil",
-  "home": "Inicio"
+  "home": "Inicio",
+  "toAnyone": "Para todos",
+  "toMyContacts": "Para mis contactos",
+  "newPost": "Compartir publicacion",
+  "publish": "Publicar",
+  "newPostMessage": "¿En que estas pensando?",
+  "addHashtag": "# Agregar hashtag"
 }

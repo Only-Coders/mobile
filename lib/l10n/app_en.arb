@@ -60,5 +60,11 @@
   "notifications": "Notifications",
   "newPost": "New Post",
   "profile": "Profile",
-  "home": "Home"
+  "home": "Home",
+  "toAnyone": "To anyone",
+  "toMyContacts": "To my contacts",
+  "newPost": "New post",
+  "publish": "Publish",
+  "newPostMessage": "What are you thinking about?",
+  "addHashtag": "# Add hashtag"
 }

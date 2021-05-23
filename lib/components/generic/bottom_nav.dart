@@ -25,6 +25,9 @@ class _BottomNavState extends State<BottomNav> {
         onTap: (value) {
           setState(() {
             _currentIndex = value;
+            if (_currentIndex == 1) {
+              Navigator.pushNamed(context, '/new-post');
+            }
           });
         },
         items: [
