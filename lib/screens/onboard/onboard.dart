@@ -4,7 +4,10 @@ import 'package:mobile/screens/onboard/general_information_second_step.dart';
 import 'package:im_stepper/stepper.dart';
 import 'package:mobile/screens/onboard/register_model.dart';
 import 'package:mobile/screens/onboard/study_experience.dart';
+import 'package:mobile/screens/onboard/suggested_contacts.dart';
+import 'package:mobile/screens/onboard/tags.dart';
 import 'package:mobile/screens/onboard/work_experience.dart';
+import 'package:mobile/screens/onboard/skills.dart';
 import 'package:provider/provider.dart';
 
 class Onboard extends StatefulWidget {
@@ -41,7 +44,7 @@ class _OnboardState extends State<Onboard> {
               child: steps(),
             ),
             Positioned(
-              bottom: 95,
+              bottom: 90,
               child: Center(
                 child: DotStepper(
                   dotCount: dotCount,
@@ -83,11 +86,15 @@ class _OnboardState extends State<Onboard> {
           increment: incrementActiveStep,
         );
       case 4:
-        return Text("Habilidades");
+        return Skills(
+          increment: incrementActiveStep,
+        );
       case 5:
-        return Text("Red de Contactos");
+        return Tags(
+          increment: incrementActiveStep,
+        );
       case 6:
-        return Text("Temas");
+        return SuggestedContacts();
       default:
         return GeneralInformationFirstStep(
           increment: incrementActiveStep,

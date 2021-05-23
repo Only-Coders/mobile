@@ -44,10 +44,17 @@
   "instituteName": "Nombre de instituto",
   "degree": "Titulo",
   "cancel": "Cancelar",
+  "finish": "Finalizar",
   "tags": "Temas",
   "tagsDescription": "Sigue temas para mantenerte informado sobre lo que te gusta",
   "followsTags": " personas siguen este tema",
-  "follow": "Follow",
-  "suggestedContacts": "Contact Network",
-  "suggestedContactsDescription": "Add people to your network of contacts or follows to find out about the latest trends"
+  "follow": "Seguir",
+  "followMessage": "Ahora sigues a ",
+  "unfollowMessage": "Dejaste de seguir a ",
+  "unfollow": "No seguir",
+  "cancelContactRequest": "Cancelar Solicitud",
+  "cancelContactRequestMessage": "Se canceló la solicitud de contacto",
+  "sendContactRequestMessage": "Se envio la solicitud de contacto",
+  "suggestedContacts": "Red de Contactos",
+  "suggestedContactsDescription": "Agrega personas a tu red de contactos o síguelas para enterarte de las ultimas tendencias"
 }

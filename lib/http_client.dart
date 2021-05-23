@@ -28,6 +28,11 @@ class HttpClient {
     return _dio.get(url, queryParameters: params);
   }
 
+  Future<Response> deleteRequest(String url,
+      [Map<String, dynamic> params]) async {
+    return _dio.delete(url, queryParameters: params);
+  }
+
   Future<Response> postRequest(String url, dynamic data) async {
     return _dio.post(url, data: data);
   }
