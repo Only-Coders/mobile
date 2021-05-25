@@ -34,7 +34,7 @@ class AuthService {
     await UserStorage.setToken(token);
   }
 
-  Future<void> login(String fbToken) async {
+  Future<String> login(String fbToken) async {
     var response = await _httpClient
         .postRequest("/api/auth/login", {"firebaseToken": fbToken});
     RegExp rgx = new RegExp(r'\w+=(?<token>.*); Path');
@@ -45,5 +45,6 @@ class AuthService {
             .firstMatch(response.headers.map["set-cookie"][0])
             .namedGroup("token");
     await UserStorage.setToken(token);
+    return token;
   }
 }

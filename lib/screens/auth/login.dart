@@ -5,6 +5,7 @@ import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/services/fb_auth.dart';
 import 'package:mobile/services/auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:jwt_decode/jwt_decode.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -20,8 +21,13 @@ class _LoginState extends State<Login> {
       BuildContext context, String email, String password) async {
     try {
       String fbToken = await _fbAuth.login(email, password);
-      await _auth.login(fbToken);
-      Navigator.pushReplacementNamed(context, "/onboard");
+      String token = await _auth.login(fbToken);
+      var payload = Jwt.parseJwt(token);
+      if (payload["complete"]) {
+        Navigator.pushReplacementNamed(context, "/feed");
+      } else {
+        Navigator.pushReplacementNamed(context, "/onboard");
+      }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         _toast.showError(context, AppLocalizations.of(context).userNotFound);
