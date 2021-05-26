@@ -434,8 +434,7 @@ class _NewPostState extends State<NewPost> {
                           child: Row(
                             children: [
                               IconButton(
-                                onPressed: _file == null &&
-                                        (type == "TEXT" || type == "IMAGE")
+                                onPressed: type == "TEXT" || type == "IMAGE"
                                     ? () async {
                                         await getImage(true);
                                         setState(() {
@@ -447,8 +446,7 @@ class _NewPostState extends State<NewPost> {
                                 splashRadius: 20,
                               ),
                               IconButton(
-                                onPressed: _file == null &&
-                                        (type == "TEXT" || type == "IMAGE")
+                                onPressed: type == "TEXT" || type == "IMAGE"
                                     ? () async {
                                         await getImage(false);
                                         setState(() {
@@ -460,11 +458,11 @@ class _NewPostState extends State<NewPost> {
                                 splashRadius: 20,
                               ),
                               IconButton(
-                                onPressed: type == "TEXT"
+                                onPressed: type == "TEXT" || type == "FILE"
                                     ? () async {
                                         await getFile();
                                         setState(() {
-                                          type = "IMAGE";
+                                          type = "FILE";
                                         });
                                       }
                                     : null,
