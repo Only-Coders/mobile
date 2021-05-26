@@ -47,4 +47,16 @@ class AuthService {
     await UserStorage.setToken(token);
     return token;
   }
+
+  Future<void> refreshToken() async {
+    var response = await _httpClient.postRequest("/api/auth/refresh", {});
+    RegExp rgx = new RegExp(r'\w+=(?<token>.*); Path');
+    Token data = Token.fromJson(response.data);
+    String token = data.token +
+        "." +
+        rgx
+            .firstMatch(response.headers.map["set-cookie"][0])
+            .namedGroup("token");
+    await UserStorage.setToken(token);
+  }
 }

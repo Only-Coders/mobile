@@ -1,4 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:mobile/navigation.dart';
+import 'package:mobile/services/auth.dart';
 import 'storage.dart';
 
 class HttpClient {
@@ -20,8 +23,32 @@ class HttpClient {
           }
           return handler.next(options);
         },
+        onError: (error, handler) async {
+          print(error.response.requestOptions.path);
+          if (error.response.statusCode != 401) {
+            return handler.next(error);
+          }
+          if (error.response.requestOptions.path == "/api/auth/refresh") {
+            await UserStorage.removeToken();
+            NavigationService.instance.navigateToReplacement("/login");
+          }
+          AuthService _authService = AuthService();
+          await _authService.refreshToken();
+          return _retry(error.requestOptions);
+        },
       ),
     );
+  }
+
+  Future<Response<dynamic>> _retry(RequestOptions requestOptions) async {
+    final options = new Options(
+      method: requestOptions.method,
+      headers: requestOptions.headers,
+    );
+    return _dio.request<dynamic>(requestOptions.path,
+        data: requestOptions.data,
+        queryParameters: requestOptions.queryParameters,
+        options: options);
   }
 
   Future<Response> getRequest(String url, [Map<String, dynamic> params]) async {

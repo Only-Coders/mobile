@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/navigation.dart';
 import 'package:mobile/screens/auth/login.dart';
 import 'package:mobile/screens/feed/feed.dart';
 import 'package:mobile/screens/onboard/onboard.dart';
@@ -18,6 +19,7 @@ class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: NavigationService.instance.navigationKey,
       title: 'Only Coders',
       localizationsDelegates: [
         AppLocalizations.delegate,
