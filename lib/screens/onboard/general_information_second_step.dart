@@ -2,10 +2,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/screens/onboard/provider/register_model.dart';
+import 'package:mobile/services/fb_storage.dart';
 import 'dart:io';
-import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:provider/provider.dart';
 import 'package:mobile/components/generic/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -26,6 +25,7 @@ class _GeneralInformationSecondStepState
     extends State<GeneralInformationSecondStep> {
   final Toast _toast = Toast();
   final _auth = AuthService();
+  final FirebaseStorage _firebaseStorage = FirebaseStorage();
   File _image;
   bool isLoading = false;
   String platform = "GITHUB";
@@ -43,18 +43,6 @@ class _GeneralInformationSecondStepState
       setState(() {
         _image = File(image.path);
       });
-  }
-
-  Future uploadFile() async {
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child("images/" + path.basename(_image.path));
-    await ref.putFile(_image).whenComplete(() async {
-      String image = await ref.getDownloadURL();
-      setState(() {
-        imageURI = image;
-      });
-    });
   }
 
   @override
@@ -80,7 +68,8 @@ class _GeneralInformationSecondStepState
               isLoading = true;
             });
             try {
-              if (imageURI.isNotEmpty) await uploadFile();
+              if (imageURI.isNotEmpty)
+                await _firebaseStorage.uploadFile(_image, "images/");
               Provider.of<RegisterModel>(context, listen: false)
                   .setSecondStepData(imageURI, description,
                       userName.isEmpty ? null : platform, userName);
