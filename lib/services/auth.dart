@@ -8,7 +8,7 @@ class AuthService {
 
   AuthService();
 
-  Future<void> register(RegisterModel registerData) async {
+  Future<String> register(RegisterModel registerData) async {
     var user = {
       "birthDate": registerData.birthDate,
       "description": registerData.description,
@@ -32,6 +32,7 @@ class AuthService {
             .firstMatch(response.headers.map["set-cookie"][0])
             .namedGroup("token");
     await UserStorage.setToken(token);
+    return token;
   }
 
   Future<String> login(String fbToken) async {

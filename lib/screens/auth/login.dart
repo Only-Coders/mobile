@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/auth/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/components/generic/toast.dart';
+import 'package:mobile/providers/user.dart' as UserData;
 import 'package:mobile/services/fb_auth.dart';
 import 'package:mobile/services/auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -24,9 +26,10 @@ class _LoginState extends State<Login> {
       String token = await _auth.login(fbToken);
       var payload = Jwt.parseJwt(token);
       if (payload["complete"]) {
-        Navigator.pushReplacementNamed(context, "/feed");
+        Provider.of<UserData.User>(context, listen: false).setUser(payload);
+        Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
-        Navigator.pushReplacementNamed(context, "/onboard");
+        Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
       }
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {

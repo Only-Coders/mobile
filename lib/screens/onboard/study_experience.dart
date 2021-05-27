@@ -45,10 +45,12 @@ class _StudyExperienceState extends State<StudyExperience> {
       isLoading = true;
     });
     try {
-      var futures = studies.map((study) {
-        return _studyService.createStudy(study);
-      });
-      await Future.wait(futures);
+      if (studies.length > 0) {
+        var futures = studies.map((study) {
+          return _studyService.createStudy(study);
+        });
+        await Future.wait(futures);
+      }
       widget.increment();
     } catch (error) {
       _toast.showError(context, AppLocalizations.of(context).serverError);

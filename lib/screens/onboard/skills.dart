@@ -106,10 +106,12 @@ class _SkillsState extends State<Skills> {
             isLoading = true;
           });
           try {
-            var futures = skills.map((skill) {
-              return _skillService.createSkill(skill);
-            });
-            await Future.wait(futures);
+            if (skills.length > 0) {
+              var futures = skills.map((skill) {
+                return _skillService.createSkill(skill);
+              });
+              await Future.wait(futures);
+            }
             widget.increment();
           } catch (error) {
             _toast.showError(context, t.serverError);

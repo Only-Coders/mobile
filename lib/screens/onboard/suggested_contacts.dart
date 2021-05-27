@@ -60,7 +60,7 @@ class _SuggestedContactsState extends State<SuggestedContacts> {
       return ElevatedButton(
         child: Text(t.finish),
         onPressed: () {
-          Navigator.pushReplacementNamed(context, "/login");
+          Navigator.pushReplacementNamed(context, "/feed");
         },
         style: ElevatedButton.styleFrom(
           elevation: 0,

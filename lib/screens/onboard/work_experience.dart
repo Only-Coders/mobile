@@ -76,10 +76,12 @@ class _WorkExperienceState extends State<WorkExperience> {
             isLoading = true;
           });
           try {
-            var futures = works.map((work) {
-              return _workService.createWork(work);
-            });
-            await Future.wait(futures);
+            if (works.length > 0) {
+              var futures = works.map((work) {
+                return _workService.createWork(work);
+              });
+              await Future.wait(futures);
+            }
             widget.increment();
           } catch (error) {
             _toast.showError(context, t.serverError);

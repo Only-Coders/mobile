@@ -1,6 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:jwt_decode/jwt_decode.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/services/fb_storage.dart';
 import 'dart:io';
@@ -73,8 +75,10 @@ class _GeneralInformationSecondStepState
               Provider.of<RegisterModel>(context, listen: false)
                   .setSecondStepData(imageURI, description,
                       userName.isEmpty ? null : platform, userName);
-              await _auth
+              String token = await _auth
                   .register(Provider.of<RegisterModel>(context, listen: false));
+              var payload = Jwt.parseJwt(token);
+              Provider.of<User>(context, listen: false).setUser(payload);
               widget.increment();
             } on DioError catch (e) {
               _toast.showError(context, e.response.data["error"]);

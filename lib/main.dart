@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/navigation.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/auth/login.dart';
 import 'package:mobile/screens/feed/feed.dart';
 import 'package:mobile/screens/onboard/onboard.dart';
@@ -8,6 +9,7 @@ import "package:firebase_core/firebase_core.dart";
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/screens/post/new_post.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -18,33 +20,36 @@ Future<void> main() async {
 class App extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: NavigationService.instance.navigationKey,
-      title: 'Only Coders',
-      localizationsDelegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: [
-        const Locale("en"),
-        const Locale("es"),
-      ],
-      theme: ThemeData(
-        primaryColor: Color(0xff00CDAE),
-        secondaryHeaderColor: Color(0xff34374B),
-        errorColor: Color(0xffff5252),
+    return Provider(
+      create: (context) => User(),
+      child: MaterialApp(
+        navigatorKey: NavigationService.instance.navigationKey,
+        title: 'Only Coders',
+        localizationsDelegates: [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: [
+          const Locale("en"),
+          const Locale("es"),
+        ],
+        theme: ThemeData(
+          primaryColor: Color(0xff00CDAE),
+          secondaryHeaderColor: Color(0xff34374B),
+          errorColor: Color(0xffff5252),
+        ),
+        debugShowCheckedModeBanner: false,
+        routes: {
+          "/feed": (context) => Feed(),
+          "/login": (context) => Login(),
+          "/register": (context) => Register(),
+          "/onboard": (context) => Onboard(),
+          "/new-post": (context) => NewPost()
+        },
+        home: Login(),
       ),
-      debugShowCheckedModeBanner: false,
-      routes: {
-        "/feed": (context) => Feed(),
-        "/login": (context) => Login(),
-        "/register": (context) => Register(),
-        "/onboard": (context) => Onboard(),
-        "/new-post": (context) => NewPost()
-      },
-      home: Login(),
     );
   }
 }
