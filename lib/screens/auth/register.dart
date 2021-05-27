@@ -13,6 +13,8 @@ class Register extends StatelessWidget {
       BuildContext context, String email, String password) async {
     try {
       await _auth.register(email, password);
+      _toast.showSuccess(
+          context, AppLocalizations.of(context).emailVerificationMessage);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         _toast.showError(context, AppLocalizations.of(context).weakPassword);

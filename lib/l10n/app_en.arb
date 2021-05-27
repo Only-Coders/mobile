@@ -66,5 +66,6 @@
   "newPost": "New post",
   "publish": "Publish",
   "newPostMessage": "What are you thinking about?",
-  "addHashtag": "# Add hashtag"
+  "addHashtag": "# Add hashtag",
+  "emailVerificationMessage": "We sent you a verification email"
 }

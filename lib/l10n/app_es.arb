@@ -66,5 +66,6 @@
   "newPost": "Compartir publicacion",
   "publish": "Publicar",
   "newPostMessage": "¿En que estas pensando?",
-  "addHashtag": "# Agregar hashtag"
+  "addHashtag": "# Agregar hashtag",
+  "emailVerificationMessage": "Te hemos enviado un correo de confirmacion"
 }
