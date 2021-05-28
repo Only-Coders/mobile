@@ -16,4 +16,8 @@ class User {
     fullName = json["fullName"];
     complete = json["complete"];
   }
+
+  void setDefaultPrivacy(bool defaultPrivacy) {
+    this.defaultPrivacy = defaultPrivacy;
+  }
 }

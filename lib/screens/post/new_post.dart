@@ -5,6 +5,7 @@ import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/models/contact.dart';
 import 'package:mobile/models/tag.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/fb_storage.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/services/tag.dart';
@@ -12,6 +13,7 @@ import 'package:mobile/services/user.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 class NewPost extends StatefulWidget {
   const NewPost({Key key}) : super(key: key);
@@ -28,7 +30,7 @@ class _NewPostState extends State<NewPost> {
   final Toast _toast = Toast();
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
   List<String> _postPrivacy = ["To anyone", "To my contacts"];
-  String selectedPostPrivacy = "To anyone";
+  String selectedPostPrivacy;
   String message = "";
   String type = "TEXT";
   File _image;
@@ -105,6 +107,8 @@ class _NewPostState extends State<NewPost> {
           uri,
           mentionCanonicalNames,
           tagNames);
+      Provider.of<User>(context, listen: false)
+          .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
       _toast.showSuccess(context, "Se compartio la publicacion");
     } catch (error) {
       print(error);
@@ -115,6 +119,9 @@ class _NewPostState extends State<NewPost> {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
+    selectedPostPrivacy = Provider.of<User>(context).defaultPrivacy
+        ? "To anyone"
+        : "To my contacts";
 
     return Portal(
       child: Scaffold(
@@ -138,7 +145,7 @@ class _NewPostState extends State<NewPost> {
           ],
         ),
         body: Builder(
-          builder: (context) {
+          builder: (_) {
             return Container(
               padding: EdgeInsets.all(15),
               child: Column(
@@ -214,8 +221,16 @@ class _NewPostState extends State<NewPost> {
                                             setState(() {
                                               selectedPostPrivacy = value;
                                             });
+                                            Provider.of<User>(context,
+                                                    listen: false)
+                                                .setDefaultPrivacy(
+                                                    selectedPostPrivacy ==
+                                                        "To anyone");
                                           },
-                                          value: selectedPostPrivacy,
+                                          value: Provider.of<User>(context)
+                                                  .defaultPrivacy
+                                              ? "To anyone"
+                                              : "To my contacts",
                                         ),
                                       )
                                     ],
