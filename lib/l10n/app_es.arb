@@ -67,5 +67,9 @@
   "publish": "Publicar",
   "newPostMessage": "¿En que estas pensando?",
   "addHashtag": "# Agregar hashtag",
-  "emailVerificationMessage": "Te hemos enviado un correo de confirmacion"
+  "emailVerificationMessage": "Te hemos enviado un correo de confirmacion",
+  "description": "Descripcion",
+  "posts": "Publicaciones",
+  "postsNoData": "No se encontraron publicaciones",
+  "seeMore": "Ver mas"
 }

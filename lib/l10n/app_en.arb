@@ -67,5 +67,9 @@
   "publish": "Publish",
   "newPostMessage": "What are you thinking about?",
   "addHashtag": "# Add hashtag",
-  "emailVerificationMessage": "We sent you a verification email"
+  "emailVerificationMessage": "We sent you a verification email",
+  "description": "Description",
+  "posts": "Posts",
+  "postsNoData": "We found no posts",
+  "seeMore": "See more"
 }

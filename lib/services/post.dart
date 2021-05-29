@@ -27,4 +27,12 @@ class PostService {
         .map((post) => Post.fromJson(post))
         .toList();
   }
+
+  Future<List<Post>> getPostsByUser(String canonicalName) async {
+    var response =
+        await _httpClient.getRequest("/api/posts/user/" + canonicalName);
+    return (response.data["content"] as List)
+        .map((post) => Post.fromJson(post))
+        .toList();
+  }
 }
