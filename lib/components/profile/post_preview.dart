@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/post.dart';
@@ -85,7 +86,9 @@ class PostPreview extends StatelessWidget {
                               )
                             : Column(
                                 children: [
-                                  Text("Posts"),
+                                  PostItem(
+                                    post: posts[0],
+                                  )
                                 ],
                               ),
                       ),
@@ -93,7 +96,9 @@ class PostPreview extends StatelessWidget {
                         SizedBox(
                           width: double.infinity,
                           child: TextButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.pushNamed(context, "/profile/posts");
+                            },
                             style: TextButton.styleFrom(primary: Colors.orange),
                             child: Text(t.seeMore),
                           ),
