@@ -11,7 +11,7 @@ class WorkService {
     var response = await _httpClient
         .getRequest("/api/workplaces", {"workplaceName": name, "size": 5});
     return (response.data["content"] as List)
-        .map((w) => Workplace.fromJson(w))
+        .map((work) => Workplace.fromJson(work))
         .toList();
   }
 
