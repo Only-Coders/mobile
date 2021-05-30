@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/components/contacts/contact_item.dart';
-import 'package:mobile/models/contact.dart';
-import 'package:mobile/services/contact.dart';
+import 'package:mobile/models/person.dart';
+import 'package:mobile/services/person.dart';
 
 class SuggestedContacts extends StatefulWidget {
   const SuggestedContacts({Key key}) : super(key: key);
@@ -13,19 +13,19 @@ class SuggestedContacts extends StatefulWidget {
 }
 
 class _SuggestedContactsState extends State<SuggestedContacts> {
-  final ContactService _contactService = ContactService();
+  final PersonService _personService = PersonService();
   Future getContacts;
-  List<Contact> contacts = [];
+  List<Person> contacts = [];
 
-  void removeContact(Contact contact) {
+  void removeContact(Person contact) {
     setState(() {
       contacts.remove(contact);
     });
   }
 
-  Future<List<Contact>> fetchContacts() async {
+  Future<List<Person>> fetchContacts() async {
     try {
-      contacts = await _contactService.getContacts();
+      contacts = await _personService.getSuggestedContacts();
     } catch (error) {
       Navigator.pushReplacementNamed(context, "/login");
     }
@@ -49,7 +49,8 @@ class _SuggestedContactsState extends State<SuggestedContacts> {
           scrollDirection: Axis.vertical,
           child: new Column(
             children: contacts
-                .map((c) => ContactItem(contact: c, remove: removeContact))
+                .map((contact) =>
+                    ContactItem(contact: contact, remove: removeContact))
                 .toList(),
           ),
         ),

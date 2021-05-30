@@ -10,7 +10,7 @@ class TagService {
     var response = await _httpClient
         .getRequest("/api/tags", {"tagName": name, "size": 10});
     return (response.data["content"] as List)
-        .map((t) => Tag.fromJson(t))
+        .map((tag) => Tag.fromJson(tag))
         .toList();
   }
 

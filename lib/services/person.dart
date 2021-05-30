@@ -1,25 +1,27 @@
 import 'package:mobile/http_client.dart';
-import 'package:mobile/models/contact.dart';
+import 'package:mobile/models/person.dart';
 
-class ContactService {
+class PersonService {
   final HttpClient _httpClient = HttpClient();
 
-  ContactService();
+  PersonService();
 
-  Future<List<Contact>> getContacts() async {
+  Future<List<Person>> getSuggestedContacts() async {
     var response = await _httpClient.getRequest("/api/suggested-users");
-    return (response.data as List).map((c) => Contact.fromJson(c)).toList();
+    return (response.data as List)
+        .map((person) => Person.fromJson(person))
+        .toList();
   }
 
-  Future<void> followContact(String canonicalName) async {
+  Future<void> followPerson(String canonicalName) async {
     await _httpClient.postRequest("/api/users/following/" + canonicalName, {});
   }
 
-  Future<void> unfollowContact(String canonicalName) async {
+  Future<void> unfollowPerson(String canonicalName) async {
     await _httpClient.deleteRequest("/api/users/following/" + canonicalName);
   }
 
-  Future<void> sendContactRequest(String canonicalName) async {
+  Future<void> sendConactRequest(String canonicalName) async {
     await _httpClient.postRequest(
         "/api/users/contact-request", {"canonicalName": canonicalName});
   }

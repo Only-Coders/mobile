@@ -1,12 +1,12 @@
-import 'package:mobile/models/contact.dart';
+import 'package:mobile/models/person.dart';
 
 class Post {
   String message;
-  Contact publisher;
+  Person publisher;
   String url;
   bool isPublic;
   String type;
-  List<Contact> mentions;
+  List<Person> mentions;
 
   Post(
       {this.message,
@@ -17,11 +17,10 @@ class Post {
       this.mentions});
 
   factory Post.fromJson(Map<String, dynamic> json) {
-    print(json['mentions']);
     return Post(
       message: json["message"],
       publisher: json['publisher'] != null
-          ? new Contact.fromJson(json['publisher'])
+          ? new Person.fromJson(json['publisher'])
           : null,
       url: json['url'],
       isPublic: json['isPublic'],

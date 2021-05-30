@@ -10,7 +10,7 @@ class SkillService {
     var response = await _httpClient
         .getRequest("/api/skills", {"skillName": name, "size": 5});
     return (response.data["content"] as List)
-        .map((s) => Skill.fromJson(s))
+        .map((skill) => Skill.fromJson(skill))
         .toList();
   }
 

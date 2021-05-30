@@ -1,21 +1,21 @@
 import 'package:mobile/models/work_position.dart';
 
-class Contact {
+class Person {
   final String canonicalName;
   final String firstName;
   final String lastName;
   final String imageURI;
   final WorkPosition currentPosition;
 
-  Contact(
+  Person(
       {this.canonicalName,
       this.firstName,
       this.lastName,
       this.imageURI,
       this.currentPosition});
 
-  factory Contact.fromJson(Map<String, dynamic> json) {
-    return Contact(
+  factory Person.fromJson(Map<String, dynamic> json) {
+    return Person(
       canonicalName: json['canonicalName'],
       firstName: json['firstName'],
       lastName: json['lastName'],

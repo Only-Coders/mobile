@@ -51,8 +51,8 @@ class _TagsState extends State<Tags> {
           scrollDirection: Axis.vertical,
           child: new Column(
             children: tags
-                .map((t) => TagItem(
-                      tag: t,
+                .map((tag) => TagItem(
+                      tag: tag,
                       removeTag: removeTag,
                     ))
                 .toList(),

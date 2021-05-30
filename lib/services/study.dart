@@ -11,7 +11,7 @@ class StudyService {
     var response = await _httpClient
         .getRequest("/api/institutes", {"instituteName": name, "size": 5});
     return (response.data["content"] as List)
-        .map((i) => Institute.fromJson(i))
+        .map((institute) => Institute.fromJson(institute))
         .toList();
   }
 

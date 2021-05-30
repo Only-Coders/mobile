@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/components/generic/toast.dart';
-import 'package:mobile/models/contact.dart';
-import 'package:mobile/services/contact.dart';
+import 'package:mobile/models/person.dart';
+import 'package:mobile/services/person.dart';
 
 class ContactItem extends StatefulWidget {
-  final Contact contact;
+  final Person contact;
   final remove;
 
   const ContactItem({Key key, this.contact, this.remove}) : super(key: key);
@@ -15,14 +15,14 @@ class ContactItem extends StatefulWidget {
 }
 
 class _ContactItemState extends State<ContactItem> {
-  final ContactService _contactService = ContactService();
+  final PersonService _personService = PersonService();
   final Toast _toast = Toast();
   bool followed = false;
   bool added = false;
 
   Future<void> followContact() async {
     try {
-      await _contactService.followContact(widget.contact.canonicalName);
+      await _personService.followPerson(widget.contact.canonicalName);
       setState(() {
         followed = true;
       });
@@ -34,7 +34,7 @@ class _ContactItemState extends State<ContactItem> {
 
   Future<void> unfollowContact() async {
     try {
-      await _contactService.unfollowContact(widget.contact.canonicalName);
+      await _personService.unfollowPerson(widget.contact.canonicalName);
       setState(() {
         followed = false;
       });
@@ -46,7 +46,7 @@ class _ContactItemState extends State<ContactItem> {
 
   Future<void> sendContactRequest() async {
     try {
-      await _contactService.sendContactRequest(widget.contact.canonicalName);
+      await _personService.sendContactRequest(widget.contact.canonicalName);
       setState(() {
         added = true;
       });
@@ -59,7 +59,7 @@ class _ContactItemState extends State<ContactItem> {
 
   Future<void> cancelContactRequest() async {
     try {
-      await _contactService.cancelContactRequest(widget.contact.canonicalName);
+      await _personService.cancelContactRequest(widget.contact.canonicalName);
       setState(() {
         added = false;
       });
