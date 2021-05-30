@@ -38,4 +38,9 @@ class PersonService {
         .map((person) => Person.fromJson(person))
         .toList();
   }
+
+  Future<Person> getPersonProfile(String canonicalName) async {
+    var response = await _httpClient.getRequest("/api/users/" + canonicalName);
+    return Person.fromJson(response.data);
+  }
 }
