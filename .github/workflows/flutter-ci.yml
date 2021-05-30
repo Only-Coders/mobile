@@ -26,6 +26,12 @@ jobs:
       with:
         channel: 'stable' # 'dev', 'alpha', default to: 'stable'
         # flutter-version: '1.12.x' # you can also specify exact version of flutter
+
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v1
+      with:
+        path: /opt/hostedtoolcache/flutter
+        key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
     # Get flutter dependencies.
     - run: flutter pub get
@@ -59,4 +65,5 @@ jobs:
         SLACK_ICON: https://img.icons8.com/doodle/2x/android--v2.png
         SLACK_TITLE: "Build & Deploy :rocket:"
         SLACK_USERNAME: Mobile
+        SLACK_MESSAGE: ":bearded_person: Build: ${{ github.event.head_commit.message }}\n :package: Get the <https://github.com/Only-Coders/mobile/releases/download/latest/app-release.apk|APK>"
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
