@@ -1,6 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
-import 'package:mobile/navigation.dart';
 import 'package:mobile/services/auth.dart';
 import 'storage.dart';
 
@@ -28,13 +26,17 @@ class HttpClient {
           if (error.response.statusCode != 401) {
             return handler.next(error);
           }
-          if (error.response.requestOptions.path == "/api/auth/refresh") {
-            await UserStorage.removeToken();
-            NavigationService.instance.navigateToReplacement("/login");
-          }
+          _dio.interceptors.requestLock.lock();
+          _dio.interceptors.responseLock.lock();
+          _dio.interceptors.errorLock.lock();
+
           AuthService _authService = AuthService();
           await _authService.refreshToken();
-          return _retry(error.requestOptions);
+
+          _dio.interceptors.requestLock.unlock();
+          _dio.interceptors.responseLock.unlock();
+          _dio.interceptors.errorLock.unlock();
+          return handler.resolve(await _retry(error.requestOptions));
         },
       ),
     );
