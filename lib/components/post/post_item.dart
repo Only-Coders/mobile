@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/models/post.dart';
+import 'package:flutter_highlight/flutter_highlight.dart';
+import 'package:flutter_highlight/themes/vs2015.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
@@ -13,10 +15,60 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
+    RegExp regExp = new RegExp(
+      r"^```(?<lang>[\w\W]*?)\n(?<code>[^`][\W\w]*?)\n```$",
+      multiLine: true,
+    );
+    List<Widget> widgets = [];
+    int pos = 0;
+
+    for (var x in regExp.allMatches(widget.post.message)) {
+      widgets.add(
+        Text(
+          widget.post.message.substring(pos, x.start),
+          style: TextStyle(color: Colors.black.withOpacity(0.6)),
+        ),
+      );
+      widgets.add(
+        Padding(
+          padding: EdgeInsets.symmetric(vertical: 0),
+          child: Container(
+            child: HighlightView(
+              x.namedGroup("code"),
+              language: x.namedGroup("lang"),
+              theme: vs2015Theme,
+              padding: EdgeInsets.all(10),
+              textStyle: TextStyle(
+                fontSize: 10,
+              ),
+            ),
+            decoration: BoxDecoration(
+              border: Border.all(
+                  color: const Color(0xFF000000),
+                  width: 4.0,
+                  style: BorderStyle.solid),
+              borderRadius: BorderRadius.all(
+                Radius.circular(4),
+              ),
+            ),
+          ),
+        ),
+      );
+      pos = x.end;
+    }
+    if (pos < widget.post.message.length) {
+      widgets.add(
+        Text(
+          widget.post.message.substring(pos, widget.post.message.length),
+          style: TextStyle(color: Colors.black.withOpacity(0.6)),
+        ),
+      );
+    }
+
     return Container(
-      padding: EdgeInsets.symmetric(vertical: 15),
       width: double.infinity,
       child: Card(
+        elevation: 1,
         child: Column(
           children: [
             Row(
@@ -55,7 +107,7 @@ class _PostItemState extends State<PostItem> {
                 IconButton(
                   splashRadius: 20,
                   onPressed: () {},
-                  icon: Icon(Icons.expand_more),
+                  icon: Icon(Icons.more_horiz),
                 ),
               ],
             ),
@@ -63,7 +115,11 @@ class _PostItemState extends State<PostItem> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(20),
-                  child: Text(widget.post.message),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: widgets,
+                  ),
                 ),
               ],
             ),
@@ -72,7 +128,7 @@ class _PostItemState extends State<PostItem> {
               child: Row(
                 children: [
                   Expanded(
-                    flex: 3,
+                    flex: 2,
                     child: Row(
                       children: [
                         SizedBox(
