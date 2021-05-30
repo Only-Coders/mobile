@@ -69,28 +69,31 @@ class PostPreview extends StatelessWidget {
                       SizedBox(
                         height: 3,
                       ),
-                      Center(
-                        child: posts.length == 0
-                            ? Column(
-                                children: [
-                                  Image.asset(
-                                    "assets/images/no-data.png",
-                                    width: 180,
-                                  ),
-                                  Text(
-                                    t.postsNoData,
-                                    style:
-                                        TextStyle(color: Colors.grey.shade600),
-                                  ),
-                                ],
-                              )
-                            : Column(
-                                children: [
-                                  PostItem(
-                                    post: posts[0],
-                                  )
-                                ],
-                              ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 25),
+                        child: Center(
+                          child: posts.length == 0
+                              ? Column(
+                                  children: [
+                                    Image.asset(
+                                      "assets/images/no-data.png",
+                                      width: 128,
+                                    ),
+                                    Text(
+                                      t.postsNoData,
+                                      style: TextStyle(
+                                          color: Colors.grey.shade600),
+                                    ),
+                                  ],
+                                )
+                              : Column(
+                                  children: [
+                                    PostItem(
+                                      post: posts[0],
+                                    )
+                                  ],
+                                ),
+                        ),
                       ),
                       if (posts.length > 1)
                         SizedBox(
