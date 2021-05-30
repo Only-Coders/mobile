@@ -23,12 +23,19 @@ class _BottomNavState extends State<BottomNav> {
         selectedFontSize: 14,
         unselectedFontSize: 14,
         onTap: (value) {
-          setState(() {
-            _currentIndex = value;
-            if (_currentIndex == 1) {
-              Navigator.pushNamed(context, '/new-post');
-            }
-          });
+          switch (value) {
+            case 0:
+              break;
+            case 1:
+              Navigator.pushNamed(context, "/new-post");
+              break;
+            case 2:
+              Navigator.pushNamed(context, "/new-post");
+              break;
+            default:
+              Navigator.pushNamed(context, "/profile");
+              break;
+          }
         },
         items: [
           BottomNavigationBarItem(
