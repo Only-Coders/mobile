@@ -33,6 +33,7 @@ class _NewPostState extends State<NewPost> {
   String selectedPostPrivacy;
   String message = "";
   String type = "TEXT";
+  bool isLoading = false;
   File _image;
   File _file;
   bool showMentions = false;
@@ -93,6 +94,9 @@ class _NewPostState extends State<NewPost> {
 
   Future<void> newPost() async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       String uri = "";
       if (_image != null) {
         uri = await _firebaseStorage.uploadFile(_image, "images/");
@@ -100,8 +104,10 @@ class _NewPostState extends State<NewPost> {
       if (_file != null) {
         uri = await _firebaseStorage.uploadFile(_file, "files/");
       }
-      var mentionsNames = mentionCanonicalNames
-          .where((mention) => message.contains(mention["display"]));
+      var mentionsNames = [];
+      if (mentionCanonicalNames.length > 0)
+        mentionCanonicalNames
+            .where((mention) => message.contains(mention["display"]));
       await _postService.createPost(message, type,
           selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       Provider.of<User>(context, listen: false)
@@ -110,6 +116,10 @@ class _NewPostState extends State<NewPost> {
     } catch (error) {
       print(error);
       _toast.showError(context, error.response.data["error"]);
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 
@@ -135,9 +145,18 @@ class _NewPostState extends State<NewPost> {
                 await newPost();
               },
               style: TextButton.styleFrom(primary: Colors.white),
-              child: Text(
-                "Publish",
-              ),
+              child: isLoading
+                  ? SizedBox(
+                      width: 25,
+                      height: 25,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Theme.of(context).primaryColor,
+                        valueColor:
+                            AlwaysStoppedAnimation(Colors.grey.shade200),
+                        strokeWidth: 3,
+                      ),
+                    )
+                  : Text(t.publish),
             ),
           ],
         ),

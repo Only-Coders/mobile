@@ -6,13 +6,8 @@ class PostService {
 
   PostService();
 
-  Future<void> createPost(
-      String message,
-      String type,
-      bool isPublic,
-      String url,
-      List<Map<String, dynamic>> mentions,
-      List<String> tags) async {
+  Future<void> createPost(String message, String type, bool isPublic,
+      String url, List<dynamic> mentions, List<String> tags) async {
     var post = {
       "message": message,
       "type": type,
