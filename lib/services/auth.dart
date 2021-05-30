@@ -1,5 +1,6 @@
 import 'package:mobile/http_client.dart';
 import 'package:mobile/models/token.dart';
+import 'package:mobile/navigation.dart';
 import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/storage.dart';
 
@@ -50,14 +51,19 @@ class AuthService {
   }
 
   Future<void> refreshToken() async {
-    var response = await _httpClient.postRequest("/api/auth/refresh", {});
-    RegExp rgx = new RegExp(r'\w+=(?<token>.*); Path');
-    Token data = Token.fromJson(response.data);
-    String token = data.token +
-        "." +
-        rgx
-            .firstMatch(response.headers.map["set-cookie"][0])
-            .namedGroup("token");
-    await UserStorage.setToken(token);
+    try {
+      var response = await _httpClient.postRequest("/api/auth/refresh", {});
+      RegExp rgx = new RegExp(r'\w+=(?<token>.*); Path');
+      Token data = Token.fromJson(response.data);
+      String token = data.token +
+          "." +
+          rgx
+              .firstMatch(response.headers.map["set-cookie"][0])
+              .namedGroup("token");
+      await UserStorage.setToken(token);
+    } catch (error) {
+      UserStorage.removeToken();
+      NavigationService.instance.navigateToRemoveUntil("/login");
+    }
   }
 }
