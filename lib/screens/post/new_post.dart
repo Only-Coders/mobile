@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:mobile/components/generic/toast.dart';
-import 'package:mobile/models/contact.dart';
+import 'package:mobile/models/person.dart';
 import 'package:mobile/models/tag.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/fb_storage.dart';
+import 'package:mobile/services/person.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/services/tag.dart';
-import 'package:mobile/services/user.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
@@ -24,7 +24,7 @@ class NewPost extends StatefulWidget {
 
 class _NewPostState extends State<NewPost> {
   final PostService _postService = PostService();
-  final UserService _userService = UserService();
+  final PersonService _personService = PersonService();
   final TagService _tagService = TagService();
   final FirebaseStorage _firebaseStorage = FirebaseStorage();
   final Toast _toast = Toast();
@@ -37,9 +37,9 @@ class _NewPostState extends State<NewPost> {
   File _file;
   bool showMentions = false;
   final imagePicker = ImagePicker();
-  List<Contact> mentions = [];
+  List<Person> mentions = [];
   List<Tag> tags = [];
-  List<String> mentionCanonicalNames = [];
+  List<Map<String, dynamic>> mentionCanonicalNames = [];
   List<String> tagNames = [];
 
   Future<void> getImage(bool camera) async {
@@ -62,10 +62,10 @@ class _NewPostState extends State<NewPost> {
     return tags;
   }
 
-  Future<List<Contact>> getUsersByFullName(String name) async {
-    List<Contact> users = [];
+  Future<List<Person>> getUsersByFullName(String name) async {
+    List<Person> users = [];
     try {
-      users = await _userService.getUsersByFullName(name);
+      users = await _personService.getPersonsByFullName(name);
     } catch (error) {
       print(error);
     }
@@ -100,13 +100,10 @@ class _NewPostState extends State<NewPost> {
       if (_file != null) {
         uri = await _firebaseStorage.uploadFile(_file, "files/");
       }
-      await _postService.createPost(
-          message,
-          type,
-          selectedPostPrivacy == "To anyone",
-          uri,
-          mentionCanonicalNames,
-          tagNames);
+      var mentionsNames = mentionCanonicalNames
+          .where((mention) => message.contains(mention["display"]));
+      await _postService.createPost(message, type,
+          selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       Provider.of<User>(context, listen: false)
           .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
       _toast.showSuccess(context, "Se compartio la publicacion");
@@ -284,8 +281,7 @@ class _NewPostState extends State<NewPost> {
                                         });
                                       } else {
                                         setState(() {
-                                          mentionCanonicalNames
-                                              .add(mention["id"]);
+                                          mentionCanonicalNames.add(mention);
                                         });
                                       }
                                     },

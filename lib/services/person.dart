@@ -21,7 +21,7 @@ class PersonService {
     await _httpClient.deleteRequest("/api/users/following/" + canonicalName);
   }
 
-  Future<void> sendConactRequest(String canonicalName) async {
+  Future<void> sendContactRequest(String canonicalName) async {
     await _httpClient.postRequest(
         "/api/users/contact-request", {"canonicalName": canonicalName});
   }
@@ -29,5 +29,13 @@ class PersonService {
   Future<void> cancelContactRequest(String canonicalName) async {
     await _httpClient
         .deleteRequest("/api/users/contact-request/" + canonicalName);
+  }
+
+  Future<List<Person>> getPersonsByFullName([String name]) async {
+    var response = await _httpClient
+        .getRequest("/api/users", {"partialName": name, "size": 3});
+    return (response.data["content"] as List)
+        .map((person) => Person.fromJson(person))
+        .toList();
   }
 }
