@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/generic/bottom_nav.dart';
 import 'package:mobile/components/post/post_item.dart';
+import 'package:mobile/models/post.dart';
 import 'package:mobile/services/post.dart';
 
 class Feed extends StatelessWidget {
@@ -14,17 +15,42 @@ class Feed extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
       ),
-      body: SingleChildScrollView(
-        child: FutureBuilder(
-          future: _postService.getFeedPosts(),
-          builder: (BuildContext context, AsyncSnapshot snapshot) {
+      body: FutureBuilder(
+        future: _postService.getFeedPosts(),
+        builder: (ctx, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
             if (snapshot.hasData) {
-              return PostItem(post: snapshot.data[0]);
+              return SingleChildScrollView(
+                child: Column(
+                  children: snapshot.data.map<Widget>((Post p) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: PostItem(
+                        post: p,
+                      ),
+                    );
+                  }).toList(),
+                ),
+              );
+              // return PostItem(post: snapshot.data[0]);
             } else {
-              return Text("Hola");
+              return Container(
+                child: Center(
+                  child: Text(
+                    '${snapshot.error} occured',
+                  ),
+                ),
+              );
             }
-          },
-        ),
+          }
+          return Container(
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+          );
+        },
       ),
       bottomNavigationBar: BottomNav(),
     );
