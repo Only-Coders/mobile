@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:mobile/components/generic/git_platform.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/services/fb_storage.dart';
@@ -98,26 +99,6 @@ class _GeneralInformationSecondStepState
       );
     }
 
-    Widget platformItem(String platform) {
-      switch (platform) {
-        case "GITHUB":
-          return SvgPicture.asset(
-            "assets/images/github.svg",
-            width: 30,
-          );
-        case "GITLAB":
-          return SvgPicture.asset(
-            "assets/images/gitlab.svg",
-            width: 30,
-          );
-        default:
-          return SvgPicture.asset(
-            "assets/images/bitbucket.svg",
-            width: 30,
-          );
-      }
-    }
-
     return Container(
       height: MediaQuery.of(context).size.height - 80,
       padding: EdgeInsets.all(25),
@@ -175,7 +156,11 @@ class _GeneralInformationSecondStepState
                             value: p,
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: [platformItem(p)],
+                              children: [
+                                GitPlatform(
+                                  platform: p,
+                                )
+                              ],
                             ),
                           );
                         }).toList(),
