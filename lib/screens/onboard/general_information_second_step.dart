@@ -71,8 +71,13 @@ class _GeneralInformationSecondStepState
               isLoading = true;
             });
             try {
-              if (imageURI.isNotEmpty)
-                await _firebaseStorage.uploadFile(_image, "images/");
+              if (_image != null) {
+                String uri =
+                    await _firebaseStorage.uploadFile(_image, "images/");
+                setState(() {
+                  imageURI = uri;
+                });
+              }
               Provider.of<RegisterModel>(context, listen: false)
                   .setSecondStepData(imageURI, description,
                       userName.isEmpty ? null : platform, userName);
