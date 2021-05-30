@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
       String fbToken = await _fbAuth.login(email, password);
       String token = await _auth.login(fbToken);
       var payload = Jwt.parseJwt(token);
-      if (payload["complete"]) {
+      if (payload["complete"] != null) {
         Provider.of<UserData.User>(context, listen: false).setUser(payload);
         Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
