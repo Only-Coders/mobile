@@ -115,12 +115,13 @@ class _NewPostState extends State<NewPost> {
   void addNewTags() {
     RegExp regex = new RegExp(r'(?<!\S)#(\w+)(\s|$)');
     var matches = regex.allMatches(message);
+    setState(() {
+      tagNames = [];
+    });
     matches.forEach((match) {
-      String value =
-          tagNames.firstWhere((tag) => tag == match.group(1), orElse: () {
-        return "";
+      setState(() {
+        tagNames.add(match.group(1));
       });
-      if (value.isEmpty) tagNames.add(match.group(1));
     });
   }
 
@@ -150,7 +151,8 @@ class _NewPostState extends State<NewPost> {
       Provider.of<User>(context, listen: false)
           .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
       Navigator.pushReplacementNamed(context, "/feed");
-      _toast.showSuccess(context, AppLocalizations.of(context).newPostMessage);
+      _toast.showSuccess(
+          context, AppLocalizations.of(context).newPostOkMessage);
     } catch (error) {
       print(error);
       _toast.showError(context, error.response.data["error"]);
