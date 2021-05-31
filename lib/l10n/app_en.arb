@@ -71,5 +71,7 @@
   "posts": "Posts",
   "postsNoData": "We found no posts",
   "seeMore": "See more",
-  "newPostOkMessage": "The post was published"
+  "newPostOkMessage": "The post was published",
+  "addLink": "Add link",
+  "invalidUrl": "Enter a valid url"
 }

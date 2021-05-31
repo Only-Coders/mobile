@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_mentions/flutter_mentions.dart';
 import 'package:mobile/components/generic/toast.dart';
+import 'package:mobile/components/post/add_link.dart';
+import 'package:mobile/components/post/link_preview.dart';
+import 'package:mobile/models/link.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/tag.dart';
 import 'package:mobile/providers/user.dart';
@@ -38,6 +41,7 @@ class _NewPostState extends State<NewPost> {
   File _file;
   bool showMentions = false;
   final imagePicker = ImagePicker();
+  Link linkPreview;
   List<Person> mentions = [];
   List<Tag> tags = [];
   List<Map<String, dynamic>> mentionCanonicalNames = [];
@@ -94,6 +98,20 @@ class _NewPostState extends State<NewPost> {
     });
   }
 
+  void addLinkPreview(Link link) {
+    setState(() {
+      type = "LINK";
+      linkPreview = link;
+    });
+  }
+
+  void removeLinkPreview() {
+    setState(() {
+      type = "TEXT";
+      linkPreview = null;
+    });
+  }
+
   void addNewTags() {
     RegExp regex = new RegExp(r'(?<!\S)#(\w+)(\s|$)');
     var matches = regex.allMatches(message);
@@ -118,10 +136,14 @@ class _NewPostState extends State<NewPost> {
       if (_file != null) {
         uri = await _firebaseStorage.uploadFile(_file, "files/");
       }
+      if (linkPreview != null && type == "LINK") {
+        uri = linkPreview.url;
+      }
       var mentionsNames = [];
       if (mentionCanonicalNames.length > 0)
         mentionCanonicalNames
             .where((mention) => message.contains(mention["display"]));
+
       addNewTags();
       await _postService.createPost(message, type,
           selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
@@ -389,6 +411,12 @@ class _NewPostState extends State<NewPost> {
                                           })
                                     ],
                                   ),
+                                  linkPreview != null
+                                      ? LinkPreview(
+                                          link: linkPreview,
+                                          removeLink: removeLinkPreview,
+                                        )
+                                      : Container(),
                                   _image != null
                                       ? Stack(
                                           children: [
@@ -503,6 +531,20 @@ class _NewPostState extends State<NewPost> {
                                       }
                                     : null,
                                 icon: Icon(Icons.attach_file),
+                                splashRadius: 20,
+                              ),
+                              IconButton(
+                                onPressed: type == "TEXT" || type == "LINK"
+                                    ? () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (_) =>
+                                              AddLink(addLink: addLinkPreview),
+                                          barrierDismissible: true,
+                                        );
+                                      }
+                                    : null,
+                                icon: Icon(Icons.link),
                                 splashRadius: 20,
                               ),
                               IconButton(

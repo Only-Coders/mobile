@@ -71,5 +71,7 @@
   "posts": "Publicaciones",
   "postsNoData": "No se encontraron publicaciones",
   "seeMore": "Ver mas",
-  "newPostOkMessage": "Se compartio la publicacion"
+  "newPostOkMessage": "Se compartio la publicacion",
+  "addLink": "Compartir link",
+  "invalidUrl": "Ingrese una url valida"
 }
