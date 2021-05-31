@@ -92,6 +92,18 @@ class _NewPostState extends State<NewPost> {
     });
   }
 
+  void addNewTags() {
+    RegExp regex = new RegExp(r'(?<!\S)#(\w+)(\s|$)');
+    var matches = regex.allMatches(message);
+    matches.forEach((match) {
+      String value =
+          tagNames.firstWhere((tag) => tag == match.group(1), orElse: () {
+        return "";
+      });
+      if (value.isEmpty) tagNames.add(match.group(1));
+    });
+  }
+
   Future<void> newPost() async {
     try {
       setState(() {
@@ -108,6 +120,8 @@ class _NewPostState extends State<NewPost> {
       if (mentionCanonicalNames.length > 0)
         mentionCanonicalNames
             .where((mention) => message.contains(mention["display"]));
+      addNewTags();
+      print(tagNames);
       await _postService.createPost(message, type,
           selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       Provider.of<User>(context, listen: false)
@@ -294,11 +308,7 @@ class _NewPostState extends State<NewPost> {
                                       }
                                     },
                                     onMentionAdd: (mention) {
-                                      if (mention["type"] == "TAG") {
-                                        setState(() {
-                                          tagNames.add(mention["id"]);
-                                        });
-                                      } else {
+                                      if (mention["type"] != "TAG") {
                                         setState(() {
                                           mentionCanonicalNames.add(mention);
                                         });
