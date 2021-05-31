@@ -49,6 +49,7 @@ class _NewPostState extends State<NewPost> {
         imageQuality: 25);
     if (image != null)
       setState(() {
+        type = "IMAGE";
         _image = File(image.path);
       });
   }
@@ -79,6 +80,7 @@ class _NewPostState extends State<NewPost> {
     if (result != null) {
       File file = File(result.files.single.path);
       setState(() {
+        type = "FILE";
         _file = file;
       });
     }
@@ -480,9 +482,6 @@ class _NewPostState extends State<NewPost> {
                                 onPressed: type == "TEXT" || type == "IMAGE"
                                     ? () async {
                                         await getImage(true);
-                                        setState(() {
-                                          type = "IMAGE";
-                                        });
                                       }
                                     : null,
                                 icon: Icon(Icons.camera_alt),
@@ -492,9 +491,6 @@ class _NewPostState extends State<NewPost> {
                                 onPressed: type == "TEXT" || type == "IMAGE"
                                     ? () async {
                                         await getImage(false);
-                                        setState(() {
-                                          type = "IMAGE";
-                                        });
                                       }
                                     : null,
                                 icon: Icon(Icons.image),
@@ -504,9 +500,6 @@ class _NewPostState extends State<NewPost> {
                                 onPressed: type == "TEXT" || type == "FILE"
                                     ? () async {
                                         await getFile();
-                                        setState(() {
-                                          type = "FILE";
-                                        });
                                       }
                                     : null,
                                 icon: Icon(Icons.attach_file),
