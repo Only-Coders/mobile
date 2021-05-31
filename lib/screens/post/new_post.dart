@@ -123,11 +123,11 @@ class _NewPostState extends State<NewPost> {
         mentionCanonicalNames
             .where((mention) => message.contains(mention["display"]));
       addNewTags();
-      print(tagNames);
       await _postService.createPost(message, type,
           selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       Provider.of<User>(context, listen: false)
           .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
+      Navigator.pushReplacementNamed(context, "/feed");
       _toast.showSuccess(context, AppLocalizations.of(context).newPostMessage);
     } catch (error) {
       print(error);
