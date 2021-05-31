@@ -126,7 +126,7 @@ class _NewPostState extends State<NewPost> {
           selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       Provider.of<User>(context, listen: false)
           .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
-      _toast.showSuccess(context, "Se compartio la publicacion");
+      _toast.showSuccess(context, AppLocalizations.of(context).newPostMessage);
     } catch (error) {
       print(error);
       _toast.showError(context, error.response.data["error"]);
@@ -150,7 +150,7 @@ class _NewPostState extends State<NewPost> {
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Theme.of(context).secondaryHeaderColor,
           title: Text(
-            "New Post",
+            t.newPost,
             style: TextStyle(color: Colors.white),
           ),
           actions: [

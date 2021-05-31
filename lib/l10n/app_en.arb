@@ -58,7 +58,6 @@
   "suggestedContacts": "Contact Network",
   "suggestedContactsDescription": "Add people to your network of contacts or follows to find out about the latest trends",
   "notifications": "Notifications",
-  "newPost": "New Post",
   "profile": "Profile",
   "home": "Home",
   "toAnyone": "To anyone",
@@ -71,5 +70,6 @@
   "description": "Description",
   "posts": "Posts",
   "postsNoData": "We found no posts",
-  "seeMore": "See more"
+  "seeMore": "See more",
+  "newPostOkMessage": "The post was published"
 }
