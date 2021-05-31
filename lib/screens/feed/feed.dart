@@ -14,6 +14,40 @@ class Feed extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
+        title: Container(
+          height: 40,
+          child: TextField(
+            decoration: InputDecoration(
+              prefixIcon: Icon(
+                Icons.search,
+                color: Colors.grey,
+              ),
+              fillColor: Color(0xff494C62),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(5),
+                borderSide: BorderSide(
+                  width: 0,
+                  style: BorderStyle.none,
+                ),
+              ),
+              filled: true,
+            ),
+          ),
+        ),
+        actions: [
+          Container(
+            margin: EdgeInsets.only(right: 5),
+            child: IconButton(
+              splashRadius: 25,
+              onPressed: () {},
+              icon: Icon(
+                Icons.message,
+                size: 30,
+                color: Colors.white,
+              ),
+            ),
+          )
+        ],
       ),
       body: FutureBuilder(
         future: _postService.getFeedPosts(),
