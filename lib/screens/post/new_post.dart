@@ -140,6 +140,7 @@ class _NewPostState extends State<NewPost> {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
+    User user = Provider.of<User>(context);
     selectedPostPrivacy = Provider.of<User>(context).defaultPrivacy
         ? "To anyone"
         : "To my contacts";
@@ -191,8 +192,10 @@ class _NewPostState extends State<NewPost> {
                               children: [
                                 CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: AssetImage(
-                                      "assets/images/default-avatar.png"),
+                                  backgroundImage: user.imageURI.isEmpty
+                                      ? AssetImage(
+                                          "assets/images/default-avatar.png")
+                                      : NetworkImage(user.imageURI),
                                   backgroundColor: Colors.transparent,
                                 ),
                                 Container(
@@ -204,7 +207,7 @@ class _NewPostState extends State<NewPost> {
                                       Container(
                                         padding: EdgeInsets.only(bottom: 5),
                                         child: Text(
-                                          "Mathias Zunino",
+                                          user.fullName,
                                           style: TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
