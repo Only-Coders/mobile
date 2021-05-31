@@ -82,8 +82,10 @@ class _PostItemState extends State<PostItem> {
                         padding: const EdgeInsets.only(top: 10),
                         child: CircleAvatar(
                           radius: 20,
-                          backgroundImage:
-                              AssetImage("assets/images/default-avatar.png"),
+                          backgroundImage: widget
+                                  .post.publisher.imageURI.isEmpty
+                              ? AssetImage("assets/images/default-avatar.png")
+                              : NetworkImage(widget.post.publisher.imageURI),
                           backgroundColor: Colors.transparent,
                         ),
                       ),
