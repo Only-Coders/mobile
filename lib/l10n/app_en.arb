@@ -73,5 +73,6 @@
   "seeMore": "See more",
   "newPostOkMessage": "The post was published",
   "addLink": "Add link",
-  "invalidUrl": "Enter a valid url"
+  "invalidUrl": "Enter a valid url",
+  "comments": " Comments"
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/models/post.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/vs2015.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
@@ -15,6 +16,7 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
     RegExp regExp = new RegExp(
       r"^```(?<lang>[\w\W]*?)\n(?<code>[^`][\W\w]*?)\n```$",
       multiLine: true,
@@ -150,7 +152,7 @@ class _PostItemState extends State<PostItem> {
                                   color: Theme.of(context).primaryColor,
                                 ),
                                 Text(
-                                  "1",
+                                  widget.post.reactions[0].quantity.toString(),
                                   style: TextStyle(
                                       fontSize: 12,
                                       color: Theme.of(context).primaryColor),
@@ -179,7 +181,7 @@ class _PostItemState extends State<PostItem> {
                                   color: Colors.red,
                                 ),
                                 Text(
-                                  "1",
+                                  widget.post.reactions[1].quantity.toString(),
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.red),
                                 ),
@@ -192,7 +194,8 @@ class _PostItemState extends State<PostItem> {
                   ),
                   Expanded(
                     flex: 1,
-                    child: Text("4 Comentarios"),
+                    child: Text(
+                        widget.post.commentQuantity.toString() + t.comments),
                   ),
                 ],
               ),

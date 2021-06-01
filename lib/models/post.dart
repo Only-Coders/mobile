@@ -1,4 +1,5 @@
 import 'package:mobile/models/person.dart';
+import 'package:mobile/models/reaction.dart';
 
 class Post {
   String message;
@@ -7,6 +8,8 @@ class Post {
   bool isPublic;
   String type;
   List<Person> mentions;
+  List<Reaction> reactions;
+  int commentQuantity;
 
   Post(
       {this.message,
@@ -14,7 +17,9 @@ class Post {
       this.url,
       this.isPublic,
       this.type,
-      this.mentions});
+      this.mentions,
+      this.reactions,
+      this.commentQuantity});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
@@ -25,6 +30,10 @@ class Post {
       url: json['url'],
       isPublic: json['isPublic'],
       type: json['type'],
+      reactions: (json['reactions'] as List<dynamic>)
+          .map((reaction) => Reaction.fromJson(reaction))
+          .toList(),
+      commentQuantity: json['commentQuantity'],
     );
   }
 
@@ -34,6 +43,7 @@ class Post {
         'url': url,
         'isPublic': isPublic,
         'type': type,
-        'mentions': mentions
+        'mentions': mentions,
+        'commentQuantity': commentQuantity
       };
 }
