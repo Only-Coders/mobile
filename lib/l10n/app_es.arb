@@ -74,5 +74,7 @@
   "newPostOkMessage": "Se compartio la publicacion",
   "addLink": "Compartir link",
   "invalidUrl": "Ingrese una url valida",
-  "comments": " Comentarios"
+  "comments": " Comentarios",
+  "report": "Reportar",
+  "save": "Guardar"
 }

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/components/post/file_post.dart';
+import 'package:mobile/components/post/image_post.dart';
+import 'package:mobile/components/post/link_post.dart';
+import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/post.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/vs2015.dart';
@@ -62,7 +66,7 @@ class _PostItemState extends State<PostItem> {
       widgets.add(
         Text(
           widget.post.message.substring(pos, widget.post.message.length),
-          style: TextStyle(color: Colors.black.withOpacity(0.6)),
+          style: TextStyle(color: Colors.black.withOpacity(0.8)),
         ),
       );
     }
@@ -108,31 +112,40 @@ class _PostItemState extends State<PostItem> {
                     ],
                   ),
                 ),
-                IconButton(
-                  splashRadius: 20,
-                  onPressed: () {},
+                PopupMenuButton(
                   icon: Icon(Icons.more_horiz),
+                  itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                    PopupMenuItem(
+                      padding: EdgeInsets.all(0),
+                      child: ListTile(
+                        leading: Icon(Icons.bookmark_add),
+                        title: Text(t.save),
+                      ),
+                    ),
+                    PopupMenuItem(
+                      padding: EdgeInsets.all(0),
+                      child: ListTile(
+                        leading: Icon(Icons.policy),
+                        title: Text(
+                          t.report,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
             Row(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: widgets,
-                  ),
-                ),
+                postType(widget.post.type, widgets),
               ],
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Expanded(
-                    flex: 2,
+                  Container(
                     child: Row(
                       children: [
                         SizedBox(
@@ -192,11 +205,7 @@ class _PostItemState extends State<PostItem> {
                       ],
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: Text(
-                        widget.post.commentQuantity.toString() + t.comments),
-                  ),
+                  Text(widget.post.commentQuantity.toString() + t.comments),
                 ],
               ),
             ),
@@ -227,5 +236,37 @@ class _PostItemState extends State<PostItem> {
         ),
       ),
     );
+  }
+
+  Widget postType(String type, List<Widget> widgets) {
+    switch (type) {
+      case "TEXT":
+        return TextPost(
+          post: widget.post,
+          content: widgets,
+        );
+        break;
+      case "IMAGE":
+        return ImagePost(
+          post: widget.post,
+          content: widgets,
+        );
+        break;
+      case "FILE":
+        return FilePost(
+          post: widget.post,
+          content: widgets,
+        );
+        break;
+      case "LINK":
+        return LinkPost(
+          post: widget.post,
+          content: widgets,
+        );
+        break;
+      default:
+        return Text("Tipo no encontrado");
+        break;
+    }
   }
 }

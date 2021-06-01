@@ -74,5 +74,7 @@
   "newPostOkMessage": "The post was published",
   "addLink": "Add link",
   "invalidUrl": "Enter a valid url",
-  "comments": " Comments"
+  "comments": " Comments",
+  "report": "Report",
+  "save": "Save"
 }
