@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mobile/components/generic/git_platform.dart';
 import 'package:mobile/components/profile/description.dart';
+import 'package:mobile/components/profile/nav_drawer.dart';
 import 'package:mobile/components/profile/post_preview.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
@@ -22,17 +23,11 @@ class _ProfileState extends State<Profile> {
     User user = Provider.of<User>(context);
 
     return Scaffold(
+      endDrawer: NavDrawer(),
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
         iconTheme: IconThemeData(color: Colors.white),
         elevation: 0,
-        actions: [
-          IconButton(
-            splashRadius: 20,
-            onPressed: () {},
-            icon: Icon(Icons.settings),
-          ),
-        ],
       ),
       body: FutureBuilder(
           future: _personService.getPersonProfile(user.canonicalName),

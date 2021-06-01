@@ -50,6 +50,11 @@ class AuthService {
     return token;
   }
 
+  void logout() {
+    UserStorage.removeToken();
+    NavigationService.instance.navigateToRemoveUntil("/login");
+  }
+
   Future<void> refreshToken() async {
     try {
       var response = await _httpClient.postRequest("/api/auth/refresh", {});
@@ -62,8 +67,7 @@ class AuthService {
               .namedGroup("token");
       await UserStorage.setToken(token);
     } catch (error) {
-      UserStorage.removeToken();
-      NavigationService.instance.navigateToRemoveUntil("/login");
+      logout();
     }
   }
 }

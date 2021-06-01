@@ -80,5 +80,6 @@
   "download": "Download",
   "remove": "Remove",
   "addToFavoriteMessage": "Added to favorites",
-  "removeFromFavoriteMessage": "Removed from favorites"
+  "removeFromFavoriteMessage": "Removed from favorites",
+  "logout": "Logout"
 }
