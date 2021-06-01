@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:mobile/models/post.dart';
 
 class ImagePost extends StatelessWidget {
@@ -15,7 +16,9 @@ class ImagePost extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 12),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(4),
-          child: Image.network(post.url),
+          child: Image.network(
+            post.url,
+          ),
         ),
       ),
     );
@@ -25,7 +28,6 @@ class ImagePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width - 8,
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(

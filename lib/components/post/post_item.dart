@@ -176,7 +176,7 @@ class _PostItemState extends State<PostItem> {
             ),
             Row(
               children: [
-                postType(widget.post.type, widgets),
+                Flexible(child: postType(widget.post.type, widgets)),
               ],
             ),
             Padding(
