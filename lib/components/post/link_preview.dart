@@ -6,7 +6,7 @@ class LinkPreview extends StatelessWidget {
   final Link link;
   final removeLink;
 
-  const LinkPreview({Key key, @required this.link, @required this.removeLink})
+  const LinkPreview({Key key, @required this.link, this.removeLink})
       : super(key: key);
 
   Future<void> launchUrl() async {
@@ -24,29 +24,44 @@ class LinkPreview extends StatelessWidget {
         child: Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+            child: Row(
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      link.title,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                    ),
-                    IconButton(
-                      splashRadius: 25,
-                      onPressed: removeLink,
-                      icon: Icon(Icons.close),
-                    ),
-                  ],
+                link.img != null
+                    ? Container(
+                        width: 95,
+                        child: Image.network(link.img),
+                      )
+                    : Container(),
+                Flexible(
+                  child: Column(
+                    // crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              link.title,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 18),
+                            ),
+                          ),
+                          if (removeLink != null)
+                            IconButton(
+                              splashRadius: 25,
+                              onPressed: removeLink,
+                              icon: Icon(Icons.close),
+                            ),
+                        ],
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(left: 10),
+                        child: Text(link.description),
+                      ),
+                    ],
+                  ),
                 ),
-                Container(
-                  padding: const EdgeInsets.only(bottom: 12),
-                  child: Text(link.description),
-                ),
-                link.img != null ? Image.network(link.img) : Container(),
               ],
             ),
           ),
