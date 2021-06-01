@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/fb_storage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FilePost extends StatelessWidget {
   final Post post;
@@ -14,25 +15,28 @@ class FilePost extends StatelessWidget {
     final FirebaseStorage _firebaseStorage = FirebaseStorage();
     List<Widget> formatedContent = content.map((item) => item).toList();
     formatedContent.add(
-      new Padding(
-        padding: const EdgeInsets.all(15),
-        child: Column(
-          children: [
-            GestureDetector(
-              onTap: () async {
-                String path = await _firebaseStorage.downloadFile(post.url);
-                Toast().showInfo(context, path);
-              },
-              child: Icon(
-                Icons.insert_drive_file,
-                size: 48,
-                color: Colors.blue,
+      new Tooltip(
+        message: AppLocalizations.of(context).download.toString(),
+        child: Padding(
+          padding: const EdgeInsets.all(15),
+          child: Column(
+            children: [
+              GestureDetector(
+                onTap: () async {
+                  String path = await _firebaseStorage.downloadFile(post.url);
+                  Toast().showInfo(context, path);
+                },
+                child: Icon(
+                  Icons.insert_drive_file,
+                  size: 48,
+                  color: Colors.blue,
+                ),
               ),
-            ),
-            Text(
-              _firebaseStorage.getFileName(post.url),
-            ),
-          ],
+              Text(
+                _firebaseStorage.getFileName(post.url),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -76,5 +76,6 @@
   "invalidUrl": "Ingrese una url valida",
   "comments": " Comentarios",
   "report": "Reportar",
-  "save": "Guardar"
+  "save": "Guardar",
+  "download": "Descargar"
 }
