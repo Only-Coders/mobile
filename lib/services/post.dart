@@ -16,16 +16,23 @@ class PostService {
       "mentionCanonicalNames": mentions,
       "tagNames": tags
     };
-    print(post);
-    var newPost = await _httpClient.postRequest("/api/posts", post);
-    print(newPost);
+    await _httpClient.postRequest("/api/posts", post);
   }
 
-  Future<List<Post>> getFeedPosts() async {
-    var response = await _httpClient.getRequest("/api/feed-posts");
+  Future<List<Post>> getFeedPosts([int page]) async {
+    var response =
+        await _httpClient.getRequest("/api/feed-posts", {"page": page});
     return (response.data["content"] as List)
         .map((post) => Post.fromJson(post))
         .toList();
+  }
+
+  Future<void> addToFavorite(String postId) async {
+    await _httpClient.postRequest("/api/users/favorite-posts/" + postId, {});
+  }
+
+  Future<void> removeFromFavorite(String postId) async {
+    await _httpClient.deleteRequest("/api/users/favorite-posts/" + postId);
   }
 
   Future<List<Post>> getPostsByUser(String canonicalName) async {

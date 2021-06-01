@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/components/post/file_post.dart';
 import 'package:mobile/components/post/image_post.dart';
 import 'package:mobile/components/post/link_post.dart';
@@ -7,6 +8,7 @@ import 'package:mobile/models/post.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/vs2015.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/services/post.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
@@ -18,9 +20,12 @@ class PostItem extends StatefulWidget {
 }
 
 class _PostItemState extends State<PostItem> {
+  final PostService _postService = PostService();
+
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
+
     RegExp regExp = new RegExp(
       r"^```(?<lang>[\w\W]*?)\n(?<code>[^`][\W\w]*?)\n```$",
       multiLine: true,
@@ -115,13 +120,47 @@ class _PostItemState extends State<PostItem> {
                 PopupMenuButton(
                   icon: Icon(Icons.more_horiz),
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
-                    PopupMenuItem(
-                      padding: EdgeInsets.all(0),
-                      child: ListTile(
-                        leading: Icon(Icons.bookmark_add),
-                        title: Text(t.save),
-                      ),
-                    ),
+                    widget.post.isFavorite == true
+                        ? PopupMenuItem(
+                            value: widget.post.isFavorite,
+                            padding: EdgeInsets.all(0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await _postService
+                                    .removeFromFavorite(widget.post.id);
+                                setState(() {
+                                  widget.post.isFavorite = false;
+                                });
+                                Toast().showSuccess(
+                                    context, t.removeFromFavoriteMessage);
+                              },
+                              child: ListTile(
+                                leading: Icon(Icons.bookmark_remove),
+                                title: Text(t.remove),
+                              ),
+                            ),
+                          )
+                        : PopupMenuItem(
+                            padding: EdgeInsets.all(0),
+                            child: GestureDetector(
+                              onTap: () async {
+                                await _postService
+                                    .addToFavorite(widget.post.id);
+                                setState(() {
+                                  widget.post.isFavorite = true;
+                                });
+                                print(widget.post.isFavorite);
+                                Toast().showSuccess(
+                                    context, t.addToFavoriteMessage);
+                              },
+                              child: ListTile(
+                                leading: Icon(Icons.bookmark_add),
+                                title: Text(
+                                  t.save,
+                                ),
+                              ),
+                            ),
+                          ),
                     PopupMenuItem(
                       padding: EdgeInsets.all(0),
                       child: ListTile(

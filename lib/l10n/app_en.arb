@@ -77,5 +77,8 @@
   "comments": " Comments",
   "report": "Report",
   "save": "Save",
-  "download": "Download"
+  "download": "Download",
+  "remove": "Remove",
+  "addToFavoriteMessage": "Added to favorites",
+  "removeFromFavoriteMessage": "Removed from favorites"
 }

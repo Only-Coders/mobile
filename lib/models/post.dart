@@ -3,6 +3,7 @@ import 'package:mobile/models/reaction.dart';
 
 class Post {
   String message;
+  String id;
   Person publisher;
   String url;
   bool isPublic;
@@ -10,16 +11,19 @@ class Post {
   List<Person> mentions;
   List<Reaction> reactions;
   int commentQuantity;
+  bool isFavorite;
 
   Post(
       {this.message,
       this.publisher,
       this.url,
+      this.id,
       this.isPublic,
       this.type,
       this.mentions,
       this.reactions,
-      this.commentQuantity});
+      this.commentQuantity,
+      this.isFavorite});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
@@ -34,6 +38,8 @@ class Post {
           .map((reaction) => Reaction.fromJson(reaction))
           .toList(),
       commentQuantity: json['commentQuantity'],
+      isFavorite: json['isFavorite'],
+      id: json['id'],
     );
   }
 
@@ -44,6 +50,8 @@ class Post {
         'isPublic': isPublic,
         'type': type,
         'mentions': mentions,
-        'commentQuantity': commentQuantity
+        'commentQuantity': commentQuantity,
+        'isFavorite': isFavorite,
+        'id': id
       };
 }
