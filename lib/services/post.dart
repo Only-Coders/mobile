@@ -20,8 +20,8 @@ class PostService {
   }
 
   Future<List<Post>> getFeedPosts([int page]) async {
-    var response =
-        await _httpClient.getRequest("/api/feed-posts", {"page": page});
+    var response = await _httpClient
+        .getRequest("/api/feed-posts", {"page": page, "size": 10});
     return (response.data["content"] as List)
         .map((post) => Post.fromJson(post))
         .toList();

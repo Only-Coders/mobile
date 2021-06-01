@@ -150,7 +150,7 @@ class _NewPostState extends State<NewPost> {
           selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       Provider.of<User>(context, listen: false)
           .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
-      Navigator.pushReplacementNamed(context, "/feed");
+      Navigator.pop(context);
       _toast.showSuccess(
           context, AppLocalizations.of(context).newPostOkMessage);
     } catch (error) {
