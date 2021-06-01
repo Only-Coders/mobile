@@ -69,7 +69,12 @@ class Toast {
             SizedBox(
               width: 10,
             ),
-            Text(message),
+            Flexible(
+              child: Text(
+                message,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
           ],
         ),
         duration: Duration(seconds: 5),
