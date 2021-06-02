@@ -40,7 +40,9 @@ class PostPreview extends StatelessWidget {
                         padding: const EdgeInsets.all(8.0),
                         child: Text(
                           '${snapshot.error} occured',
-                          style: TextStyle(fontSize: 18),
+                          style: TextStyle(
+                              fontSize: 18,
+                              color: Theme.of(context).accentColor),
                         ),
                       ),
                     ],
@@ -64,7 +66,9 @@ class PostPreview extends StatelessWidget {
                       Text(
                         t.posts,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                            color: Theme.of(context).accentColor),
                       ),
                       SizedBox(
                         height: 3,

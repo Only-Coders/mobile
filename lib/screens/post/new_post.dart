@@ -178,14 +178,15 @@ class _NewPostState extends State<NewPost> {
           backgroundColor: Theme.of(context).secondaryHeaderColor,
           title: Text(
             t.newPost,
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: Theme.of(context).accentColor),
           ),
           actions: [
             TextButton(
               onPressed: () async {
                 await newPost();
               },
-              style: TextButton.styleFrom(primary: Colors.white),
+              style:
+                  TextButton.styleFrom(primary: Theme.of(context).accentColor),
               child: isLoading
                   ? SizedBox(
                       width: 25,
@@ -197,7 +198,10 @@ class _NewPostState extends State<NewPost> {
                         strokeWidth: 3,
                       ),
                     )
-                  : Text(t.publish),
+                  : Text(
+                      t.publish,
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    ),
             ),
           ],
         ),
@@ -235,6 +239,8 @@ class _NewPostState extends State<NewPost> {
                                         child: Text(
                                           user.fullName,
                                           style: TextStyle(
+                                              color:
+                                                  Theme.of(context).accentColor,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 16),
                                         ),
@@ -261,14 +267,22 @@ class _NewPostState extends State<NewPost> {
                                                         p == "To anyone"
                                                             ? Icons.vpn_lock
                                                             : Icons.person,
+                                                        color: Theme.of(context)
+                                                            .accentColor,
                                                         size: 16,
                                                       ),
                                                       SizedBox(
                                                         width: 5,
                                                       ),
-                                                      Text(p == "To anyone"
-                                                          ? t.toAnyone
-                                                          : t.toMyContacts),
+                                                      Text(
+                                                        p == "To anyone"
+                                                            ? t.toAnyone
+                                                            : t.toMyContacts,
+                                                        style: TextStyle(
+                                                            color: Theme.of(
+                                                                    context)
+                                                                .accentColor),
+                                                      ),
                                                     ],
                                                   ),
                                                   value: p,
@@ -311,6 +325,8 @@ class _NewPostState extends State<NewPost> {
                                       });
                                     },
                                     maxLines: null,
+                                    style: TextStyle(
+                                        color: Theme.of(context).accentColor),
                                     decoration: InputDecoration(
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(5),
@@ -320,6 +336,8 @@ class _NewPostState extends State<NewPost> {
                                         ),
                                       ),
                                       hintText: t.newPostMessage,
+                                      hintStyle: TextStyle(
+                                          color: Theme.of(context).accentColor),
                                     ),
                                     onSearchChanged:
                                         (String trigger, String value) async {
@@ -514,7 +532,10 @@ class _NewPostState extends State<NewPost> {
                                         await getImage(true);
                                       }
                                     : null,
-                                icon: Icon(Icons.camera_alt),
+                                icon: Icon(
+                                  Icons.camera_alt,
+                                  color: Theme.of(context).accentColor,
+                                ),
                                 splashRadius: 20,
                               ),
                               IconButton(
@@ -523,7 +544,10 @@ class _NewPostState extends State<NewPost> {
                                         await getImage(false);
                                       }
                                     : null,
-                                icon: Icon(Icons.image),
+                                icon: Icon(
+                                  Icons.image,
+                                  color: Theme.of(context).accentColor,
+                                ),
                                 splashRadius: 20,
                               ),
                               IconButton(
@@ -532,7 +556,10 @@ class _NewPostState extends State<NewPost> {
                                         await getFile();
                                       }
                                     : null,
-                                icon: Icon(Icons.attach_file),
+                                icon: Icon(
+                                  Icons.attach_file,
+                                  color: Theme.of(context).accentColor,
+                                ),
                                 splashRadius: 20,
                               ),
                               IconButton(
@@ -546,7 +573,10 @@ class _NewPostState extends State<NewPost> {
                                         );
                                       }
                                     : null,
-                                icon: Icon(Icons.link),
+                                icon: Icon(
+                                  Icons.link,
+                                  color: Theme.of(context).accentColor,
+                                ),
                                 splashRadius: 20,
                               ),
                               IconButton(
@@ -555,7 +585,10 @@ class _NewPostState extends State<NewPost> {
                                         addCodeSnippet();
                                       }
                                     : null,
-                                icon: Icon(Icons.code),
+                                icon: Icon(
+                                  Icons.code,
+                                  color: Theme.of(context).accentColor,
+                                ),
                                 splashRadius: 20,
                               ),
                             ],

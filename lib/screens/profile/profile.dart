@@ -6,6 +6,7 @@ import 'package:mobile/components/profile/nav_drawer.dart';
 import 'package:mobile/components/profile/post_preview.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
+import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
@@ -38,6 +39,7 @@ class _ProfileState extends State<Profile> {
                   child: Center(
                     child: Text(
                       '${snapshot.error} occured',
+                      style: TextStyle(color: Theme.of(context).accentColor),
                     ),
                   ),
                 );
@@ -113,9 +115,7 @@ class _ProfileState extends State<Profile> {
                             Positioned(
                               top: 140,
                               width: MediaQuery.of(context).size.width - 40,
-                              child: Description(
-                                  description:
-                                      "Hola soy un frontend developer y hago dibujitos con html5 porque en 4 no me gusta"),
+                              child: Description(description: ""),
                             ),
                           ],
                         ),
@@ -131,13 +131,21 @@ class _ProfileState extends State<Profile> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Favoritos"),
+                                Text(
+                                  "Favoritos",
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   "No hay favoritos recientes",
-                                  style: TextStyle(color: Colors.grey.shade600),
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.6),
+                                  ),
                                 ),
                               ],
                             ),
@@ -154,13 +162,21 @@ class _ProfileState extends State<Profile> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Experiencias"),
+                                Text(
+                                  "Experiencias",
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   "No hay experiencias recientes",
-                                  style: TextStyle(color: Colors.grey.shade600),
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.6),
+                                  ),
                                 ),
                               ],
                             ),
@@ -177,13 +193,21 @@ class _ProfileState extends State<Profile> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Formacion academica"),
+                                Text(
+                                  "Formacion academica",
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   "No hay educaciones recientes",
-                                  style: TextStyle(color: Colors.grey.shade600),
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.6),
+                                  ),
                                 ),
                               ],
                             ),
@@ -200,13 +224,21 @@ class _ProfileState extends State<Profile> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Habilidades"),
+                                Text(
+                                  "Habilidades",
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   "No hay habilidades recientes",
-                                  style: TextStyle(color: Colors.grey.shade600),
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.6),
+                                  ),
                                 ),
                               ],
                             ),
@@ -223,13 +255,21 @@ class _ProfileState extends State<Profile> {
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text("Intereses"),
+                                Text(
+                                  "Intereses",
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
                                 SizedBox(
                                   height: 5,
                                 ),
                                 Text(
                                   "No hay intereses recientes",
-                                  style: TextStyle(color: Colors.grey.shade600),
+                                  style: TextStyle(
+                                    color: Theme.of(context)
+                                        .accentColor
+                                        .withOpacity(0.6),
+                                  ),
                                 ),
                               ],
                             ),

@@ -26,7 +26,10 @@ class _AddLinkState extends State<AddLink> {
     var t = AppLocalizations.of(context);
 
     return AlertDialog(
-      title: Text(t.addLink),
+      title: Text(
+        t.addLink,
+        style: TextStyle(color: Theme.of(context).accentColor),
+      ),
       content: Container(
         width: 450,
         child: Form(
@@ -43,6 +46,7 @@ class _AddLinkState extends State<AddLink> {
                 validator: (val) {
                   return validUrl.hasMatch(val) ? null : t.invalidUrl;
                 },
+                style: TextStyle(color: Theme.of(context).accentColor),
                 decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(5),
@@ -52,6 +56,7 @@ class _AddLinkState extends State<AddLink> {
                     ),
                   ),
                   labelText: "Url",
+                  labelStyle: TextStyle(color: Theme.of(context).accentColor),
                   filled: true,
                 ),
               )

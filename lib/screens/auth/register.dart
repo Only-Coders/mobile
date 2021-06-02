@@ -41,7 +41,11 @@ class Register extends StatelessWidget {
                 Center(
                   child: Text(
                     t.register,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Theme.of(context).accentColor,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -66,18 +70,22 @@ class Register extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(t.alreadyHaveAnAccount),
+                    Text(
+                      t.alreadyHaveAnAccount,
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    ),
                     SizedBox(
                       width: 5,
                     ),
                     InkWell(
                       onTap: () {
-                        Navigator.pushNamed(context, "/login");
+                        Navigator.pop(context);
                       },
                       child: Text(
                         t.login,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          color: Theme.of(context).accentColor,
                         ),
                       ),
                     ),

@@ -44,20 +44,30 @@ class LinkPreview extends StatelessWidget {
                             child: Text(
                               link.title,
                               style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                                color: Theme.of(context).accentColor,
+                              ),
                             ),
                           ),
                           if (removeLink != null)
                             IconButton(
                               splashRadius: 25,
                               onPressed: removeLink,
-                              icon: Icon(Icons.close),
+                              icon: Icon(
+                                Icons.close,
+                                color: Theme.of(context).accentColor,
+                              ),
                             ),
                         ],
                       ),
                       Container(
                         padding: const EdgeInsets.only(left: 10),
-                        child: Text(link.description),
+                        child: Text(
+                          link.description,
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
+                        ),
                       ),
                     ],
                   ),

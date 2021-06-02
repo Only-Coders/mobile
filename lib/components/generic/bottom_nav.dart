@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/theme/themes.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -17,9 +18,8 @@ class _BottomNavState extends State<BottomNav> {
       child: BottomNavigationBar(
         currentIndex: _currentIndex,
         type: BottomNavigationBarType.fixed,
-        backgroundColor: Colors.white,
         selectedItemColor: Theme.of(context).primaryColor,
-        unselectedItemColor: Colors.black.withOpacity(.60),
+        unselectedItemColor: Theme.of(context).accentColor.withOpacity(0.6),
         selectedFontSize: 14,
         unselectedFontSize: 14,
         onTap: (value) {
@@ -40,7 +40,9 @@ class _BottomNavState extends State<BottomNav> {
         items: [
           BottomNavigationBarItem(
             label: t.home,
-            icon: Icon(Icons.home),
+            icon: Icon(
+              Icons.home,
+            ),
           ),
           BottomNavigationBarItem(
             label: t.newPost,

@@ -57,7 +57,11 @@ class _LoginState extends State<Login> {
                 Center(
                   child: Text(
                     t.login,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                      color: Theme.of(context).accentColor,
+                    ),
                   ),
                 ),
                 SizedBox(
@@ -82,7 +86,12 @@ class _LoginState extends State<Login> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text(t.dontHaveAnAccount),
+                    Text(
+                      t.dontHaveAnAccount,
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
                     SizedBox(
                       width: 5,
                     ),
@@ -94,6 +103,7 @@ class _LoginState extends State<Login> {
                         t.register,
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
+                          color: Theme.of(context).accentColor,
                         ),
                       ),
                     ),

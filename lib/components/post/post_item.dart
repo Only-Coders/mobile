@@ -6,7 +6,7 @@ import 'package:mobile/components/post/link_post.dart';
 import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/post.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/vs2015.dart';
+import 'package:flutter_highlight/themes/tomorrow-night.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/services/post.dart';
 
@@ -37,7 +37,8 @@ class _PostItemState extends State<PostItem> {
       widgets.add(
         Text(
           widget.post.message.substring(pos, x.start),
-          style: TextStyle(color: Colors.black.withOpacity(0.6)),
+          style:
+              TextStyle(color: Theme.of(context).accentColor.withOpacity(0.8)),
         ),
       );
       widgets.add(
@@ -47,7 +48,7 @@ class _PostItemState extends State<PostItem> {
             child: HighlightView(
               x.namedGroup("code"),
               language: x.namedGroup("lang"),
-              theme: vs2015Theme,
+              theme: tomorrowNightTheme,
               padding: EdgeInsets.all(10),
               textStyle: TextStyle(
                 fontSize: 10,
@@ -55,7 +56,7 @@ class _PostItemState extends State<PostItem> {
             ),
             decoration: BoxDecoration(
               border: Border.all(
-                  color: const Color(0xFF000000),
+                  color: const Color(0xff1d1f21),
                   width: 4.0,
                   style: BorderStyle.solid),
               borderRadius: BorderRadius.all(
@@ -71,7 +72,9 @@ class _PostItemState extends State<PostItem> {
       widgets.add(
         Text(
           widget.post.message.substring(pos, widget.post.message.length),
-          style: TextStyle(color: Colors.black.withOpacity(0.8)),
+          style: TextStyle(
+            color: Theme.of(context).accentColor.withOpacity(0.8),
+          ),
         ),
       );
     }
@@ -104,21 +107,34 @@ class _PostItemState extends State<PostItem> {
                         width: 10,
                       ),
                       Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             "${widget.post.publisher.firstName} ${widget.post.publisher.lastName}",
-                            style: TextStyle(fontWeight: FontWeight.bold),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Theme.of(context).accentColor,
+                            ),
                           ),
                           if (widget.post.publisher.currentPosition != null)
                             Text(
-                                "${widget.post.publisher.currentPosition.workplace} ${widget.post.publisher.currentPosition.position}"),
+                              "${widget.post.publisher.currentPosition.workplace.name} ${widget.post.publisher.currentPosition.position}",
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(0.6),
+                              ),
+                            ),
                         ],
                       ),
                     ],
                   ),
                 ),
                 PopupMenuButton(
-                  icon: Icon(Icons.more_horiz),
+                  icon: Icon(
+                    Icons.more_horiz,
+                    color: Theme.of(context).accentColor,
+                  ),
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
                     widget.post.isFavorite == true
                         ? PopupMenuItem(
@@ -135,8 +151,15 @@ class _PostItemState extends State<PostItem> {
                                     context, t.removeFromFavoriteMessage);
                               },
                               child: ListTile(
-                                leading: Icon(Icons.bookmark_remove),
-                                title: Text(t.remove),
+                                leading: Icon(
+                                  Icons.bookmark_remove,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                                title: Text(
+                                  t.remove,
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                ),
                               ),
                             ),
                           )
@@ -154,9 +177,15 @@ class _PostItemState extends State<PostItem> {
                                     context, t.addToFavoriteMessage);
                               },
                               child: ListTile(
-                                leading: Icon(Icons.bookmark_add),
+                                leading: Icon(
+                                  Icons.bookmark_add,
+                                  color: Theme.of(context).accentColor,
+                                ),
                                 title: Text(
                                   t.save,
+                                  style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                  ),
                                 ),
                               ),
                             ),
@@ -164,9 +193,15 @@ class _PostItemState extends State<PostItem> {
                     PopupMenuItem(
                       padding: EdgeInsets.all(0),
                       child: ListTile(
-                        leading: Icon(Icons.policy),
+                        leading: Icon(
+                          Icons.policy,
+                          color: Theme.of(context).accentColor,
+                        ),
                         title: Text(
                           t.report,
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                          ),
                         ),
                       ),
                     ),
@@ -193,7 +228,10 @@ class _PostItemState extends State<PostItem> {
                             onPressed: () {},
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
-                                  color: Colors.grey.shade400, width: 1),
+                                  color: Theme.of(context)
+                                      .accentColor
+                                      .withOpacity(0.4),
+                                  width: 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                             ),
@@ -222,7 +260,10 @@ class _PostItemState extends State<PostItem> {
                             onPressed: () {},
                             style: OutlinedButton.styleFrom(
                               side: BorderSide(
-                                  color: Colors.grey.shade400, width: 1),
+                                  color: Theme.of(context)
+                                      .accentColor
+                                      .withOpacity(0.4),
+                                  width: 1),
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                             ),
@@ -244,7 +285,12 @@ class _PostItemState extends State<PostItem> {
                       ],
                     ),
                   ),
-                  Text(widget.post.commentQuantity.toString() + t.comments),
+                  Text(
+                    widget.post.commentQuantity.toString() + t.comments,
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
                 ],
               ),
             ),
@@ -263,8 +309,15 @@ class _PostItemState extends State<PostItem> {
                     style: TextButton.styleFrom(primary: Colors.black54),
                     child: Row(
                       children: [
-                        Icon(Icons.message),
-                        Text("Comentar"),
+                        Icon(
+                          Icons.message,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        Text(
+                          "Comentar",
+                          style:
+                              TextStyle(color: Theme.of(context).accentColor),
+                        ),
                       ],
                     ),
                   ),

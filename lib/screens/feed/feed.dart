@@ -4,6 +4,7 @@ import 'package:mobile/components/generic/bottom_nav.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/post.dart';
+import 'package:mobile/theme/themes.dart';
 
 class Feed extends StatefulWidget {
   const Feed({Key key}) : super(key: key);
@@ -55,7 +56,9 @@ class _FeedState extends State<Feed> {
                 Icons.search,
                 color: Colors.grey,
               ),
-              fillColor: Color(0xff494C62),
+              fillColor: currentTheme.currentTheme == ThemeMode.dark
+                  ? Theme.of(context).cardColor.withOpacity(0.4)
+                  : Theme.of(context).cardColor.withOpacity(0.2),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(5),
                 borderSide: BorderSide(
@@ -76,7 +79,7 @@ class _FeedState extends State<Feed> {
               icon: Icon(
                 Icons.message,
                 size: 30,
-                color: Colors.white,
+                color: Theme.of(context).accentColor,
               ),
             ),
           )

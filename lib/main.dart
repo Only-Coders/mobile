@@ -12,6 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/screens/post/new_post.dart';
 import 'package:mobile/screens/post/profile_posts.dart';
 import 'package:mobile/screens/profile/profile.dart';
+import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 Future<void> main() async {
@@ -20,7 +21,20 @@ Future<void> main() async {
   runApp(App());
 }
 
-class App extends StatelessWidget {
+class App extends StatefulWidget {
+  @override
+  _AppState createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    currentTheme.addListener(() {
+      setState(() {});
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Provider(
@@ -38,11 +52,9 @@ class App extends StatelessWidget {
           const Locale("en"),
           const Locale("es"),
         ],
-        theme: ThemeData(
-          primaryColor: Color(0xff00CDAE),
-          secondaryHeaderColor: Color(0xff34374B),
-          errorColor: Color(0xffff5252),
-        ),
+        theme: CustomTheme.lightTheme,
+        darkTheme: CustomTheme.darkTheme,
+        themeMode: currentTheme.currentTheme,
         debugShowCheckedModeBanner: false,
         routes: {
           "/": (context) => Wrapper(),

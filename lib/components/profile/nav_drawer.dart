@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/auth.dart';
+import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -27,13 +28,16 @@ class NavDrawer extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: CircleAvatar(
                         radius: 25,
-                        backgroundImage: user.imageURI.isEmpty
+                        backgroundImage: user.imageURI == null
                             ? AssetImage("assets/images/default-avatar.png")
                             : NetworkImage(user.imageURI),
                       ),
                     ),
                     Text(
                       user.fullName,
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
                     ),
                   ],
                 ),
@@ -43,8 +47,56 @@ class NavDrawer extends StatelessWidget {
                 thickness: 1,
               ),
               ListTile(
-                leading: Icon(Icons.logout),
-                title: Text(t.logout),
+                leading: Icon(
+                  Icons.brightness_6,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      t.theme,
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.bedtime,
+                          color: currentTheme.currentTheme == ThemeMode.dark
+                              ? Colors.white
+                              : Colors.grey,
+                        ),
+                        Switch(
+                          value: currentTheme.currentTheme != ThemeMode.dark,
+                          activeColor: Theme.of(context).primaryColor,
+                          onChanged: (value) {
+                            currentTheme.toggleTheme();
+                          },
+                        ),
+                        Icon(
+                          Icons.wb_sunny,
+                          color: currentTheme.currentTheme == ThemeMode.dark
+                              ? Colors.grey
+                              : Colors.orange,
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              ListTile(
+                leading: Icon(
+                  Icons.logout,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  t.logout,
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
                 onTap: _authService.logout,
               ),
             ],

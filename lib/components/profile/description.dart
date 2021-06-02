@@ -24,13 +24,14 @@ class Description extends StatelessWidget {
           children: [
             Text(
               t.description,
+              style: TextStyle(color: Theme.of(context).accentColor),
             ),
             SizedBox(
               height: 3,
             ),
             Text(
               description,
-              style: TextStyle(color: Colors.grey.shade600),
+              style: TextStyle(color: Theme.of(context).accentColor),
             ),
           ],
         ),
