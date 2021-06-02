@@ -44,4 +44,12 @@ class PersonService {
     var response = await _httpClient.getRequest("/api/users/" + canonicalName);
     return Profile.fromJson(response.data);
   }
+
+  Future<List<Person>> searchPerson(String partialName) async {
+    var response = await _httpClient
+        .getRequest("/api/users", {"partialName": partialName, "size": 4});
+    return (response.data["content"] as List)
+        .map((person) => Person.fromJson(person))
+        .toList();
+  }
 }

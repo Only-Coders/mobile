@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mobile/components/generic/bottom_nav.dart';
 import 'package:mobile/components/post/post_item.dart';
+import 'package:mobile/models/person.dart';
 import 'package:mobile/models/post.dart';
+import 'package:mobile/services/person.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/theme/themes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Feed extends StatefulWidget {
   const Feed({Key key}) : super(key: key);
@@ -16,6 +20,7 @@ class Feed extends StatefulWidget {
 class _FeedState extends State<Feed> {
   static const _pageSize = 10;
   final PostService _postService = PostService();
+  final PersonService _personService = PersonService();
   final PagingController<int, Post> _pagingController =
       PagingController(firstPageKey: 0);
 
@@ -45,28 +50,59 @@ class _FeedState extends State<Feed> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
         title: Container(
           height: 40,
-          child: TextField(
-            decoration: InputDecoration(
-              prefixIcon: Icon(
-                Icons.search,
-                color: Colors.grey,
-              ),
-              fillColor: currentTheme.currentTheme == ThemeMode.dark
-                  ? Theme.of(context).cardColor.withOpacity(0.4)
-                  : Theme.of(context).cardColor.withOpacity(0.2),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(5),
-                borderSide: BorderSide(
-                  width: 0,
-                  style: BorderStyle.none,
+          child: TypeAheadField<Person>(
+            suggestionsCallback: _personService.searchPerson,
+            onSuggestionSelected: (Person suggestion) {},
+            itemBuilder: (context, Person suggestion) {
+              return ListTile(
+                leading: CircleAvatar(
+                  radius: 20,
+                  backgroundImage: suggestion.imageURI.isEmpty
+                      ? AssetImage("assets/images/default-avatar.png")
+                      : NetworkImage(suggestion.imageURI),
                 ),
+                title: Text(
+                  suggestion.firstName,
+                  style: TextStyle(color: Theme.of(context).accentColor),
+                ),
+                subtitle: Text(
+                  suggestion.currentPosition != null
+                      ? "${suggestion.currentPosition.workplace.name} ${suggestion.currentPosition.position}"
+                      : "",
+                  style: TextStyle(
+                    fontSize: 11,
+                    color: Theme.of(context).accentColor.withOpacity(0.8),
+                  ),
+                ),
+              );
+            },
+            textFieldConfiguration: TextFieldConfiguration(
+              decoration: InputDecoration(
+                prefixIcon: Icon(
+                  Icons.search,
+                  color: Colors.grey,
+                ),
+                fillColor: currentTheme.currentTheme == ThemeMode.dark
+                    ? Theme.of(context).cardColor.withOpacity(0.4)
+                    : Theme.of(context).cardColor.withOpacity(0.2),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
+                  borderSide: BorderSide(
+                    width: 0,
+                    style: BorderStyle.none,
+                  ),
+                ),
+                labelText: t.search,
+                labelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+                filled: true,
               ),
-              filled: true,
             ),
           ),
         ),

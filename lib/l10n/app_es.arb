@@ -82,5 +82,6 @@
   "addToFavoriteMessage": "Agregado a favoritos",
   "removeFromFavoriteMessage": "Se elimino de favoritos",
   "logout": "Cerrar sesion",
-  "theme": "Tema"
+  "theme": "Tema",
+  "search": "Buscar usuario..."
 }
