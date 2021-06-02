@@ -21,6 +21,21 @@ class PostItem extends StatefulWidget {
 
 class _PostItemState extends State<PostItem> {
   final PostService _postService = PostService();
+  int bronceMedals = 0;
+  int silverMedals = 0;
+  int goldMedals = 0;
+
+  void calculateMedals(int approves) {
+    int bronce = approves % 100;
+    approves = (approves - bronce) ~/ 100;
+    int silver = approves % 100;
+    int gold = (approves - silver) ~/ 100;
+    setState(() {
+      bronceMedals = bronce;
+      silverMedals = silver;
+      goldMedals = gold;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -78,6 +93,7 @@ class _PostItemState extends State<PostItem> {
         ),
       );
     }
+    calculateMedals(widget.post.reactions[0].quantity);
 
     return Container(
       width: double.infinity,
@@ -109,17 +125,64 @@ class _PostItemState extends State<PostItem> {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(
-                            "${widget.post.publisher.firstName} ${widget.post.publisher.lastName}",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).accentColor,
-                            ),
+                          Row(
+                            children: [
+                              Text(
+                                "${widget.post.publisher.firstName} ${widget.post.publisher.lastName}",
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Image.asset(
+                                "assets/images/gold-medal.png",
+                                width: 12,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                goldMedals.toString(),
+                                style: TextStyle(fontSize: 11),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Image.asset(
+                                "assets/images/silver-medal.png",
+                                width: 12,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                silverMedals.toString(),
+                                style: TextStyle(fontSize: 11),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Image.asset(
+                                "assets/images/bronce-medal.png",
+                                width: 12,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                bronceMedals.toString(),
+                                style: TextStyle(fontSize: 11),
+                              ),
+                            ],
                           ),
                           if (widget.post.publisher.currentPosition != null)
                             Text(
                               "${widget.post.publisher.currentPosition.workplace.name} ${widget.post.publisher.currentPosition.position}",
                               style: TextStyle(
+                                fontSize: 11,
                                 color: Theme.of(context)
                                     .accentColor
                                     .withOpacity(0.6),
