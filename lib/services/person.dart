@@ -1,5 +1,6 @@
 import 'package:mobile/http_client.dart';
 import 'package:mobile/models/person.dart';
+import 'package:mobile/models/profile.dart';
 
 class PersonService {
   final HttpClient _httpClient = HttpClient();
@@ -39,8 +40,8 @@ class PersonService {
         .toList();
   }
 
-  Future<Person> getPersonProfile(String canonicalName) async {
+  Future<Profile> getPersonProfile(String canonicalName) async {
     var response = await _httpClient.getRequest("/api/users/" + canonicalName);
-    return Person.fromJson(response.data);
+    return Profile.fromJson(response.data);
   }
 }

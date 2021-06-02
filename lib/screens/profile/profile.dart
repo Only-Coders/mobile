@@ -4,6 +4,7 @@ import 'package:mobile/components/generic/git_platform.dart';
 import 'package:mobile/components/profile/description.dart';
 import 'package:mobile/components/profile/nav_drawer.dart';
 import 'package:mobile/components/profile/post_preview.dart';
+import 'package:mobile/models/profile.dart' as ProfileType;
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
 import 'package:mobile/theme/themes.dart';
@@ -44,7 +45,7 @@ class _ProfileState extends State<Profile> {
                   ),
                 );
               } else {
-                var user = snapshot.data;
+                ProfileType.Profile user = snapshot.data;
 
                 return SingleChildScrollView(
                   child: Column(
@@ -85,7 +86,7 @@ class _ProfileState extends State<Profile> {
                                             padding: const EdgeInsets.only(
                                                 bottom: 5),
                                             child: Text(
-                                              "${user.currentPosition.position} ${user.currentPosition.worplace.name}",
+                                              "${user.currentPosition.position} ${user.currentPosition.workplace.name}",
                                               style: TextStyle(
                                                   color: Colors.white,
                                                   fontSize: 14),
@@ -94,29 +95,35 @@ class _ProfileState extends State<Profile> {
                                         : Container(
                                             padding: EdgeInsets.only(bottom: 5),
                                           ),
-                                    Row(
-                                      children: [
-                                        GitPlatform(platform: "GITHUB"),
-                                        SizedBox(
-                                          width: 5,
-                                        ),
-                                        Text(
-                                          "jose",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontSize: 12),
-                                        ),
-                                      ],
-                                    )
+                                    if (user.gitProfile != null)
+                                      Row(
+                                        children: [
+                                          GitPlatform(
+                                              platform:
+                                                  user.gitProfile.platform),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                          Text(
+                                            "@${user.gitProfile.userName}",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                        ],
+                                      )
                                   ],
                                 ),
                               ],
                             ),
-                            Positioned(
-                              top: 140,
-                              width: MediaQuery.of(context).size.width - 40,
-                              child: Description(description: ""),
-                            ),
+                            if (user.description != null &&
+                                user.description.isNotEmpty)
+                              Positioned(
+                                top: 140,
+                                width: MediaQuery.of(context).size.width - 40,
+                                child:
+                                    Description(description: user.description),
+                              ),
                           ],
                         ),
                       ),
