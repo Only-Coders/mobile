@@ -57,9 +57,7 @@ class _FeedState extends State<Feed> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
-        brightness: currentTheme.currentTheme == ThemeMode.dark
-            ? Brightness.dark
-            : Brightness.light,
+        brightness: Brightness.dark,
         title: Container(
           height: 40,
           child: TypeAheadField<Person>(

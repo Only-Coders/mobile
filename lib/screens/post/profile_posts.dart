@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/post.dart';
-import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/post.dart';
-import 'package:provider/provider.dart';
 
 class ProfilePosts extends StatelessWidget {
-  const ProfilePosts({Key key}) : super(key: key);
+  final String canonicalName;
+
+  const ProfilePosts({Key key, this.canonicalName}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final PostService _postService = PostService();
-    String canonicalName = Provider.of<User>(context).canonicalName;
 
     return Scaffold(
       appBar: AppBar(

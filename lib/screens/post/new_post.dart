@@ -182,15 +182,14 @@ class _NewPostState extends State<NewPost> {
           backgroundColor: Theme.of(context).secondaryHeaderColor,
           title: Text(
             t.newPost,
-            style: TextStyle(color: Theme.of(context).accentColor),
+            style: TextStyle(color: Colors.white),
           ),
           actions: [
             TextButton(
               onPressed: () async {
                 await newPost();
               },
-              style:
-                  TextButton.styleFrom(primary: Theme.of(context).accentColor),
+              style: TextButton.styleFrom(primary: Colors.white),
               child: isLoading
                   ? SizedBox(
                       width: 25,
@@ -204,7 +203,7 @@ class _NewPostState extends State<NewPost> {
                     )
                   : Text(
                       t.publish,
-                      style: TextStyle(color: Theme.of(context).accentColor),
+                      style: TextStyle(color: Colors.white),
                     ),
             ),
           ],

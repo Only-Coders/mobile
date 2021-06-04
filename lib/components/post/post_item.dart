@@ -90,28 +90,44 @@ class _PostItemState extends State<PostItem> {
         String canonicalName = x
             .namedGroup("mention")
             .substring(1, x.namedGroup("mention").length);
-        Person person = widget.post.mentions
-            .where((element) => element.canonicalName == canonicalName)
-            .first;
-        widgets.add(Padding(
-          padding: const EdgeInsets.only(right: 5),
-          child: InkWell(
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => Profile(
-                    canonicalName: canonicalName,
-                  ),
+        if (widget.post.mentions.isNotEmpty) {
+          Person person = widget.post.mentions
+              .where((element) => element.canonicalName == canonicalName)
+              .first;
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Profile(
+                        canonicalName: canonicalName,
+                      ),
+                    ),
+                  );
+                },
+                child: Text(
+                  "@${person.firstName} ${person.lastName}",
+                  style: TextStyle(color: Colors.blue),
                 ),
-              );
-            },
-            child: Text(
-              "@${person.firstName} ${person.lastName}",
-              style: TextStyle(color: Colors.blue),
+              ),
             ),
-          ),
-        ));
+          );
+        } else {
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Text(
+                x.namedGroup("mention"),
+                style: TextStyle(
+                  color: Theme.of(context).accentColor.withOpacity(0.8),
+                ),
+              ),
+            ),
+          );
+        }
       }
       pos = x.end;
     }

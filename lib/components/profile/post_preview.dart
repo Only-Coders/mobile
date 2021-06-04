@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/post.dart';
+import 'package:mobile/screens/post/profile_posts.dart';
 import 'package:mobile/services/post.dart';
 
 class PostPreview extends StatelessWidget {
@@ -106,7 +107,14 @@ class PostPreview extends StatelessWidget {
                           width: double.infinity,
                           child: TextButton(
                             onPressed: () {
-                              Navigator.pushNamed(context, "/profile/posts");
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProfilePosts(
+                                    canonicalName: canonicalName,
+                                  ),
+                                ),
+                              );
                             },
                             style: TextButton.styleFrom(primary: Colors.orange),
                             child: Text(t.seeMore),
