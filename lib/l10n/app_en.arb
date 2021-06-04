@@ -83,5 +83,8 @@
   "removeFromFavoriteMessage": "Removed from favorites",
   "logout": "Logout",
   "theme": "Theme",
-  "search": "Search user..."
+  "search": "Search user...",
+  "usersNotFound": "No se pudo encontrar usuarios con ese nombre",
+  "postsNotFound": "No se encontraron publicaciones",
+  "emptyList": "Be the first to add a post"
 }

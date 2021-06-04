@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mobile/components/generic/bottom_nav.dart';
@@ -55,12 +56,15 @@ class _FeedState extends State<Feed> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
+        brightness: currentTheme.currentTheme == ThemeMode.dark
+            ? Brightness.dark
+            : Brightness.light,
         title: Container(
           height: 40,
           child: TypeAheadField<Person>(
             suggestionsCallback: _personService.searchPerson,
             onSuggestionSelected: (Person suggestion) {},
-            itemBuilder: (context, Person suggestion) {
+            itemBuilder: (ctx, Person suggestion) {
               return ListTile(
                 leading: CircleAvatar(
                   radius: 20,
@@ -83,7 +87,31 @@ class _FeedState extends State<Feed> {
                 ),
               );
             },
+            noItemsFoundBuilder: (ctx) {
+              return Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      "assets/images/no-data.png",
+                      width: 100,
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      t.usersNotFound,
+                      style: TextStyle(color: Theme.of(context).accentColor),
+                    ),
+                  ],
+                ),
+              );
+            },
             textFieldConfiguration: TextFieldConfiguration(
+              style: TextStyle(
+                color: Colors.white.withOpacity(0.8),
+              ),
               decoration: InputDecoration(
                 prefixIcon: Icon(
                   Icons.search,
@@ -100,7 +128,7 @@ class _FeedState extends State<Feed> {
                   ),
                 ),
                 labelText: t.search,
-                labelStyle: TextStyle(color: Colors.white.withOpacity(0.8)),
+                labelStyle: TextStyle(color: Colors.white.withOpacity(0.6)),
                 filled: true,
               ),
             ),
@@ -115,7 +143,7 @@ class _FeedState extends State<Feed> {
               icon: Icon(
                 Icons.message,
                 size: 30,
-                color: Theme.of(context).accentColor,
+                color: Colors.white,
               ),
             ),
           )
@@ -126,11 +154,65 @@ class _FeedState extends State<Feed> {
         child: PagedListView<int, Post>(
           pagingController: _pagingController,
           builderDelegate: PagedChildBuilderDelegate<Post>(
-            itemBuilder: (context, item, index) {
+            itemBuilder: (ctx, item, index) {
               return Padding(
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: PostItem(
                   post: item,
+                ),
+              );
+            },
+            noItemsFoundIndicatorBuilder: (ctx) {
+              return Center(
+                child: Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        "assets/images/no-data.png",
+                        width: 100,
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Text(
+                        t.postsNotFound,
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        t.emptyList,
+                        style: TextStyle(
+                          color: Theme.of(context).accentColor,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      OutlinedButton.icon(
+                        onPressed: () {
+                          Navigator.of(context).pushNamed("/new-post");
+                        },
+                        style: OutlinedButton.styleFrom(
+                          side: BorderSide(
+                            width: 1.0,
+                            color: Theme.of(context).primaryColor,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        icon: Icon(Icons.add, size: 18),
+                        label: Text(
+                          t.newPost,
+                          style:
+                              TextStyle(color: Theme.of(context).primaryColor),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               );
             },

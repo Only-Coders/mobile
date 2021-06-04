@@ -55,7 +55,7 @@ class _BottomNavState extends State<BottomNav> {
             ),
           ),
           BottomNavigationBarItem(
-            label: t.newPost,
+            label: t.publish,
             icon: Icon(Icons.add_box),
           ),
           BottomNavigationBarItem(

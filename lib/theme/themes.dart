@@ -44,7 +44,7 @@ class CustomTheme extends ChangeNotifier {
     return ThemeData(
       primaryColor: Color(0xff00CDAE),
       primarySwatch: createMaterialColor(Color(0xff00CDAE)),
-      accentColor: Colors.black.withOpacity(0.9),
+      accentColor: Colors.black.withOpacity(0.8),
       secondaryHeaderColor: Color(0xff34374B),
       errorColor: Color(0xffff5252),
     );
