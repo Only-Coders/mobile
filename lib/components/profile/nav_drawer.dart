@@ -28,9 +28,10 @@ class NavDrawer extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: CircleAvatar(
                         radius: 25,
-                        backgroundImage: user.imageURI == null
-                            ? AssetImage("assets/images/default-avatar.png")
-                            : NetworkImage(user.imageURI),
+                        backgroundImage:
+                            user.imageURI == null || user.imageURI.isEmpty
+                                ? AssetImage("assets/images/default-avatar.png")
+                                : NetworkImage(user.imageURI),
                       ),
                     ),
                     Text(
@@ -71,8 +72,8 @@ class NavDrawer extends StatelessWidget {
                         Switch(
                           value: currentTheme.currentTheme != ThemeMode.dark,
                           activeColor: Theme.of(context).primaryColor,
-                          onChanged: (value) {
-                            currentTheme.toggleTheme();
+                          onChanged: (value) async {
+                            await currentTheme.toggleTheme();
                           },
                         ),
                         Icon(
