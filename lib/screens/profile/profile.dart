@@ -20,11 +20,16 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final PersonService _personService = PersonService();
+  Future getProfile;
+
+  @override
+  void initState() {
+    getProfile = _personService.getPersonProfile(widget.canonicalName);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    User user = Provider.of<User>(context);
-
     return Scaffold(
       endDrawer: NavDrawer(),
       appBar: AppBar(
@@ -33,9 +38,7 @@ class _ProfileState extends State<Profile> {
         elevation: 0,
       ),
       body: FutureBuilder(
-          future: _personService.getPersonProfile(widget.canonicalName != null
-              ? widget.canonicalName
-              : user.canonicalName),
+          future: getProfile,
           builder: (ctx, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {

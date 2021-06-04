@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/providers/user.dart';
+import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/theme/themes.dart';
+import 'package:provider/provider.dart';
 
 class BottomNav extends StatefulWidget {
   @override
@@ -33,7 +36,14 @@ class _BottomNavState extends State<BottomNav> {
               Navigator.pushNamed(context, "/new-post");
               break;
             default:
-              Navigator.pushNamed(context, "/profile");
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Profile(
+                    canonicalName: Provider.of<User>(context).canonicalName,
+                  ),
+                ),
+              );
               break;
           }
         },

@@ -35,6 +35,7 @@ class CustomTheme extends ChangeNotifier {
   static ThemeData get lightTheme {
     return ThemeData(
       primaryColor: Color(0xff00CDAE),
+      primarySwatch: createMaterialColor(Color(0xff00CDAE)),
       accentColor: Colors.black.withOpacity(0.9),
       secondaryHeaderColor: Color(0xff34374B),
       errorColor: Color(0xffff5252),
@@ -47,7 +48,6 @@ class CustomTheme extends ChangeNotifier {
       primarySwatch: createMaterialColor(Color(0xff00CDAE)),
       accentColor: Colors.white.withOpacity(0.9),
       secondaryHeaderColor: Color(0xff26272D),
-      // secondaryHeaderColor: Color(0xff1E1E1E),
       cardColor: Color(0xff1E1E1E),
       dialogBackgroundColor: Color(0xff1E1E1E),
       scaffoldBackgroundColor: Color(0xff121212),
