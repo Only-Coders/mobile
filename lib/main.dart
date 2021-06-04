@@ -14,10 +14,14 @@ import 'package:mobile/screens/post/profile_posts.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  currentTheme.loadTheme(
+      prefs.getBool("isDark") == null ? false : prefs.getBool("isDark"));
   runApp(App());
 }
 

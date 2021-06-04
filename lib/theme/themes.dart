@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 CustomTheme currentTheme = CustomTheme();
 
@@ -27,8 +28,15 @@ class CustomTheme extends ChangeNotifier {
 
   ThemeMode get currentTheme => _isDarkTheme ? ThemeMode.dark : ThemeMode.light;
 
-  void toggleTheme() {
+  Future<void> toggleTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     _isDarkTheme = !_isDarkTheme;
+    prefs.setBool("isDark", _isDarkTheme);
+    notifyListeners();
+  }
+
+  void loadTheme(bool value) {
+    _isDarkTheme = value;
     notifyListeners();
   }
 
