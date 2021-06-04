@@ -137,7 +137,9 @@ class _ProfileState extends State<Profile> {
                           ],
                         ),
                       ),
-                      PostPreview(),
+                      PostPreview(
+                        canonicalName: widget.canonicalName,
+                      ),
                       Container(
                         margin: EdgeInsets.only(top: 5),
                         width: double.infinity,

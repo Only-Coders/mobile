@@ -6,6 +6,7 @@ import 'package:mobile/components/generic/bottom_nav.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/post.dart';
+import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/person.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/theme/themes.dart';
@@ -63,7 +64,16 @@ class _FeedState extends State<Feed> {
           height: 40,
           child: TypeAheadField<Person>(
             suggestionsCallback: _personService.searchPerson,
-            onSuggestionSelected: (Person suggestion) {},
+            onSuggestionSelected: (Person suggestion) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Profile(
+                    canonicalName: suggestion.canonicalName,
+                  ),
+                ),
+              );
+            },
             itemBuilder: (ctx, Person suggestion) {
               return ListTile(
                 leading: CircleAvatar(
