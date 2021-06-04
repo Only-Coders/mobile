@@ -84,7 +84,7 @@
   "logout": "Logout",
   "theme": "Theme",
   "search": "Search user...",
-  "usersNotFound": "No se pudo encontrar usuarios con ese nombre",
-  "postsNotFound": "No se encontraron publicaciones",
+  "usersNotFound": "Could not find users with that name",
+  "postsNotFound": "No posts found!",
   "emptyList": "Be the first to add a post"
 }

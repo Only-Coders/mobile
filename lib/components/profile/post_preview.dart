@@ -33,7 +33,10 @@ class PostPreview extends StatelessWidget {
                       Text(
                         t.posts,
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 14),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 14,
+                          color: Theme.of(context).accentColor,
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
@@ -128,7 +131,11 @@ class PostPreview extends StatelessWidget {
                 children: [
                   Text(
                     t.posts,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 14,
+                      color: Theme.of(context).accentColor,
+                    ),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),

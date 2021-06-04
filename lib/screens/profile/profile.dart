@@ -5,9 +5,7 @@ import 'package:mobile/components/profile/description.dart';
 import 'package:mobile/components/profile/nav_drawer.dart';
 import 'package:mobile/components/profile/post_preview.dart';
 import 'package:mobile/models/profile.dart' as ProfileType;
-import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
-import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
   final String canonicalName;
