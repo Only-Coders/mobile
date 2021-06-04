@@ -74,48 +74,52 @@ class _ProfileState extends State<Profile> {
                                         : NetworkImage(user.imageURI),
                                   ),
                                 ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Text(
-                                      "${user.firstName} ${user.lastName}",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 24),
-                                    ),
-                                    user.currentPosition != null
-                                        ? Padding(
-                                            padding: const EdgeInsets.only(
-                                                bottom: 5),
-                                            child: Text(
-                                              "${user.currentPosition.position} ${user.currentPosition.workplace.name}",
+                                Flexible(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    mainAxisSize: MainAxisSize.max,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "${user.firstName} ${user.lastName}",
+                                        style: TextStyle(
+                                            color: Colors.white, fontSize: 24),
+                                      ),
+                                      user.currentPosition != null
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  bottom: 5),
+                                              child: Text(
+                                                "${user.currentPosition.position} ${user.currentPosition.workplace.name}",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 14),
+                                              ),
+                                            )
+                                          : Container(
+                                              padding:
+                                                  EdgeInsets.only(bottom: 5),
+                                            ),
+                                      if (user.gitProfile != null)
+                                        Row(
+                                          children: [
+                                            GitPlatform(
+                                                platform:
+                                                    user.gitProfile.platform),
+                                            SizedBox(
+                                              width: 5,
+                                            ),
+                                            Text(
+                                              "@${user.gitProfile.userName}",
                                               style: TextStyle(
                                                   color: Colors.white,
-                                                  fontSize: 14),
+                                                  fontSize: 12),
                                             ),
-                                          )
-                                        : Container(
-                                            padding: EdgeInsets.only(bottom: 5),
-                                          ),
-                                    if (user.gitProfile != null)
-                                      Row(
-                                        children: [
-                                          GitPlatform(
-                                              platform:
-                                                  user.gitProfile.platform),
-                                          SizedBox(
-                                            width: 5,
-                                          ),
-                                          Text(
-                                            "@${user.gitProfile.userName}",
-                                            style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 12),
-                                          ),
-                                        ],
-                                      )
-                                  ],
+                                          ],
+                                        )
+                                    ],
+                                  ),
                                 ),
                               ],
                             ),
