@@ -43,7 +43,7 @@ class StudyExperienceItem extends StatelessWidget {
                 height: 2,
               ),
               Text(
-                "${parseDate(study.since)} - ${study.until.isEmpty ? "" : parseDate(study.until)}",
+                "${parseDate(study.since)} - ${study.until == null ? "Actual" : parseDate(study.until)}",
                 style: TextStyle(color: Colors.grey.shade700, fontSize: 10),
               ),
               Row(

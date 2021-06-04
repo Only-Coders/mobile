@@ -208,7 +208,7 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
               "name": institute,
               "degree": degree,
               "since": _startDate.toIso8601String(),
-              "until": _endDate.toIso8601String()
+              "until": _endDate == null ? null : _endDate.toIso8601String(),
             });
             widget.addStudy(study);
             Navigator.pop(context);
