@@ -98,7 +98,7 @@ class _ContactItemState extends State<ContactItem> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            widget.contact.canonicalName,
+                            "${widget.contact.firstName} ${widget.contact.lastName}",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 13),
                           ),
