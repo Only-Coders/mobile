@@ -43,8 +43,8 @@ class _SuggestedContactsState extends State<SuggestedContacts> {
     var t = AppLocalizations.of(context);
 
     Widget listTags() {
-      return SizedBox(
-        height: 325,
+      return Container(
+        height: MediaQuery.of(context).size.height - 325,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
           child: new Column(
