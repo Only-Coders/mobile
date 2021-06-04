@@ -17,23 +17,34 @@ class FilePost extends StatelessWidget {
     formatedContent.add(
       new Tooltip(
         message: AppLocalizations.of(context).download.toString(),
-        child: Padding(
-          padding: const EdgeInsets.all(15),
+        child: Container(
+          width: double.infinity,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              GestureDetector(
-                onTap: () async {
-                  String path = await _firebaseStorage.downloadFile(post.url);
-                  Toast().showInfo(context, path);
-                },
-                child: Icon(
-                  Icons.insert_drive_file,
-                  size: 48,
-                  color: Colors.blue,
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                child: Column(
+                  children: [
+                    GestureDetector(
+                      onTap: () async {
+                        String path =
+                            await _firebaseStorage.downloadFile(post.url);
+                        Toast().showInfo(context, path);
+                      },
+                      child: Icon(
+                        Icons.insert_drive_file,
+                        size: 48,
+                        color: Colors.blue,
+                      ),
+                    ),
+                    Text(
+                      _firebaseStorage.getFileName(post.url),
+                      style: TextStyle(
+                          color: Theme.of(context).accentColor, fontSize: 11),
+                    ),
+                  ],
                 ),
-              ),
-              Text(
-                _firebaseStorage.getFileName(post.url),
               ),
             ],
           ),
@@ -46,13 +57,13 @@ class FilePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width - 8,
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: getContent(context),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Wrap(
+            children: getContent(context),
+          ),
         ),
       ),
     );

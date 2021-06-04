@@ -140,10 +140,14 @@ class _NewPostState extends State<NewPost> {
       if (linkPreview != null && type == "LINK") {
         uri = linkPreview.url;
       }
-      var mentionsNames = [];
-      if (mentionCanonicalNames.length > 0)
-        mentionCanonicalNames
-            .where((mention) => message.contains(mention["display"]));
+      mentionCanonicalNames
+          .where((mention) => message.contains(mention["display"]));
+
+      List<String> mentionsNames = mentionCanonicalNames.map((element) {
+        message =
+            message.replaceAll("@${element['display']}", "@${element['id']}");
+        return element["id"] as String;
+      }).toList();
 
       addNewTags();
       await _postService.createPost(message, type,
@@ -355,7 +359,8 @@ class _NewPostState extends State<NewPost> {
                                       }
                                     },
                                     onMentionAdd: (mention) {
-                                      if (mention["type"] != "TAG") {
+                                      if (mention["type"] == null) {
+                                        print("Add");
                                         setState(() {
                                           mentionCanonicalNames.add(mention);
                                         });

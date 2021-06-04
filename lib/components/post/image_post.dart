@@ -30,10 +30,11 @@ class ImagePost extends StatelessWidget {
     return Container(
       child: Padding(
         padding: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: getContent(),
+        child: Align(
+          alignment: Alignment.topLeft,
+          child: Wrap(
+            children: getContent(),
+          ),
         ),
       ),
     );

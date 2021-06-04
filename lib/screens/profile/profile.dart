@@ -7,11 +7,12 @@ import 'package:mobile/components/profile/post_preview.dart';
 import 'package:mobile/models/profile.dart' as ProfileType;
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
-import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key key}) : super(key: key);
+  final String canonicalName;
+
+  const Profile({Key key, this.canonicalName}) : super(key: key);
 
   @override
   _ProfileState createState() => _ProfileState();
@@ -32,7 +33,9 @@ class _ProfileState extends State<Profile> {
         elevation: 0,
       ),
       body: FutureBuilder(
-          future: _personService.getPersonProfile(user.canonicalName),
+          future: _personService.getPersonProfile(widget.canonicalName != null
+              ? widget.canonicalName
+              : user.canonicalName),
           builder: (ctx, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasError) {

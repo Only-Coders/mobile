@@ -4,10 +4,12 @@ import 'package:mobile/components/post/file_post.dart';
 import 'package:mobile/components/post/image_post.dart';
 import 'package:mobile/components/post/link_post.dart';
 import 'package:mobile/components/post/text_post.dart';
+import 'package:mobile/models/person.dart';
 import 'package:mobile/models/post.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/tomorrow-night.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/post.dart';
 
 class PostItem extends StatefulWidget {
@@ -42,13 +44,14 @@ class _PostItemState extends State<PostItem> {
     var t = AppLocalizations.of(context);
 
     RegExp regExp = new RegExp(
-      r"^```(?<lang>[\w\W]*?)\n(?<code>[^`][\W\w]*?)\n```$",
+      r"(^```(?<lang>[\w\W]*?)\n(?<code>[^`][\W\w]*?)\n```$)|((?<!\S)(?<tag>#\w+)(\s|$))|((?<!\S)(?<mention>@\w+-\w{5})(\s|$))",
       multiLine: true,
     );
     List<Widget> widgets = [];
     int pos = 0;
 
     for (var x in regExp.allMatches(widget.post.message)) {
+      print(x);
       widgets.add(
         Text(
           widget.post.message.substring(pos, x.start),
@@ -56,31 +59,60 @@ class _PostItemState extends State<PostItem> {
               TextStyle(color: Theme.of(context).accentColor.withOpacity(0.8)),
         ),
       );
-      widgets.add(
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 0),
-          child: Container(
-            child: HighlightView(
-              x.namedGroup("code"),
-              language: x.namedGroup("lang"),
-              theme: tomorrowNightTheme,
-              padding: EdgeInsets.all(10),
-              textStyle: TextStyle(
-                fontSize: 10,
+      if (x.namedGroup("code") != null)
+        widgets.add(
+          Padding(
+            padding: EdgeInsets.only(bottom: 5),
+            child: Container(
+              width: double.infinity,
+              child: HighlightView(
+                x.namedGroup("code"),
+                language: x.namedGroup("lang"),
+                theme: tomorrowNightTheme,
+                padding: EdgeInsets.all(10),
+                textStyle: TextStyle(
+                  fontSize: 10,
+                ),
               ),
-            ),
-            decoration: BoxDecoration(
-              border: Border.all(
-                  color: const Color(0xff1d1f21),
-                  width: 4.0,
-                  style: BorderStyle.solid),
-              borderRadius: BorderRadius.all(
-                Radius.circular(4),
+              decoration: BoxDecoration(
+                border: Border.all(
+                    color: const Color(0xff1d1f21),
+                    width: 4.0,
+                    style: BorderStyle.solid),
+                borderRadius: BorderRadius.all(
+                  Radius.circular(4),
+                ),
               ),
             ),
           ),
-        ),
-      );
+        );
+      if (x.namedGroup("mention") != null) {
+        String canonicalName = x
+            .namedGroup("mention")
+            .substring(1, x.namedGroup("mention").length);
+        Person person = widget.post.mentions
+            .where((element) => element.canonicalName == canonicalName)
+            .first;
+        widgets.add(Padding(
+          padding: const EdgeInsets.only(right: 5),
+          child: InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Profile(
+                    canonicalName: canonicalName,
+                  ),
+                ),
+              );
+            },
+            child: Text(
+              "@${person.firstName} ${person.lastName}",
+              style: TextStyle(color: Colors.blue),
+            ),
+          ),
+        ));
+      }
       pos = x.end;
     }
     if (pos < widget.post.message.length) {
@@ -272,11 +304,7 @@ class _PostItemState extends State<PostItem> {
                 ),
               ],
             ),
-            Row(
-              children: [
-                Flexible(child: postType(widget.post.type, widgets)),
-              ],
-            ),
+            postType(widget.post.type, widgets),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Row(

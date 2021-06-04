@@ -37,6 +37,9 @@ class Post {
       reactions: (json['reactions'] as List<dynamic>)
           .map((reaction) => Reaction.fromJson(reaction))
           .toList(),
+      mentions: (json['mentions'] as List<dynamic>)
+          .map((mention) => Person.fromJson(mention))
+          .toList(),
       commentQuantity: json['commentQuantity'],
       isFavorite: json['isFavorite'],
       id: json['id'],
@@ -49,7 +52,6 @@ class Post {
         'url': url,
         'isPublic': isPublic,
         'type': type,
-        'mentions': mentions,
         'commentQuantity': commentQuantity,
         'isFavorite': isFavorite,
         'id': id
