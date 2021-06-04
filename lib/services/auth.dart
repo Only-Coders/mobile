@@ -3,6 +3,7 @@ import 'package:mobile/models/token.dart';
 import 'package:mobile/navigation.dart';
 import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
   final HttpClient _httpClient = HttpClient();
@@ -50,8 +51,10 @@ class AuthService {
     return token;
   }
 
-  void logout() {
+  Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     UserStorage.removeToken();
+    prefs.remove("user");
     NavigationService.instance.navigateToRemoveUntil("/login");
   }
 

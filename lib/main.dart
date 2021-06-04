@@ -20,12 +20,19 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   SharedPreferences prefs = await SharedPreferences.getInstance();
+  User user = User(prefs.getString("user"));
   currentTheme.loadTheme(
       prefs.getBool("isDark") == null ? false : prefs.getBool("isDark"));
-  runApp(App());
+  runApp(App(
+    user: user,
+  ));
 }
 
 class App extends StatefulWidget {
+  final User user;
+
+  const App({Key key, this.user}) : super(key: key);
+
   @override
   _AppState createState() => _AppState();
 }
@@ -42,7 +49,7 @@ class _AppState extends State<App> {
   @override
   Widget build(BuildContext context) {
     return Provider(
-      create: (context) => User(),
+      create: (context) => widget.user,
       child: MaterialApp(
         navigatorKey: NavigationService.instance.navigationKey,
         title: 'Only Coders',

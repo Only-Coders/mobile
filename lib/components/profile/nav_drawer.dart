@@ -98,7 +98,9 @@ class NavDrawer extends StatelessWidget {
                     color: Theme.of(context).accentColor,
                   ),
                 ),
-                onTap: _authService.logout,
+                onTap: () async {
+                  await _authService.logout();
+                },
               ),
             ],
           ),

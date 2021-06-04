@@ -85,6 +85,7 @@ class _GeneralInformationSecondStepState
                   .register(Provider.of<RegisterModel>(context, listen: false));
               var payload = Jwt.parseJwt(token);
               Provider.of<User>(context, listen: false).setUser(payload);
+              await Provider.of<User>(context, listen: false).saveUserOnPrefs();
               widget.increment();
             } on DioError catch (e) {
               _toast.showError(context, e.response.data["error"]);
