@@ -171,7 +171,7 @@ class _NewPostState extends State<NewPost> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     User user = Provider.of<User>(context);
-    selectedPostPrivacy = Provider.of<User>(context).defaultPrivacy == null
+    selectedPostPrivacy = Provider.of<User>(context).defaultPrivacy
         ? "To anyone"
         : "To my contacts";
 
@@ -305,8 +305,7 @@ class _NewPostState extends State<NewPost> {
                                                         "To anyone");
                                           },
                                           value: Provider.of<User>(context)
-                                                      .defaultPrivacy ==
-                                                  null
+                                                  .defaultPrivacy
                                               ? "To anyone"
                                               : "To my contacts",
                                         ),
