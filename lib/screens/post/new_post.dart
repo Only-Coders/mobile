@@ -381,6 +381,8 @@ class _NewPostState extends State<NewPost> {
                                               .toList(),
                                           suggestionBuilder: (data) {
                                             return Container(
+                                              color:
+                                                  Theme.of(context).cardColor,
                                               padding: EdgeInsets.all(10.0),
                                               child: Row(
                                                 children: <Widget>[
@@ -407,6 +409,8 @@ class _NewPostState extends State<NewPost> {
                                               .toList(),
                                           suggestionBuilder: (data) {
                                             return Container(
+                                              color:
+                                                  Theme.of(context).cardColor,
                                               padding: EdgeInsets.all(10.0),
                                               child: Row(
                                                 children: <Widget>[
@@ -424,6 +428,9 @@ class _NewPostState extends State<NewPost> {
                                                     width: 20.0,
                                                   ),
                                                   Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
                                                     children: <Widget>[
                                                       Text(data['id']),
                                                       Text(
