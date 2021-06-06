@@ -10,13 +10,14 @@ on:
 # on: push    # Default will running for every branch.
     
 jobs:
-  build:
+  build-ios:
     # This job will run on ubuntu virtual machine
     runs-on: macos-latest
     steps:
     
     # Setup Java environment in order to build the Android app.
     - uses: actions/checkout@v1
+
     - uses: actions/setup-java@v1
       with:
         java-version: '12.x'
@@ -32,13 +33,16 @@ jobs:
       with:
         path: /Users/runner/hostedtoolcache/flutter
         key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+
+    - name: Cache Pods
+      uses: actions/cache@v1
+      with:
+        path: Pods
+        key: ${{ runner.os }}-pods-${{ hashFiles('**/Podfile.lock') }}
     
     # Get flutter dependencies.
     - run: flutter pub get
     
-    # Build apk.
-    - run: flutter build apk
-
     # Build  ipa.
     - name: Build iOS App
       run: |
@@ -53,12 +57,48 @@ jobs:
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "latest"
+        automatic_release_tag: "latest-ios"
+        prerelease: true
+        title: "Development Build"
+        files: |
+          build/ios/iphoneos/app.ipa
+
+  build-android:
+    # This job will run on ubuntu virtual machine
+    runs-on: ubuntu-latest
+    steps:
+    
+    # Setup Java environment in order to build the Android app.
+    - uses: actions/checkout@v1
+    - uses: actions/setup-java@v1
+      with:
+        java-version: '12.x'
+
+    # Setup the flutter environment.
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: 'stable' # 'dev', 'alpha', default to: 'stable'
+
+    - name: Cache Flutter dependencies
+      uses: actions/cache@v1
+      with:
+        path: /Users/runner/hostedtoolcache/flutter
+        key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
+
+    # Get flutter dependencies.
+    - run: flutter pub get
+    
+    # Build apk.
+    - run: flutter build apk
+
+    - uses: "marvinpinto/action-automatic-releases@latest"
+      with:
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "latest-android"
         prerelease: true
         title: "Development Build"
         files: |
           build/app/outputs/apk/release/app-release.apk
-          build/ios/iphoneos/app.ipa
 
     - name: rsync deployments
       uses: burnett01/rsync-deployments@4.1
@@ -66,16 +106,6 @@ jobs:
         switches: -avzr --delete
         path: build/app/outputs/apk/release/app-release.apk
         remote_path: /usr/share/caddy/app.apk
-        remote_host: onlycoders.tech
-        remote_user: mzunino
-        remote_key: ${{ secrets.DEPLOY_KEY }}
-
-    - name: rsync deployments
-      uses: burnett01/rsync-deployments@4.1
-      with:
-        switches: -avzr --delete
-        path: build/ios/iphoneos/app.ipa
-        remote_path: /usr/share/caddy
         remote_host: onlycoders.tech
         remote_user: mzunino
         remote_key: ${{ secrets.DEPLOY_KEY }}
@@ -88,5 +118,5 @@ jobs:
         SLACK_ICON: https://img.icons8.com/doodle/2x/android--v2.png
         SLACK_TITLE: "Build & Deploy :rocket:"
         SLACK_USERNAME: Mobile
-        SLACK_MESSAGE: ":bearded_person: Build: ${{ github.event.head_commit.message }}\n :package: Get the <https://onlycoders.tech/app.apk|APK> \n :apple: Get the <https://onlycoders.tech/app.ipa|IPA> "
+        SLACK_MESSAGE: ":bearded_person: Build: ${{ github.event.head_commit.message }}\n :package: Get the <https://onlycoders.tech/app.apk|APK> "
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
