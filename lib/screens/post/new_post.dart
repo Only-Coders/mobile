@@ -51,11 +51,15 @@ class _NewPostState extends State<NewPost> {
     final image = await imagePicker.getImage(
         source: camera ? ImageSource.camera : ImageSource.gallery,
         imageQuality: 25);
-    if (image != null)
-      setState(() {
-        type = "IMAGE";
-        _image = File(image.path);
-      });
+    if (image != null) {
+      int bytes = File(image.path).lengthSync();
+      if ((bytes / 1000 / 1000) < 1) {
+        setState(() {
+          type = "IMAGE";
+          _image = File(image.path);
+        });
+      }
+    }
   }
 
   Future<List<Tag>> getTags(String name) async {
@@ -83,10 +87,13 @@ class _NewPostState extends State<NewPost> {
 
     if (result != null) {
       File file = File(result.files.single.path);
-      setState(() {
-        type = "FILE";
-        _file = file;
-      });
+      int bytes = file.lengthSync();
+      if ((bytes / 1000 / 1000) < 5) {
+        setState(() {
+          type = "FILE";
+          _file = file;
+        });
+      }
     }
   }
 
@@ -360,7 +367,6 @@ class _NewPostState extends State<NewPost> {
                                     },
                                     onMentionAdd: (mention) {
                                       if (mention["type"] == null) {
-                                        print("Add");
                                         setState(() {
                                           mentionCanonicalNames.add(mention);
                                         });
