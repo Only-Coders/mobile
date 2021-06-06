@@ -12,7 +12,7 @@ on:
 jobs:
   build:
     # This job will run on ubuntu virtual machine
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     steps:
     
     # Setup Java environment in order to build the Android app.
@@ -30,23 +30,25 @@ jobs:
     - name: Cache Flutter dependencies
       uses: actions/cache@v1
       with:
-        path: /opt/hostedtoolcache/flutter
+        path: /Users/runner/hostedtoolcache/flutter
         key: ${{ runner.OS }}-flutter-install-cache-${{ env.flutter_version }}
     
     # Get flutter dependencies.
     - run: flutter pub get
     
-    # Check for any formatting issues in the code.
-    # - run: flutter format --set-exit-if-changed .
-    
-    # Statically analyze the Dart code for any errors.
-    # - run: flutter analyze .
-    
-    # Run widget tests for our flutter project.
-    # - run: flutter test
-    
     # Build apk.
     - run: flutter build apk
+
+    # Build  ipa.
+    - name: Build iOS App
+      run: |
+        flutter build ios --no-codesign
+        cd build/ios/iphoneos
+        mkdir Payload
+        cd Payload
+        ln -s ../Runner.app
+        cd ..
+        zip -r app.ipa Payload
     
     - uses: "marvinpinto/action-automatic-releases@latest"
       with:
@@ -56,6 +58,7 @@ jobs:
         title: "Development Build"
         files: |
           build/app/outputs/apk/release/app-release.apk
+          build/ios/iphoneos/app.ipa
 
     - name: rsync deployments
       uses: burnett01/rsync-deployments@4.1
@@ -63,6 +66,16 @@ jobs:
         switches: -avzr --delete
         path: build/app/outputs/apk/release/app-release.apk
         remote_path: /usr/share/caddy/app.apk
+        remote_host: onlycoders.tech
+        remote_user: mzunino
+        remote_key: ${{ secrets.DEPLOY_KEY }}
+
+    - name: rsync deployments
+      uses: burnett01/rsync-deployments@4.1
+      with:
+        switches: -avzr --delete
+        path: build/ios/iphoneos/app.ipa
+        remote_path: /usr/share/caddy
         remote_host: onlycoders.tech
         remote_user: mzunino
         remote_key: ${{ secrets.DEPLOY_KEY }}
@@ -75,5 +88,5 @@ jobs:
         SLACK_ICON: https://img.icons8.com/doodle/2x/android--v2.png
         SLACK_TITLE: "Build & Deploy :rocket:"
         SLACK_USERNAME: Mobile
-        SLACK_MESSAGE: ":bearded_person: Build: ${{ github.event.head_commit.message }}\n :package: Get the <https://onlycoders.tech/app.apk|APK>"
+        SLACK_MESSAGE: ":bearded_person: Build: ${{ github.event.head_commit.message }}\n :package: Get the <https://onlycoders.tech/app.apk|APK> \n :apple: Get the <https://onlycoders.tech/app.ipa|IPA> "
         SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
