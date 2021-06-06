@@ -9,7 +9,9 @@ import 'package:mobile/models/post.dart';
 import 'package:flutter_highlight/flutter_highlight.dart';
 import 'package:flutter_highlight/themes/tomorrow-night.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/models/post_tag.dart';
 import 'package:mobile/screens/profile/profile.dart';
+import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/services/post.dart';
 
 class PostItem extends StatefulWidget {
@@ -51,7 +53,6 @@ class _PostItemState extends State<PostItem> {
     int pos = 0;
 
     for (var x in regExp.allMatches(widget.post.message)) {
-      print(x);
       widgets.add(
         Text(
           widget.post.message.substring(pos, x.start),
@@ -86,6 +87,62 @@ class _PostItemState extends State<PostItem> {
             ),
           ),
         );
+      if (x.namedGroup("tag") != null) {
+        String canonicalName =
+            x.namedGroup("tag").substring(1, x.namedGroup("tag").length);
+        if (widget.post.tags.isNotEmpty) {
+          Iterable<PostTag> iterable = widget.post.tags
+              .where((element) => element.canonicalName == canonicalName);
+          if (iterable.isNotEmpty) {
+            PostTag tag = iterable.first;
+            widgets.add(
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: InkWell(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => TagPosts(
+                          canonicalName: canonicalName,
+                        ),
+                      ),
+                    );
+                  },
+                  child: Text(
+                    "#${tag.displayName}",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+              ),
+            );
+          } else {
+            widgets.add(
+              Padding(
+                padding: const EdgeInsets.only(right: 5),
+                child: Text(
+                  x.namedGroup("tag"),
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor.withOpacity(0.8),
+                  ),
+                ),
+              ),
+            );
+          }
+        } else {
+          widgets.add(
+            Padding(
+              padding: const EdgeInsets.only(right: 5),
+              child: Text(
+                x.namedGroup("tag"),
+                style: TextStyle(
+                  color: Theme.of(context).accentColor.withOpacity(0.8),
+                ),
+              ),
+            ),
+          );
+        }
+      }
       if (x.namedGroup("mention") != null) {
         String canonicalName = x
             .namedGroup("mention")

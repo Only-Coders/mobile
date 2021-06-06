@@ -42,4 +42,12 @@ class PostService {
         .map((post) => Post.fromJson(post))
         .toList();
   }
+
+  Future<List<Post>> getPostsByTag(String canonicalName, [int page]) async {
+    var response = await _httpClient
+        .getRequest("/api/tags/$canonicalName/posts", {"page": page});
+    return (response.data["content"] as List)
+        .map((post) => Post.fromJson(post))
+        .toList();
+  }
 }

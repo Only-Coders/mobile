@@ -1,4 +1,5 @@
 import 'package:mobile/models/person.dart';
+import 'package:mobile/models/post_tag.dart';
 import 'package:mobile/models/reaction.dart';
 
 class Post {
@@ -10,6 +11,7 @@ class Post {
   String type;
   List<Person> mentions;
   List<Reaction> reactions;
+  List<PostTag> tags;
   int commentQuantity;
   bool isFavorite;
 
@@ -22,6 +24,7 @@ class Post {
       this.type,
       this.mentions,
       this.reactions,
+      this.tags,
       this.commentQuantity,
       this.isFavorite});
 
@@ -39,6 +42,9 @@ class Post {
           .toList(),
       mentions: (json['mentions'] as List<dynamic>)
           .map((mention) => Person.fromJson(mention))
+          .toList(),
+      tags: (json['tags'] as List<dynamic>)
+          .map((tag) => PostTag.fromJson(tag))
           .toList(),
       commentQuantity: json['commentQuantity'],
       isFavorite: json['isFavorite'],
