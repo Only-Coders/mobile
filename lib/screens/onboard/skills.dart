@@ -65,7 +65,6 @@ class _SkillsState extends State<Skills> {
                               color: Colors.green.shade400, width: 1),
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        backgroundColor: Colors.grey.shade50,
                         deleteIcon: Icon(
                           Icons.close_rounded,
                           color: Colors.green.shade400,
@@ -100,7 +99,10 @@ class _SkillsState extends State<Skills> {
                   strokeWidth: 3,
                 ),
               )
-            : Text(t.next),
+            : Text(
+                t.next,
+                style: TextStyle(color: Colors.white),
+              ),
         onPressed: () async {
           setState(() {
             isLoading = true;

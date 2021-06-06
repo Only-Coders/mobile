@@ -4,6 +4,7 @@ import 'package:mobile/models/workplace.dart';
 import 'package:mobile/services/work.dart';
 import "package:flutter_typeahead/flutter_typeahead.dart";
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/theme/themes.dart';
 
 class AddWorkExperience extends StatefulWidget {
   final addWork;
@@ -44,7 +45,10 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
     var t = AppLocalizations.of(context);
 
     return AlertDialog(
-      title: Text(t.addWorkExperience),
+      title: Text(
+        t.addWorkExperience,
+        style: TextStyle(color: Theme.of(context).accentColor),
+      ),
       content: SingleChildScrollView(
         child: Container(
           width: 500,
@@ -65,7 +69,10 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                   },
                   itemBuilder: (context, Workplace suggestion) {
                     return ListTile(
-                      title: Text(suggestion.name),
+                      title: Text(
+                        suggestion.name,
+                        style: TextStyle(color: Theme.of(context).accentColor),
+                      ),
                     );
                   },
                   validator: (val) {
@@ -73,6 +80,9 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                   },
                   textFieldConfiguration: TextFieldConfiguration(
                     controller: _typeAheadController,
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -82,7 +92,12 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                         ),
                       ),
                       labelText: t.workName,
+                      labelStyle:
+                          TextStyle(color: Theme.of(context).accentColor),
                       filled: true,
+                      fillColor: currentTheme.currentTheme == ThemeMode.dark
+                          ? Theme.of(context).scaffoldBackgroundColor
+                          : Colors.grey.shade200,
                     ),
                   ),
                 ),
@@ -95,6 +110,9 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                       position = val;
                     });
                   },
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -104,7 +122,11 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                       ),
                     ),
                     labelText: t.position,
+                    labelStyle: TextStyle(color: Theme.of(context).accentColor),
                     filled: true,
+                    fillColor: currentTheme.currentTheme == ThemeMode.dark
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : Colors.grey.shade200,
                   ),
                 ),
                 SizedBox(
@@ -119,6 +141,22 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                   onTap: () async {
                     DateTime date = await showDatePicker(
                         context: context,
+                        builder: (BuildContext context, Widget child) {
+                          return Theme(
+                            data: currentTheme.currentTheme == ThemeMode.light
+                                ? CustomTheme.lightTheme.copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : CustomTheme.darkTheme.copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        },
                         initialDate:
                             _startDate == null ? DateTime.now() : _startDate,
                         firstDate: DateTime(1970),
@@ -131,6 +169,9 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                       });
                     }
                   },
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -140,7 +181,11 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                       ),
                     ),
                     labelText: t.startDate,
+                    labelStyle: TextStyle(color: Theme.of(context).accentColor),
                     filled: true,
+                    fillColor: currentTheme.currentTheme == ThemeMode.dark
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : Colors.grey.shade200,
                   ),
                 ),
                 SizedBox(
@@ -161,6 +206,22 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                   onTap: () async {
                     DateTime date = await showDatePicker(
                         context: context,
+                        builder: (BuildContext context, Widget child) {
+                          return Theme(
+                            data: currentTheme.currentTheme == ThemeMode.light
+                                ? CustomTheme.lightTheme.copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : CustomTheme.darkTheme.copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        },
                         initialDate:
                             _endDate == null ? DateTime.now() : _endDate,
                         firstDate: DateTime(1970),
@@ -173,6 +234,9 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                       });
                     }
                   },
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5),
@@ -182,7 +246,11 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
                       ),
                     ),
                     labelText: t.endDate,
+                    labelStyle: TextStyle(color: Theme.of(context).accentColor),
                     filled: true,
+                    fillColor: currentTheme.currentTheme == ThemeMode.dark
+                        ? Theme.of(context).scaffoldBackgroundColor
+                        : Colors.grey.shade200,
                   ),
                 ),
               ],

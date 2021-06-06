@@ -4,6 +4,7 @@ import 'package:mobile/models/institute.dart';
 import 'package:mobile/models/study.dart';
 import 'package:mobile/services/study.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/theme/themes.dart';
 
 class EditStudyExperience extends StatefulWidget {
   final int index;
@@ -37,7 +38,8 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
       instituteId = widget.study.id;
       degree = widget.study.degree;
       _startDate = DateTime.parse(widget.study.since);
-      _endDate = DateTime.parse(widget.study.until);
+      if (widget.study.until != null)
+        _endDate = DateTime.parse(widget.study.until);
     });
     _typeAheadController.text = widget.study.name;
     _degreeController.text = widget.study.degree;
@@ -147,6 +149,22 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                   onTap: () async {
                     DateTime date = await showDatePicker(
                         context: context,
+                        builder: (BuildContext context, Widget child) {
+                          return Theme(
+                            data: currentTheme.currentTheme == ThemeMode.light
+                                ? CustomTheme.lightTheme.copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : CustomTheme.darkTheme.copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        },
                         initialDate:
                             _startDate == null ? DateTime.now() : _startDate,
                         firstDate: DateTime(1970),
@@ -189,6 +207,22 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                   onTap: () async {
                     DateTime date = await showDatePicker(
                         context: context,
+                        builder: (BuildContext context, Widget child) {
+                          return Theme(
+                            data: currentTheme.currentTheme == ThemeMode.light
+                                ? CustomTheme.lightTheme.copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : CustomTheme.darkTheme.copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        },
                         initialDate:
                             _endDate == null ? DateTime.now() : _endDate,
                         firstDate: DateTime(1970),

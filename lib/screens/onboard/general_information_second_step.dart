@@ -8,6 +8,7 @@ import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/services/fb_storage.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:mobile/components/generic/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -64,7 +65,10 @@ class _GeneralInformationSecondStepState
                   strokeWidth: 3,
                 ),
               )
-            : Text(t.next),
+            : Text(
+                t.next,
+                style: TextStyle(color: Colors.white),
+              ),
         onPressed: () async {
           if (!isLoading) {
             setState(() {
@@ -189,6 +193,7 @@ class _GeneralInformationSecondStepState
                         onChanged: (val) {
                           userName = val;
                         },
+                        style: TextStyle(color: Theme.of(context).accentColor),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(5),
@@ -199,7 +204,14 @@ class _GeneralInformationSecondStepState
                           ),
                           hintText: "ej: jose",
                           labelText: t.gitProfile,
+                          hintStyle:
+                              TextStyle(color: Theme.of(context).accentColor),
+                          labelStyle:
+                              TextStyle(color: Theme.of(context).accentColor),
                           filled: true,
+                          fillColor: currentTheme.currentTheme == ThemeMode.dark
+                              ? Theme.of(context).cardColor
+                              : Colors.grey.shade200,
                         ),
                       ),
                     ),
@@ -215,6 +227,7 @@ class _GeneralInformationSecondStepState
                     });
                   },
                   maxLines: 4,
+                  style: TextStyle(color: Theme.of(context).accentColor),
                   decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.always,
                     border: OutlineInputBorder(
@@ -225,7 +238,11 @@ class _GeneralInformationSecondStepState
                       ),
                     ),
                     labelText: t.aboutYourSelf,
+                    labelStyle: TextStyle(color: Theme.of(context).accentColor),
                     filled: true,
+                    fillColor: currentTheme.currentTheme == ThemeMode.dark
+                        ? Theme.of(context).cardColor
+                        : Colors.grey.shade200,
                   ),
                 ),
               ],

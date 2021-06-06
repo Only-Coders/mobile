@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:mobile/models/country.dart';
 import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/services/country.dart';
+import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -72,7 +73,10 @@ class _GeneralInformationFirstStepState
                   strokeWidth: 3,
                 ),
               )
-            : Text(t.next),
+            : Text(
+                t.next,
+                style: TextStyle(color: Colors.white),
+              ),
         onPressed: () {
           if (formKey.currentState.validate() && !isLoading) {
             setState(() {
@@ -138,6 +142,8 @@ class _GeneralInformationFirstStepState
                                         ? null
                                         : t.fieldRequired;
                                   },
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5),
@@ -147,7 +153,13 @@ class _GeneralInformationFirstStepState
                                       ),
                                     ),
                                     labelText: t.name,
+                                    labelStyle: TextStyle(
+                                        color: Theme.of(context).accentColor),
                                     filled: true,
+                                    fillColor: currentTheme.currentTheme ==
+                                            ThemeMode.dark
+                                        ? Theme.of(context).cardColor
+                                        : Colors.grey.shade200,
                                   ),
                                 ),
                                 SizedBox(
@@ -164,6 +176,8 @@ class _GeneralInformationFirstStepState
                                         ? null
                                         : t.fieldRequired;
                                   },
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5),
@@ -173,7 +187,13 @@ class _GeneralInformationFirstStepState
                                       ),
                                     ),
                                     labelText: t.lastName,
+                                    labelStyle: TextStyle(
+                                        color: Theme.of(context).accentColor),
                                     filled: true,
+                                    fillColor: currentTheme.currentTheme ==
+                                            ThemeMode.dark
+                                        ? Theme.of(context).cardColor
+                                        : Colors.grey.shade200,
                                   ),
                                 ),
                                 SizedBox(
@@ -185,6 +205,30 @@ class _GeneralInformationFirstStepState
                                   onTap: () async {
                                     DateTime date = await showDatePicker(
                                         context: context,
+                                        builder: (BuildContext context,
+                                            Widget child) {
+                                          return Theme(
+                                            data: currentTheme.currentTheme ==
+                                                    ThemeMode.light
+                                                ? CustomTheme.lightTheme
+                                                    .copyWith(
+                                                    colorScheme:
+                                                        ColorScheme.light(
+                                                      primary: Theme.of(context)
+                                                          .primaryColor,
+                                                    ),
+                                                  )
+                                                : CustomTheme.darkTheme
+                                                    .copyWith(
+                                                    colorScheme:
+                                                        ColorScheme.dark(
+                                                      primary: Theme.of(context)
+                                                          .primaryColor,
+                                                    ),
+                                                  ),
+                                            child: child,
+                                          );
+                                        },
                                         initialDate: birthDate == null
                                             ? DateTime.now()
                                             : birthDate,
@@ -198,6 +242,8 @@ class _GeneralInformationFirstStepState
                                       });
                                     }
                                   },
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5),
@@ -207,7 +253,13 @@ class _GeneralInformationFirstStepState
                                       ),
                                     ),
                                     labelText: t.birthDate,
+                                    labelStyle: TextStyle(
+                                        color: Theme.of(context).accentColor),
                                     filled: true,
+                                    fillColor: currentTheme.currentTheme ==
+                                            ThemeMode.dark
+                                        ? Theme.of(context).cardColor
+                                        : Colors.grey.shade200,
                                   ),
                                 ),
                                 SizedBox(
@@ -227,6 +279,8 @@ class _GeneralInformationFirstStepState
                                         ? null
                                         : t.fieldRequired;
                                   },
+                                  style: TextStyle(
+                                      color: Theme.of(context).accentColor),
                                   decoration: InputDecoration(
                                     border: OutlineInputBorder(
                                       borderRadius: BorderRadius.circular(5),
@@ -236,7 +290,13 @@ class _GeneralInformationFirstStepState
                                       ),
                                     ),
                                     labelText: t.country,
+                                    labelStyle: TextStyle(
+                                        color: Theme.of(context).accentColor),
                                     filled: true,
+                                    fillColor: currentTheme.currentTheme ==
+                                            ThemeMode.dark
+                                        ? Theme.of(context).cardColor
+                                        : Colors.grey.shade200,
                                   ),
                                   value: country,
                                   isExpanded: true,

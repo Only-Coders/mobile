@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mobile/theme/themes.dart';
 
 class GitPlatform extends StatelessWidget {
   final String platform;
@@ -14,10 +15,15 @@ class GitPlatform extends StatelessWidget {
   Widget platformItem() {
     switch (platform) {
       case "GITHUB":
-        return SvgPicture.asset(
-          "assets/images/github.svg",
-          width: 30,
-        );
+        return currentTheme.currentTheme == ThemeMode.light
+            ? SvgPicture.asset(
+                "assets/images/github.svg",
+                width: 30,
+              )
+            : Image.asset(
+                "assets/images/github-dark.png",
+                width: 30,
+              );
       case "GITLAB":
         return SvgPicture.asset(
           "assets/images/gitlab.svg",

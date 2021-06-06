@@ -53,6 +53,7 @@ class CustomTheme extends ChangeNotifier {
   static ThemeData get darkTheme {
     return ThemeData(
       primaryColor: Color(0xff00CDAE),
+      brightness: Brightness.dark,
       primarySwatch: createMaterialColor(Color(0xff00CDAE)),
       accentColor: Colors.white.withOpacity(0.9),
       secondaryHeaderColor: Color(0xff26272D),

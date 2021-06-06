@@ -107,7 +107,10 @@ class _ContactItemState extends State<ContactItem> {
                                 ? ""
                                 : "${widget.contact.currentPosition.workplace.name} ${widget.contact.currentPosition.position}",
                             style: TextStyle(
-                                color: Colors.grey.shade700, fontSize: 11),
+                                color: Theme.of(context)
+                                    .accentColor
+                                    .withOpacity(0.6),
+                                fontSize: 11),
                           ),
                         ],
                       ),
@@ -180,7 +183,7 @@ class _ContactItemState extends State<ContactItem> {
                               ? AppLocalizations.of(context)
                                   .cancelContactRequest
                               : AppLocalizations.of(context).add,
-                          style: TextStyle(fontSize: 12),
+                          style: TextStyle(fontSize: 12, color: Colors.white),
                         ),
                       ),
                     ),

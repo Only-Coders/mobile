@@ -62,7 +62,10 @@ class _TagsState extends State<Tags> {
 
     Widget nextButton() {
       return ElevatedButton(
-        child: Text(t.next),
+        child: Text(
+          t.next,
+          style: TextStyle(color: Colors.white),
+        ),
         onPressed: () {
           widget.increment();
         },

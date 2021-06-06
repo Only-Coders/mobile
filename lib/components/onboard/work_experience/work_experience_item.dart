@@ -34,18 +34,28 @@ class WorkExperienceItem extends StatelessWidget {
             children: [
               Text(
                 work.workplace.name,
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                  color: Theme.of(context).accentColor,
+                ),
               ),
               Text(
                 work.position,
-                style: TextStyle(color: Colors.grey.shade700, fontSize: 12),
+                style: TextStyle(
+                  color: Theme.of(context).accentColor.withOpacity(0.6),
+                  fontSize: 12,
+                ),
               ),
               SizedBox(
                 height: 2,
               ),
               Text(
                 "${parseDate(work.since)} - ${work.until == null ? "Actual" : parseDate(work.until)}",
-                style: TextStyle(color: Colors.grey.shade700, fontSize: 10),
+                style: TextStyle(
+                  color: Theme.of(context).accentColor.withOpacity(0.6),
+                  fontSize: 10,
+                ),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,

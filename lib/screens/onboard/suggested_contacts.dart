@@ -59,7 +59,10 @@ class _SuggestedContactsState extends State<SuggestedContacts> {
 
     Widget finishButton() {
       return ElevatedButton(
-        child: Text(t.finish),
+        child: Text(
+          t.finish,
+          style: TextStyle(color: Colors.white),
+        ),
         onPressed: () {
           Navigator.pushReplacementNamed(context, "/feed");
         },

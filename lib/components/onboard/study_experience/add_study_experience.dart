@@ -4,6 +4,7 @@ import 'package:mobile/models/institute.dart';
 import 'package:mobile/models/study.dart';
 import 'package:mobile/services/study.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/theme/themes.dart';
 
 class AddStudyExperience extends StatefulWidget {
   final addStudy;
@@ -119,6 +120,22 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                   onTap: () async {
                     DateTime date = await showDatePicker(
                         context: context,
+                        builder: (BuildContext context, Widget child) {
+                          return Theme(
+                            data: currentTheme.currentTheme == ThemeMode.light
+                                ? CustomTheme.lightTheme.copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : CustomTheme.darkTheme.copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        },
                         initialDate:
                             _startDate == null ? DateTime.now() : _startDate,
                         firstDate: DateTime(1970),
@@ -161,6 +178,22 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
                   onTap: () async {
                     DateTime date = await showDatePicker(
                         context: context,
+                        builder: (BuildContext context, Widget child) {
+                          return Theme(
+                            data: currentTheme.currentTheme == ThemeMode.light
+                                ? CustomTheme.lightTheme.copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : CustomTheme.darkTheme.copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        },
                         initialDate:
                             _endDate == null ? DateTime.now() : _endDate,
                         firstDate: DateTime(1970),

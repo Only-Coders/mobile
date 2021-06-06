@@ -4,6 +4,7 @@ import 'package:mobile/models/workplace.dart';
 import 'package:mobile/services/work.dart';
 import "package:flutter_typeahead/flutter_typeahead.dart";
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/theme/themes.dart';
 
 class EditWorkExperience extends StatefulWidget {
   final updateWork;
@@ -37,7 +38,7 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
       workplaceId = widget.work.workplace.id;
       position = widget.work.position;
       _startDate = DateTime.parse(widget.work.since);
-      _endDate = DateTime.parse(widget.work.until);
+      if (_endDate != null) _endDate = DateTime.parse(widget.work.until);
     });
     _typeAheadController.text = widget.work.workplace.name;
     _positionController.text = widget.work.position;
@@ -147,6 +148,22 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                   onTap: () async {
                     DateTime date = await showDatePicker(
                         context: context,
+                        builder: (BuildContext context, Widget child) {
+                          return Theme(
+                            data: currentTheme.currentTheme == ThemeMode.light
+                                ? CustomTheme.lightTheme.copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : CustomTheme.darkTheme.copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        },
                         initialDate:
                             _startDate == null ? DateTime.now() : _startDate,
                         firstDate: DateTime(1970),
@@ -189,6 +206,22 @@ class _EditWorkExperienceState extends State<EditWorkExperience> {
                   onTap: () async {
                     DateTime date = await showDatePicker(
                         context: context,
+                        builder: (BuildContext context, Widget child) {
+                          return Theme(
+                            data: currentTheme.currentTheme == ThemeMode.light
+                                ? CustomTheme.lightTheme.copyWith(
+                                    colorScheme: ColorScheme.light(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  )
+                                : CustomTheme.darkTheme.copyWith(
+                                    colorScheme: ColorScheme.dark(
+                                      primary: Theme.of(context).primaryColor,
+                                    ),
+                                  ),
+                            child: child,
+                          );
+                        },
                         initialDate:
                             _endDate == null ? DateTime.now() : _endDate,
                         firstDate: DateTime(1970),

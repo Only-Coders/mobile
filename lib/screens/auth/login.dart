@@ -7,6 +7,7 @@ import 'package:mobile/services/fb_auth.dart';
 import 'package:mobile/services/auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 class Login extends StatefulWidget {
@@ -27,6 +28,8 @@ class _LoginState extends State<Login> {
       var payload = Jwt.parseJwt(token);
       if (payload["complete"] != null) {
         Provider.of<UserData.User>(context, listen: false).setUser(payload);
+        await Provider.of<UserData.User>(context, listen: false)
+            .saveUserOnPrefs();
         Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
         Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
@@ -68,10 +71,15 @@ class _LoginState extends State<Login> {
                   height: 60,
                 ),
                 Center(
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 160,
-                  ),
+                  child: currentTheme.currentTheme != ThemeMode.dark
+                      ? Image.asset(
+                          'assets/images/logo.png',
+                          width: 160,
+                        )
+                      : Image.asset(
+                          "assets/images/dark-logo.png",
+                          width: 160,
+                        ),
                 ),
                 SizedBox(
                   height: 60,

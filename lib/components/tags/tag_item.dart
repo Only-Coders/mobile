@@ -52,7 +52,9 @@ class TagItem extends StatelessWidget {
                       Text(
                         tag.followerQuantity.toString() + t.followsTags,
                         style: TextStyle(
-                            color: Colors.grey.shade700, fontSize: 12),
+                            color:
+                                Theme.of(context).accentColor.withOpacity(0.6),
+                            fontSize: 12),
                       ),
                     ],
                   ),

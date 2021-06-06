@@ -70,7 +70,10 @@ class _WorkExperienceState extends State<WorkExperience> {
                   strokeWidth: 3,
                 ),
               )
-            : Text(t.next),
+            : Text(
+                t.next,
+                style: TextStyle(color: Colors.white),
+              ),
         onPressed: () async {
           setState(() {
             isLoading = true;

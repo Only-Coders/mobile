@@ -91,7 +91,10 @@ class _StudyExperienceState extends State<StudyExperience> {
                   strokeWidth: 3,
                 ),
               )
-            : Text(t.next),
+            : Text(
+                t.next,
+                style: TextStyle(color: Colors.white),
+              ),
         onPressed: () async {
           await createStudies(context);
         },

@@ -171,7 +171,7 @@ class _NewPostState extends State<NewPost> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     User user = Provider.of<User>(context);
-    selectedPostPrivacy = Provider.of<User>(context).defaultPrivacy
+    selectedPostPrivacy = Provider.of<User>(context).defaultPrivacy == null
         ? "To anyone"
         : "To my contacts";
 
@@ -225,7 +225,8 @@ class _NewPostState extends State<NewPost> {
                               children: [
                                 CircleAvatar(
                                   radius: 30,
-                                  backgroundImage: user.imageURI.isEmpty
+                                  backgroundImage: user.imageURI == null ||
+                                          user.imageURI.isEmpty
                                       ? AssetImage(
                                           "assets/images/default-avatar.png")
                                       : NetworkImage(user.imageURI),
@@ -304,7 +305,8 @@ class _NewPostState extends State<NewPost> {
                                                         "To anyone");
                                           },
                                           value: Provider.of<User>(context)
-                                                  .defaultPrivacy
+                                                      .defaultPrivacy ==
+                                                  null
                                               ? "To anyone"
                                               : "To my contacts",
                                         ),
