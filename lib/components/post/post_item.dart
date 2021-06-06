@@ -324,7 +324,7 @@ class _PostItemState extends State<PostItem> {
                                   color: Theme.of(context).accentColor,
                                 ),
                                 title: Text(
-                                  t.remove,
+                                  t.removeFavorite,
                                   style: TextStyle(
                                       color: Theme.of(context).accentColor),
                                 ),
@@ -340,7 +340,6 @@ class _PostItemState extends State<PostItem> {
                                 setState(() {
                                   widget.post.isFavorite = true;
                                 });
-                                print(widget.post.isFavorite);
                                 Toast().showSuccess(
                                     context, t.addToFavoriteMessage);
                               },

@@ -79,6 +79,7 @@
   "save": "Guardar",
   "download": "Descargar",
   "remove": "Eliminar",
+  "removeFavorite": "Eliminar favorito",
   "addToFavoriteMessage": "Agregado a favoritos",
   "removeFromFavoriteMessage": "Se elimino de favoritos",
   "logout": "Cerrar sesion",
