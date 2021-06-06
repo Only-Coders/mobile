@@ -232,11 +232,24 @@ class _PostItemState extends State<PostItem> {
                         children: [
                           Row(
                             children: [
-                              Text(
-                                "${widget.post.publisher.firstName} ${widget.post.publisher.lastName}",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Theme.of(context).accentColor,
+                              GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => Profile(
+                                        canonicalName:
+                                            widget.post.publisher.canonicalName,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Text(
+                                  "${widget.post.publisher.firstName} ${widget.post.publisher.lastName}",
+                                  style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Theme.of(context).accentColor,
+                                  ),
                                 ),
                               ),
                               SizedBox(
