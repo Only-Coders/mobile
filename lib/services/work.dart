@@ -20,4 +20,8 @@ class WorkService {
     if (work.workplace.id.isEmpty) workJson.remove("id");
     await _httpClient.postRequest("/api/users/workplaces", workJson);
   }
+
+  Future<void> deleteWork(String id) async {
+    await _httpClient.deleteRequest("/api/users/workplaces/$id");
+  }
 }

@@ -9,9 +9,15 @@ class WorkExperienceItem extends StatelessWidget {
   final int index;
   final removeWork;
   final updateWork;
+  final bool inProfile;
 
   const WorkExperienceItem(
-      {Key key, this.work, this.index, this.removeWork, this.updateWork})
+      {Key key,
+      this.work,
+      this.index,
+      this.removeWork,
+      this.updateWork,
+      this.inProfile = false})
       : super(key: key);
 
   String parseDate(String date) {
@@ -27,6 +33,9 @@ class WorkExperienceItem extends StatelessWidget {
       padding: EdgeInsets.only(top: 5, bottom: 5),
       width: double.infinity,
       child: Card(
+        color: inProfile
+            ? Theme.of(context).scaffoldBackgroundColor
+            : Theme.of(context).cardColor,
         child: Padding(
           padding: EdgeInsets.all(10),
           child: Column(

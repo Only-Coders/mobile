@@ -5,6 +5,7 @@ import 'package:mobile/components/profile/description.dart';
 import 'package:mobile/components/profile/favorites_preview.dart';
 import 'package:mobile/components/profile/nav_drawer.dart';
 import 'package:mobile/components/profile/post_preview.dart';
+import 'package:mobile/components/profile/work_experience_preview.dart';
 import 'package:mobile/models/profile.dart' as ProfileType;
 import 'package:mobile/services/person.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -172,37 +173,50 @@ class _ProfileState extends State<Profile> {
                         canonicalName: widget.canonicalName,
                       ),
                       FavoritesPreview(),
-                      Container(
-                        margin: EdgeInsets.only(top: 5),
-                        width: double.infinity,
-                        child: Card(
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Experiencias",
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "No hay experiencias recientes",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .accentColor
-                                        .withOpacity(0.6),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
+                      WorkExperiencePreview(
+                        canonicalName: widget.canonicalName,
                       ),
+                      // Container(
+                      //   margin: EdgeInsets.only(top: 5),
+                      //   width: double.infinity,
+                      //   child: Card(
+                      //     elevation: 0,
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.all(15),
+                      //       child: Column(
+                      //         crossAxisAlignment: CrossAxisAlignment.start,
+                      //         children: [
+                      //           Text(
+                      //             "Experiencias",
+                      //             style: TextStyle(
+                      //                 color: Theme.of(context).accentColor),
+                      //           ),
+                      //           Center(
+                      //             child: Column(
+                      //               children: [
+                      //                 Image.asset(
+                      //                   "assets/images/no-data-work.png",
+                      //                   width: 128,
+                      //                 ),
+                      //                 SizedBox(
+                      //                   height: 5,
+                      //                 ),
+                      //                 Text(
+                      //                   "No hay experiencias recientes",
+                      //                   style: TextStyle(
+                      //                     color: Theme.of(context)
+                      //                         .accentColor
+                      //                         .withOpacity(0.6),
+                      //                   ),
+                      //                 ),
+                      //               ],
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       Container(
                         margin: EdgeInsets.only(top: 5),
                         width: double.infinity,
@@ -218,15 +232,25 @@ class _ProfileState extends State<Profile> {
                                   style: TextStyle(
                                       color: Theme.of(context).accentColor),
                                 ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "No hay educaciones recientes",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .accentColor
-                                        .withOpacity(0.6),
+                                Center(
+                                  child: Column(
+                                    children: [
+                                      Image.asset(
+                                        "assets/images/no-data-study.png",
+                                        width: 128,
+                                      ),
+                                      SizedBox(
+                                        height: 5,
+                                      ),
+                                      Text(
+                                        "No hay educaciones recientes",
+                                        style: TextStyle(
+                                          color: Theme.of(context)
+                                              .accentColor
+                                              .withOpacity(0.6),
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ),
                               ],

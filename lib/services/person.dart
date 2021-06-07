@@ -1,6 +1,7 @@
 import 'package:mobile/http_client.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/profile.dart';
+import 'package:mobile/models/work_position.dart';
 
 class PersonService {
   final HttpClient _httpClient = HttpClient();
@@ -50,6 +51,14 @@ class PersonService {
         .getRequest("/api/users", {"partialName": partialName, "size": 4});
     return (response.data["content"] as List)
         .map((person) => Person.fromJson(person))
+        .toList();
+  }
+
+  Future<List<WorkPosition>> getPersonWorks(String canonicalName) async {
+    var response =
+        await _httpClient.getRequest("/api/users/$canonicalName/workplaces");
+    return (response.data["content"] as List)
+        .map((work) => WorkPosition.fromJson(work))
         .toList();
   }
 }
