@@ -6,6 +6,7 @@ import 'package:mobile/components/profile/nav_drawer.dart';
 import 'package:mobile/components/profile/post_preview.dart';
 import 'package:mobile/models/profile.dart' as ProfileType;
 import 'package:mobile/services/person.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Profile extends StatefulWidget {
   final String canonicalName;
@@ -24,6 +25,31 @@ class _ProfileState extends State<Profile> {
   void initState() {
     getProfile = _personService.getPersonProfile(widget.canonicalName);
     super.initState();
+  }
+
+  Future<void> launchUrl(String user, String gitPlatform) async {
+    switch (gitPlatform) {
+      case "GITHUB":
+        String url = "https://github.com/$user";
+        if (await canLaunch(url)) {
+          await launch(url);
+        }
+        break;
+      case "GITLAB":
+        String url = "https://gitlab.com/$user";
+        if (await canLaunch(url)) {
+          await launch(url);
+        }
+        break;
+      case "BITBUCKET":
+        String url = "https://bitbucket.com/$user";
+        if (await canLaunch(url)) {
+          await launch(url);
+        }
+        break;
+      default:
+        break;
+    }
   }
 
   @override
@@ -103,21 +129,27 @@ class _ProfileState extends State<Profile> {
                                                   EdgeInsets.only(bottom: 5),
                                             ),
                                       if (user.gitProfile != null)
-                                        Row(
-                                          children: [
-                                            GitPlatform(
-                                                platform:
-                                                    user.gitProfile.platform),
-                                            SizedBox(
-                                              width: 5,
-                                            ),
-                                            Text(
-                                              "@${user.gitProfile.userName}",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12),
-                                            ),
-                                          ],
+                                        GestureDetector(
+                                          onTap: () {
+                                            launchUrl(user.gitProfile.userName,
+                                                user.gitProfile.platform);
+                                          },
+                                          child: Row(
+                                            children: [
+                                              GitPlatform(
+                                                  platform:
+                                                      user.gitProfile.platform),
+                                              SizedBox(
+                                                width: 5,
+                                              ),
+                                              Text(
+                                                "@${user.gitProfile.userName}",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
                                         )
                                     ],
                                   ),
