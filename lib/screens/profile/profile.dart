@@ -9,6 +9,7 @@ import 'package:mobile/components/profile/work_experience_preview.dart';
 import 'package:mobile/models/profile.dart' as ProfileType;
 import 'package:mobile/services/person.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Profile extends StatefulWidget {
   final String canonicalName;
@@ -56,10 +57,13 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Scaffold(
       endDrawer: NavDrawer(),
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
+        brightness: Brightness.dark,
         iconTheme: IconThemeData(color: Colors.white),
         elevation: 0,
       ),
@@ -92,9 +96,11 @@ class _ProfileState extends State<Profile> {
                           clipBehavior: Clip.none,
                           children: [
                             Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Padding(
-                                  padding: const EdgeInsets.all(10),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 10),
                                   child: CircleAvatar(
                                     radius: 40,
                                     backgroundImage: user.imageURI.isEmpty
@@ -104,56 +110,70 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ),
                                 Flexible(
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.max,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        "${user.firstName} ${user.lastName}",
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 24),
-                                      ),
-                                      user.currentPosition != null
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  bottom: 5),
-                                              child: Text(
-                                                "${user.currentPosition.position} ${user.currentPosition.workplace.name}",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 14),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "${user.firstName} ${user.lastName}",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 24),
+                                        ),
+                                        user.currentPosition != null
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                    bottom: 5),
+                                                child: Text(
+                                                  "${user.currentPosition.position} ${user.currentPosition.workplace.name}",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 14),
+                                                ),
+                                              )
+                                            : Container(
+                                                padding:
+                                                    EdgeInsets.only(bottom: 5),
                                               ),
-                                            )
-                                          : Container(
-                                              padding:
-                                                  EdgeInsets.only(bottom: 5),
+                                        if (user.gitProfile != null)
+                                          GestureDetector(
+                                            onTap: () {
+                                              launchUrl(
+                                                  user.gitProfile.userName,
+                                                  user.gitProfile.platform);
+                                            },
+                                            child: Row(
+                                              children: [
+                                                GitPlatform(
+                                                    platform: user
+                                                        .gitProfile.platform),
+                                                SizedBox(
+                                                  width: 5,
+                                                ),
+                                                Text(
+                                                  "@${user.gitProfile.userName}",
+                                                  style: TextStyle(
+                                                      color: Colors.white,
+                                                      fontSize: 12),
+                                                ),
+                                              ],
                                             ),
-                                      if (user.gitProfile != null)
-                                        GestureDetector(
-                                          onTap: () {
-                                            launchUrl(user.gitProfile.userName,
-                                                user.gitProfile.platform);
+                                          ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushNamed("/profile/contacts");
                                           },
-                                          child: Row(
-                                            children: [
-                                              GitPlatform(
-                                                  platform:
-                                                      user.gitProfile.platform),
-                                              SizedBox(
-                                                width: 5,
-                                              ),
-                                              Text(
-                                                "@${user.gitProfile.userName}",
-                                                style: TextStyle(
-                                                    color: Colors.white,
-                                                    fontSize: 12),
-                                              ),
-                                            ],
+                                          child: Text(
+                                            "${user.contactQty} ${t.contacts}",
+                                            style:
+                                                TextStyle(color: Colors.white),
                                           ),
                                         )
-                                    ],
+                                      ],
+                                    ),
                                   ),
                                 ),
                               ],
@@ -176,47 +196,6 @@ class _ProfileState extends State<Profile> {
                       WorkExperiencePreview(
                         canonicalName: widget.canonicalName,
                       ),
-                      // Container(
-                      //   margin: EdgeInsets.only(top: 5),
-                      //   width: double.infinity,
-                      //   child: Card(
-                      //     elevation: 0,
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.all(15),
-                      //       child: Column(
-                      //         crossAxisAlignment: CrossAxisAlignment.start,
-                      //         children: [
-                      //           Text(
-                      //             "Experiencias",
-                      //             style: TextStyle(
-                      //                 color: Theme.of(context).accentColor),
-                      //           ),
-                      //           Center(
-                      //             child: Column(
-                      //               children: [
-                      //                 Image.asset(
-                      //                   "assets/images/no-data-work.png",
-                      //                   width: 128,
-                      //                 ),
-                      //                 SizedBox(
-                      //                   height: 5,
-                      //                 ),
-                      //                 Text(
-                      //                   "No hay experiencias recientes",
-                      //                   style: TextStyle(
-                      //                     color: Theme.of(context)
-                      //                         .accentColor
-                      //                         .withOpacity(0.6),
-                      //                   ),
-                      //                 ),
-                      //               ],
-                      //             ),
-                      //           ),
-                      //         ],
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
                       Container(
                         margin: EdgeInsets.only(top: 5),
                         width: double.infinity,

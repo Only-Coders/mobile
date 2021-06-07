@@ -61,4 +61,16 @@ class PersonService {
         .map((work) => WorkPosition.fromJson(work))
         .toList();
   }
+
+  Future<List<Person>> getMyContacts([int page]) async {
+    var response =
+        await _httpClient.getRequest("/api/users/contacts", {"page": page});
+    return (response.data["content"] as List)
+        .map((person) => Person.fromJson(person))
+        .toList();
+  }
+
+  Future<void> removeMyContact(String canonicalName) async {
+    await _httpClient.deleteRequest("/api/users/contacts/$canonicalName");
+  }
 }

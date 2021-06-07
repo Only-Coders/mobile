@@ -88,5 +88,8 @@
   "usersNotFound": "Could not find users with that name",
   "postsNotFound": "No posts found!",
   "emptyList": "Be the first to add a post",
-  "favorites": "Favorites"
+  "favorites": "Favorites",
+  "contacts": "Contacts",
+  "removeContactsMessage": "The contact was removed successfully",
+  "contactsNotFound": "You dont have contacts"
 }
