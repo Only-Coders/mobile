@@ -5,16 +5,14 @@ import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/post.dart';
 
-class TagPosts extends StatefulWidget {
-  final String canonicalName;
-
-  const TagPosts({Key key, this.canonicalName}) : super(key: key);
+class FavoritePosts extends StatefulWidget {
+  const FavoritePosts({Key key}) : super(key: key);
 
   @override
-  _TagPostsState createState() => _TagPostsState();
+  _FavoritePostsState createState() => _FavoritePostsState();
 }
 
-class _TagPostsState extends State<TagPosts> {
+class _FavoritePostsState extends State<FavoritePosts> {
   static const _pageSize = 10;
   final PostService _postService = PostService();
   final PagingController<int, Post> _pagingController =
@@ -31,8 +29,7 @@ class _TagPostsState extends State<TagPosts> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       int page = pageKey ~/ 10;
-      final newItems =
-          await _postService.getPostsByTag(widget.canonicalName, page);
+      final newItems = await _postService.getFavoritesPost(page);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -52,6 +49,10 @@ class _TagPostsState extends State<TagPosts> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
+        title: Text(
+          t.favorites,
+          style: TextStyle(color: Colors.white),
+        ),
         iconTheme: IconThemeData(color: Colors.white),
         brightness: Brightness.dark,
       ),
@@ -90,33 +91,6 @@ class _TagPostsState extends State<TagPosts> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(
-                        t.emptyList,
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed("/new-post");
-                        },
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                            width: 1.0,
-                            color: Theme.of(context).primaryColor,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        icon: Icon(Icons.add, size: 18),
-                        label: Text(
-                          t.newPost,
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                        ),
-                      )
                     ],
                   ),
                 ),

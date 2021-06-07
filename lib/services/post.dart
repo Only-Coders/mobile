@@ -50,4 +50,12 @@ class PostService {
         .map((post) => Post.fromJson(post))
         .toList();
   }
+
+  Future<List<Post>> getFavoritesPost([int page]) async {
+    var response = await _httpClient
+        .getRequest("/api/users/favorite-posts", {"page": page});
+    return (response.data["content"] as List)
+        .map((post) => Post.fromJson(post))
+        .toList();
+  }
 }

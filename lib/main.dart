@@ -11,6 +11,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/screens/post/new_post.dart';
 import 'package:mobile/screens/post/profile_posts.dart';
+import 'package:mobile/screens/profile/favorite_posts.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/theme/themes.dart';
@@ -77,6 +78,7 @@ class _AppState extends State<App> {
           "/new-post": (context) => NewPost(),
           "/profile": (context) => Profile(),
           "/profile/posts": (context) => ProfilePosts(),
+          "/profile/favorites": (context) => FavoritePosts(),
           "/tag/posts": (context) => TagPosts()
         },
       ),

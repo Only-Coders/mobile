@@ -3,6 +3,7 @@ import 'package:flutter/rendering.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/post.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfilePosts extends StatelessWidget {
   final String canonicalName;
@@ -12,10 +13,15 @@ class ProfilePosts extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PostService _postService = PostService();
+    var t = AppLocalizations.of(context);
 
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
+        title: Text(
+          t.posts,
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Theme.of(context).secondaryHeaderColor,
       ),
       body: SingleChildScrollView(

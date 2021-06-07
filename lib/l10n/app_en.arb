@@ -87,5 +87,6 @@
   "search": "Search user...",
   "usersNotFound": "Could not find users with that name",
   "postsNotFound": "No posts found!",
-  "emptyList": "Be the first to add a post"
+  "emptyList": "Be the first to add a post",
+  "favorites": "Favorites"
 }

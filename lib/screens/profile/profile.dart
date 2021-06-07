@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mobile/components/generic/git_platform.dart';
 import 'package:mobile/components/profile/description.dart';
+import 'package:mobile/components/profile/favorites_preview.dart';
 import 'package:mobile/components/profile/nav_drawer.dart';
 import 'package:mobile/components/profile/post_preview.dart';
 import 'package:mobile/models/profile.dart' as ProfileType;
@@ -170,37 +171,7 @@ class _ProfileState extends State<Profile> {
                       PostPreview(
                         canonicalName: widget.canonicalName,
                       ),
-                      Container(
-                        margin: EdgeInsets.only(top: 5),
-                        width: double.infinity,
-                        child: Card(
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(15),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  "Favoritos",
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                ),
-                                SizedBox(
-                                  height: 5,
-                                ),
-                                Text(
-                                  "No hay favoritos recientes",
-                                  style: TextStyle(
-                                    color: Theme.of(context)
-                                        .accentColor
-                                        .withOpacity(0.6),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
+                      FavoritesPreview(),
                       Container(
                         margin: EdgeInsets.only(top: 5),
                         width: double.infinity,
