@@ -53,13 +53,63 @@ class _PostItemState extends State<PostItem> {
     int pos = 0;
 
     for (var x in regExp.allMatches(widget.post.message)) {
-      widgets.add(
-        Text(
-          widget.post.message.substring(pos, x.start),
-          style:
-              TextStyle(color: Theme.of(context).accentColor.withOpacity(0.8)),
-        ),
-      );
+      if (widget.post.message.substring(pos, x.start).contains("\n")) {
+        if (widget.post.message.substring(pos, x.start).indexOf("\n") > 0) {
+          widgets.add(
+            Text(
+              widget.post.message.substring(
+                  pos,
+                  pos +
+                      widget.post.message
+                          .substring(pos, x.start)
+                          .indexOf("\n")),
+              style: TextStyle(
+                  color: Theme.of(context).accentColor.withOpacity(0.8)),
+            ),
+          );
+          widgets.add(
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.post.message.substring(
+                        pos +
+                            widget.post.message
+                                .substring(pos, x.start)
+                                .indexOf("\n") +
+                            1,
+                        x.start),
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor.withOpacity(0.8)),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          widgets.add(
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    widget.post.message.substring(pos, x.start),
+                    style: TextStyle(
+                        color: Theme.of(context).accentColor.withOpacity(0.8)),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      } else {
+        widgets.add(
+          Text(
+            widget.post.message.substring(pos, x.start),
+            style: TextStyle(
+                color: Theme.of(context).accentColor.withOpacity(0.8)),
+          ),
+        );
+      }
       if (x.namedGroup("code") != null)
         widgets.add(
           Padding(
