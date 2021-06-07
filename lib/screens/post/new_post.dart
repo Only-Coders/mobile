@@ -19,7 +19,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 class NewPost extends StatefulWidget {
-  const NewPost({Key key}) : super(key: key);
+  final refreshFeed;
+
+  const NewPost({Key key, this.refreshFeed}) : super(key: key);
 
   @override
   _NewPostState createState() => _NewPostState();

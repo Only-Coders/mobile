@@ -227,7 +227,9 @@ class _FeedState extends State<Feed> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNav(),
+      bottomNavigationBar: BottomNav(
+        refreshFeed: _pagingController.refresh,
+      ),
     );
   }
 }

@@ -2,10 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/profile/profile.dart';
-import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 
 class BottomNav extends StatefulWidget {
+  final refreshFeed;
+
+  const BottomNav({Key key, this.refreshFeed}) : super(key: key);
+
   @override
   _BottomNavState createState() => _BottomNavState();
 }
@@ -30,7 +33,8 @@ class _BottomNavState extends State<BottomNav> {
             case 0:
               break;
             case 1:
-              Navigator.pushNamed(context, "/new-post");
+              Navigator.pushNamed(context, "/new-post")
+                  .then((value) => widget.refreshFeed());
               break;
             case 2:
               Navigator.pushNamed(context, "/new-post");
