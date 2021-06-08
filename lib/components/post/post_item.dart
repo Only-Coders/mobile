@@ -13,6 +13,7 @@ import 'package:mobile/models/post_tag.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/services/post.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
@@ -248,7 +249,7 @@ class _PostItemState extends State<PostItem> {
         ),
       );
     }
-    calculateMedals(widget.post.reactions[0].quantity);
+    calculateMedals(widget.post.publisher.amountOfMedals);
 
     return Container(
       width: double.infinity,
@@ -267,11 +268,11 @@ class _PostItemState extends State<PostItem> {
                         padding: const EdgeInsets.only(top: 10),
                         child: CircleAvatar(
                           radius: 20,
+                          backgroundColor: Colors.grey.shade300,
                           backgroundImage: widget
                                   .post.publisher.imageURI.isEmpty
                               ? AssetImage("assets/images/default-avatar.png")
                               : NetworkImage(widget.post.publisher.imageURI),
-                          backgroundColor: Colors.transparent,
                         ),
                       ),
                       SizedBox(

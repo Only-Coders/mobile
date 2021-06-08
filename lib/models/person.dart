@@ -5,6 +5,7 @@ class Person {
   final String firstName;
   final String lastName;
   final String imageURI;
+  final int amountOfMedals;
   final WorkPosition currentPosition;
 
   Person(
@@ -12,6 +13,7 @@ class Person {
       this.firstName,
       this.lastName,
       this.imageURI,
+      this.amountOfMedals,
       this.currentPosition});
 
   factory Person.fromJson(Map<String, dynamic> json) {
@@ -20,6 +22,7 @@ class Person {
       firstName: json['firstName'],
       lastName: json['lastName'],
       imageURI: json['imageURI'],
+      amountOfMedals: json['amountOfMedals'],
       currentPosition: json['currentPosition'] != null
           ? new WorkPosition.fromJson(json['currentPosition'])
           : null,
@@ -31,6 +34,7 @@ class Person {
         'firstName': firstName,
         'lastName': lastName,
         'imageURI': imageURI,
+        'amountOfMedals': amountOfMedals,
         'currentPosition':
             currentPosition != null ? currentPosition.toJson() : null,
       };

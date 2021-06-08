@@ -103,6 +103,7 @@ class _ProfileState extends State<Profile> {
                                       horizontal: 10),
                                   child: CircleAvatar(
                                     radius: 40,
+                                    backgroundColor: Colors.grey.shade300,
                                     backgroundImage: user.imageURI.isEmpty
                                         ? AssetImage(
                                             "assets/images/default-avatar.png")
