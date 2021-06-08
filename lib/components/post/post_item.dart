@@ -13,7 +13,6 @@ import 'package:mobile/models/post_tag.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/services/post.dart';
-import 'package:skeleton_text/skeleton_text.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
