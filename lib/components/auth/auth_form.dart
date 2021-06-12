@@ -104,8 +104,28 @@ class _AuthFormState extends State<AuthForm> {
                       : Colors.grey.shade200,
                   filled: true),
             ),
+            if (t.login == widget.buttonText)
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  InkWell(
+                    onTap: () {
+                      Navigator.of(context).pushNamed("/forgot-password");
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.only(top: 10, right: 8),
+                      child: Text(
+                        t.forgotPassword,
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             SizedBox(
-              height: 30,
+              height: 35,
             ),
             SizedBox(
               width: double.infinity,

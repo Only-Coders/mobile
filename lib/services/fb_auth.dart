@@ -20,4 +20,8 @@ class FBAuthService {
       return await credentials.user.getIdToken();
     }
   }
+
+  Future<void> resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
 }

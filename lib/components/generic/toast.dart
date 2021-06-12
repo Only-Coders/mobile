@@ -15,7 +15,13 @@ class Toast {
             SizedBox(
               width: 10,
             ),
-            Text(message),
+            Flexible(
+              child: Text(
+                message,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
         ),
         duration: Duration(seconds: 5),
@@ -42,7 +48,13 @@ class Toast {
             SizedBox(
               width: 10,
             ),
-            Text(message),
+            Flexible(
+              child: Text(
+                message,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
           ],
         ),
         duration: Duration(seconds: 5),
@@ -73,6 +85,7 @@ class Toast {
               child: Text(
                 message,
                 overflow: TextOverflow.ellipsis,
+                style: TextStyle(color: Colors.white),
               ),
             ),
           ],

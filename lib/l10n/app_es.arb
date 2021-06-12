@@ -91,5 +91,10 @@
   "favorites": "Favoritos",
   "contacts": "Contactos",
   "removeContactsMessage": "Se removio al contacto correctamente",
-  "contactsNotFound": "No tienes contactos"
+  "contactsNotFound": "No tienes contactos",
+  "forgotPassword": "¿ Olvidaste tu contraseña ?",
+  "dontWorry": "No te preocupes, le pasa a lo mejor de nosotros",
+  "sendLink": "Enviaremos un enlace de recuperación de contraseña al correo electrónico proporcionado.",
+  "confirm": "Confirmar",
+  "forgotPasswordMessage": "Le enviamos un correo electrónico para restablecer su contraseña"
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/navigation.dart';
 import 'package:mobile/providers/user.dart';
+import 'package:mobile/screens/auth/forgot_password.dart';
 import 'package:mobile/screens/auth/login.dart';
 import 'package:mobile/screens/auth/wrapper.dart';
 import 'package:mobile/screens/feed/feed.dart';
@@ -75,6 +76,7 @@ class _AppState extends State<App> {
           "/feed": (context) => Feed(),
           "/login": (context) => Login(),
           "/register": (context) => Register(),
+          "/forgot-password": (context) => ForgotPassword(),
           "/onboard": (context) => Onboard(),
           "/new-post": (context) => NewPost(),
           "/profile": (context) => Profile(),
