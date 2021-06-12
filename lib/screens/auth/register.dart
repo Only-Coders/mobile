@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/services/fb_auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/theme/themes.dart';
 
 class Register extends StatelessWidget {
   final _auth = FBAuthService(FirebaseAuth.instance);
@@ -49,17 +50,22 @@ class Register extends StatelessWidget {
                   ),
                 ),
                 SizedBox(
-                  height: 60,
-                ),
+                    height:
+                        currentTheme.currentTheme == ThemeMode.dark ? 20 : 60),
                 Center(
-                  child: Image.asset(
-                    'assets/images/logo.png',
-                    width: 160,
-                  ),
+                  child: currentTheme.currentTheme != ThemeMode.dark
+                      ? Image.asset(
+                          'assets/images/logo.png',
+                          width: 160,
+                        )
+                      : Image.asset(
+                          "assets/images/dark-logo.png",
+                          width: 240,
+                        ),
                 ),
                 SizedBox(
-                  height: 60,
-                ),
+                    height:
+                        currentTheme.currentTheme == ThemeMode.dark ? 20 : 60),
                 AuthForm(
                   buttonText: t.register,
                   action: register,
