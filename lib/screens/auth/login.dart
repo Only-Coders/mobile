@@ -68,8 +68,8 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 SizedBox(
-                  height: 60,
-                ),
+                    height:
+                        currentTheme.currentTheme == ThemeMode.dark ? 20 : 60),
                 Center(
                   child: currentTheme.currentTheme != ThemeMode.dark
                       ? Image.asset(
@@ -78,12 +78,12 @@ class _LoginState extends State<Login> {
                         )
                       : Image.asset(
                           "assets/images/dark-logo.png",
-                          width: 160,
+                          width: 240,
                         ),
                 ),
                 SizedBox(
-                  height: 60,
-                ),
+                    height:
+                        currentTheme.currentTheme == ThemeMode.dark ? 20 : 60),
                 AuthForm(
                   buttonText: t.login,
                   action: login,
