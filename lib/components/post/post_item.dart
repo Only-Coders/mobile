@@ -3,6 +3,7 @@ import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/components/post/file_post.dart';
 import 'package:mobile/components/post/image_post.dart';
 import 'package:mobile/components/post/link_post.dart';
+import 'package:mobile/components/post/post_parser.dart';
 import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/post.dart';
@@ -25,15 +26,16 @@ class PostItem extends StatefulWidget {
 
 class _PostItemState extends State<PostItem> {
   final PostService _postService = PostService();
+  final PostParser _postParser = PostParser();
   int bronceMedals = 0;
   int silverMedals = 0;
   int goldMedals = 0;
 
   void calculateMedals(int approves) {
-    int bronce = approves % 100;
-    approves = (approves - bronce) ~/ 100;
-    int silver = approves % 100;
-    int gold = (approves - silver) ~/ 100;
+    int bronce = approves % 5;
+    approves = (approves - bronce) ~/ 5;
+    int silver = approves % 5;
+    int gold = (approves - silver) ~/ 5;
     setState(() {
       bronceMedals = bronce;
       silverMedals = silver;
@@ -45,209 +47,9 @@ class _PostItemState extends State<PostItem> {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
 
-    RegExp regExp = new RegExp(
-      r"(^```(?<lang>[\w\W]*?)\n(?<code>[^`][\W\w]*?)\n```$)|((?<!\S)(?<tag>#\w+)(\s|$))|((?<!\S)(?<mention>@\w+-\w{5})(\s|$))",
-      multiLine: true,
-    );
-    List<Widget> widgets = [];
-    int pos = 0;
+    List<Widget> widgets = _postParser.parsePost(
+        context, widget.post.message, widget.post.tags, widget.post.mentions);
 
-    for (var x in regExp.allMatches(widget.post.message)) {
-      if (widget.post.message.substring(pos, x.start).contains("\n")) {
-        if (widget.post.message.substring(pos, x.start).indexOf("\n") > 0) {
-          widgets.add(
-            Text(
-              widget.post.message.substring(
-                  pos,
-                  pos +
-                      widget.post.message
-                          .substring(pos, x.start)
-                          .indexOf("\n")),
-              style: TextStyle(
-                  color: Theme.of(context).accentColor.withOpacity(0.8)),
-            ),
-          );
-          widgets.add(
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    widget.post.message.substring(
-                        pos +
-                            widget.post.message
-                                .substring(pos, x.start)
-                                .indexOf("\n") +
-                            1,
-                        x.start),
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor.withOpacity(0.8)),
-                  ),
-                ),
-              ],
-            ),
-          );
-        } else {
-          widgets.add(
-            Row(
-              children: [
-                Expanded(
-                  child: Text(
-                    widget.post.message.substring(pos, x.start),
-                    style: TextStyle(
-                        color: Theme.of(context).accentColor.withOpacity(0.8)),
-                  ),
-                ),
-              ],
-            ),
-          );
-        }
-      } else {
-        widgets.add(
-          Text(
-            widget.post.message.substring(pos, x.start),
-            style: TextStyle(
-                color: Theme.of(context).accentColor.withOpacity(0.8)),
-          ),
-        );
-      }
-      if (x.namedGroup("code") != null)
-        widgets.add(
-          Padding(
-            padding: EdgeInsets.only(bottom: 5),
-            child: Container(
-              width: double.infinity,
-              child: HighlightView(
-                x.namedGroup("code"),
-                language: x.namedGroup("lang"),
-                theme: tomorrowNightTheme,
-                padding: EdgeInsets.all(10),
-                textStyle: TextStyle(
-                  fontSize: 10,
-                ),
-              ),
-              decoration: BoxDecoration(
-                border: Border.all(
-                    color: const Color(0xff1d1f21),
-                    width: 4.0,
-                    style: BorderStyle.solid),
-                borderRadius: BorderRadius.all(
-                  Radius.circular(4),
-                ),
-              ),
-            ),
-          ),
-        );
-      if (x.namedGroup("tag") != null) {
-        String canonicalName =
-            x.namedGroup("tag").substring(1, x.namedGroup("tag").length);
-        if (widget.post.tags.isNotEmpty) {
-          Iterable<PostTag> iterable = widget.post.tags
-              .where((element) => element.canonicalName == canonicalName);
-          if (iterable.isNotEmpty) {
-            PostTag tag = iterable.first;
-            widgets.add(
-              Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => TagPosts(
-                          canonicalName: canonicalName,
-                        ),
-                      ),
-                    );
-                  },
-                  child: Text(
-                    "#${tag.displayName}",
-                    style: TextStyle(color: Colors.blue),
-                  ),
-                ),
-              ),
-            );
-          } else {
-            widgets.add(
-              Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: Text(
-                  x.namedGroup("tag"),
-                  style: TextStyle(
-                    color: Theme.of(context).accentColor.withOpacity(0.8),
-                  ),
-                ),
-              ),
-            );
-          }
-        } else {
-          widgets.add(
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: Text(
-                x.namedGroup("tag"),
-                style: TextStyle(
-                  color: Theme.of(context).accentColor.withOpacity(0.8),
-                ),
-              ),
-            ),
-          );
-        }
-      }
-      if (x.namedGroup("mention") != null) {
-        String canonicalName = x
-            .namedGroup("mention")
-            .substring(1, x.namedGroup("mention").length);
-        if (widget.post.mentions.isNotEmpty) {
-          Person person = widget.post.mentions
-              .where((element) => element.canonicalName == canonicalName)
-              .first;
-          widgets.add(
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: InkWell(
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => Profile(
-                        canonicalName: canonicalName,
-                      ),
-                    ),
-                  );
-                },
-                child: Text(
-                  "@${person.firstName} ${person.lastName}",
-                  style: TextStyle(color: Colors.blue),
-                ),
-              ),
-            ),
-          );
-        } else {
-          widgets.add(
-            Padding(
-              padding: const EdgeInsets.only(right: 5),
-              child: Text(
-                x.namedGroup("mention"),
-                style: TextStyle(
-                  color: Theme.of(context).accentColor.withOpacity(0.8),
-                ),
-              ),
-            ),
-          );
-        }
-      }
-      pos = x.end;
-    }
-    if (pos < widget.post.message.length) {
-      widgets.add(
-        Text(
-          widget.post.message.substring(pos, widget.post.message.length),
-          style: TextStyle(
-            color: Theme.of(context).accentColor.withOpacity(0.8),
-          ),
-        ),
-      );
-    }
     calculateMedals(widget.post.publisher.amountOfMedals);
 
     return Container(
