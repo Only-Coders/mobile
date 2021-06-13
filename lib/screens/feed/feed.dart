@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mobile/components/generic/bottom_nav.dart';
+import 'package:mobile/components/generic/no_data.dart';
 import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/person.dart';
@@ -38,7 +39,8 @@ class _FeedState extends State<Feed> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       int page = pageKey ~/ 10;
-      final newItems = await _postService.getFeedPosts(page);
+      List<Post> newItems = await _postService.getFeedPosts(page);
+      newItems = [];
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -96,27 +98,10 @@ class _FeedState extends State<Feed> {
                 ),
               );
             },
-            noItemsFoundBuilder: (ctx) {
-              return Center(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      "assets/images/no-data.png",
-                      width: 100,
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      t.usersNotFound,
-                      style: TextStyle(color: Theme.of(context).accentColor),
-                    ),
-                  ],
-                ),
-              );
-            },
+            noItemsFoundBuilder: (ctx) => NoData(
+              message: t.usersNotFound,
+              img: "assets/images/no-data.png",
+            ),
             textFieldConfiguration: TextFieldConfiguration(
               style: TextStyle(
                 color: Colors.white.withOpacity(0.8),
@@ -174,60 +159,33 @@ class _FeedState extends State<Feed> {
             firstPageErrorIndicatorBuilder: (ctx) => ServerError(
               refresh: _pagingController.refresh,
             ),
-            noItemsFoundIndicatorBuilder: (ctx) {
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/no-data.png",
-                        width: 100,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        t.postsNotFound,
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        t.emptyList,
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      OutlinedButton.icon(
-                        onPressed: () {
-                          Navigator.of(context).pushNamed("/new-post");
-                        },
-                        style: OutlinedButton.styleFrom(
-                          side: BorderSide(
-                            width: 1.0,
-                            color: Theme.of(context).primaryColor,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
-                        icon: Icon(Icons.add, size: 18),
-                        label: Text(
-                          t.newPost,
-                          style:
-                              TextStyle(color: Theme.of(context).primaryColor),
-                        ),
-                      )
-                    ],
+            noItemsFoundIndicatorBuilder: (ctx) => NoData(
+              title: t.postsNotFound,
+              message: t.emptyList,
+              img: "assets/images/no-data.png",
+              action: Container(
+                width: double.infinity,
+                height: 48,
+                margin: EdgeInsets.all(15),
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed("/new-post");
+                  },
+                  style: OutlinedButton.styleFrom(
+                    side: BorderSide(
+                      width: 1.0,
+                      color: Theme.of(context).primaryColor,
+                      style: BorderStyle.solid,
+                    ),
+                  ),
+                  icon: Icon(Icons.add, size: 18),
+                  label: Text(
+                    t.newPost,
+                    style: TextStyle(color: Theme.of(context).primaryColor),
                   ),
                 ),
-              );
-            },
+              ),
+            ),
           ),
         ),
       ),
