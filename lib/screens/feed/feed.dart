@@ -39,8 +39,7 @@ class _FeedState extends State<Feed> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       int page = pageKey ~/ 10;
-      List<Post> newItems = await _postService.getFeedPosts(page);
-      newItems = [];
+      final newItems = await _postService.getFeedPosts(page);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
