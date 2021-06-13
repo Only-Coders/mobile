@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mobile/components/generic/bottom_nav.dart';
+import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/post.dart';
@@ -170,6 +171,9 @@ class _FeedState extends State<Feed> {
                 ),
               );
             },
+            firstPageErrorIndicatorBuilder: (ctx) => ServerError(
+              refresh: _pagingController.refresh,
+            ),
             noItemsFoundIndicatorBuilder: (ctx) {
               return Center(
                 child: Padding(

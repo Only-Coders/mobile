@@ -96,5 +96,9 @@
   "dontWorry": "Don't worry, happens to the best of us.",
   "sendLink": "We'll send a password recovery link to the provided email.",
   "confirm": "Confirm",
-  "forgotPasswordMessage": "We sent you an email to reset your password"
+  "forgotPasswordMessage": "We sent you an email to reset your password",
+  "somethingWentWrong": "Something went wrong",
+  "unknownError": "The application has encountered an unknown error.",
+  "tryAgainMessage": "Please try again later",
+  "tryAgain": "Try Again"
 }

@@ -96,5 +96,9 @@
   "dontWorry": "No te preocupes, le pasa a lo mejor de nosotros",
   "sendLink": "Enviaremos un enlace de recuperación de contraseña al correo electrónico proporcionado.",
   "confirm": "Confirmar",
-  "forgotPasswordMessage": "Le enviamos un correo electrónico para restablecer su contraseña"
+  "forgotPasswordMessage": "Le enviamos un correo electrónico para restablecer su contraseña",
+  "somethingWentWrong": "Algo salió mal",
+  "unknownError": "La aplicación ha encontrado un error desconocido",
+  "tryAgainMessage": "Por favor, inténtelo de nuevo más tarde",
+  "tryAgain": "Inténtalo de nuevo"
 }
