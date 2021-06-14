@@ -163,16 +163,17 @@ class _NewPostState extends State<NewPost> {
           selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       Provider.of<User>(context, listen: false)
           .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
+      setState(() {
+        isLoading = false;
+      });
       Navigator.pop(context);
       _toast.showSuccess(
           context, AppLocalizations.of(context).newPostOkMessage);
     } catch (error) {
-      print(error);
-      _toast.showError(context, error.response.data["error"]);
-    } finally {
       setState(() {
         isLoading = false;
       });
+      _toast.showError(context, error.response.data["error"]);
     }
   }
 
