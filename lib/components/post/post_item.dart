@@ -9,6 +9,7 @@ import 'package:mobile/models/post.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/post.dart';
+import 'package:mobile/theme/themes.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
@@ -304,10 +305,12 @@ class _PostItemState extends State<PostItem> {
                               Icons.arrow_drop_up_sharp,
                             ),
                             style: OutlinedButton.styleFrom(
-                              backgroundColor:
-                                  widget.post.myReaction == "APPROVE"
+                              backgroundColor: widget.post.myReaction ==
+                                      "APPROVE"
+                                  ? currentTheme.currentTheme == ThemeMode.light
                                       ? Color(0xffD2F6F1)
-                                      : null,
+                                      : Color(0xff1e353b)
+                                  : null,
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .accentColor
@@ -338,10 +341,12 @@ class _PostItemState extends State<PostItem> {
                             ),
                             style: OutlinedButton.styleFrom(
                               primary: Colors.red,
-                              backgroundColor:
-                                  widget.post.myReaction == "REJECT"
+                              backgroundColor: widget.post.myReaction ==
+                                      "REJECT"
+                                  ? currentTheme.currentTheme == ThemeMode.light
                                       ? Color(0xffFEE3E1)
-                                      : null,
+                                      : Color(0xff291818)
+                                  : null,
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .accentColor
