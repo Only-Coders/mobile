@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mobile/components/contacts/profile_contact_item.dart';
+import 'package:mobile/components/generic/no_data.dart';
+import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/services/person.dart';
 
@@ -29,7 +31,7 @@ class _MyContactsState extends State<MyContacts> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       int page = pageKey ~/ 10;
-      final newItems = await _personService.getMyContacts(page);
+      List<Person> newItems = await _personService.getMyContacts(page);
       final isLastPage = newItems.length < _pageSize;
       if (isLastPage) {
         _pagingController.appendLastPage(newItems);
@@ -70,33 +72,13 @@ class _MyContactsState extends State<MyContacts> {
                 ),
               );
             },
-            noItemsFoundIndicatorBuilder: (ctx) {
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/no-data-contacts.png",
-                        width: 100,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        t.contactsNotFound,
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
+            firstPageErrorIndicatorBuilder: (ctx) => ServerError(
+              refresh: _pagingController.refresh,
+            ),
+            noItemsFoundIndicatorBuilder: (ctx) => NoData(
+              title: t.contactsNotFound,
+              img: "assets/images/no-data-contacts.png",
+            ),
           ),
         ),
       ),

@@ -18,58 +18,43 @@ class ProfileContactItem extends StatelessWidget {
     final PersonService _personService = PersonService();
     var t = AppLocalizations.of(context);
 
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10),
-      width: double.infinity,
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.all(10),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundImage: contact.imageURI.isEmpty
-                    ? AssetImage("assets/images/default-avatar.png")
-                    : NetworkImage(contact.imageURI),
-                backgroundColor: Colors.transparent,
+    return ListTile(
+      leading: CircleAvatar(
+        radius: 30,
+        backgroundImage: contact.imageURI.isEmpty
+            ? AssetImage("assets/images/default-avatar.png")
+            : NetworkImage(contact.imageURI),
+        backgroundColor: Colors.transparent,
+      ),
+      title: Text(
+        "${contact.firstName} ${contact.lastName}",
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+      ),
+      subtitle: contact.currentPosition != null
+          ? Text(
+              "${contact.currentPosition.position} ${contact.currentPosition.workplace.name}",
+              style: TextStyle(
+                color: Theme.of(context).accentColor.withOpacity(0.6),
+                fontSize: 12,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "${contact.firstName} ${contact.lastName}",
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                  ),
-                  Text(
-                    "${contact.currentPosition.position} ${contact.currentPosition.workplace.name}",
-                    style: TextStyle(
-                      color: Theme.of(context).accentColor.withOpacity(0.6),
-                      fontSize: 12,
-                    ),
-                  ),
-                ],
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  try {
-                    await _personService.removeMyContact(contact.canonicalName);
-                    refreshContacts();
-                    Toast().showSuccess(context, t.removeContactsMessage);
-                  } catch (error) {
-                    Toast().showSuccess(context, t.serverError);
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  primary: Theme.of(context).errorColor,
-                ),
-                child: Text(
-                  t.remove,
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-            ],
-          ),
+            )
+          : Container(),
+      trailing: ElevatedButton(
+        onPressed: () async {
+          try {
+            await _personService.removeMyContact(contact.canonicalName);
+            refreshContacts();
+            Toast().showSuccess(context, t.removeContactsMessage);
+          } catch (error) {
+            Toast().showError(context, t.serverError);
+          }
+        },
+        style: ElevatedButton.styleFrom(
+          primary: Theme.of(context).errorColor,
+        ),
+        child: Text(
+          t.remove,
+          style: TextStyle(color: Colors.white),
         ),
       ),
     );

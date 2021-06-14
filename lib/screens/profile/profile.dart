@@ -162,15 +162,18 @@ class _ProfileState extends State<Profile> {
                                               ],
                                             ),
                                           ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pushNamed("/profile/contacts");
-                                          },
-                                          child: Text(
-                                            "${user.contactQty} ${t.contacts}",
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                        SizedBox(
+                                          height: 34,
+                                          child: TextButton(
+                                            onPressed: () {
+                                              Navigator.of(context).pushNamed(
+                                                  "/profile/contacts");
+                                            },
+                                            child: Text(
+                                              "${user.contactQty} ${t.contacts}",
+                                              style: TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           ),
                                         )
                                       ],
