@@ -58,4 +58,9 @@ class PostService {
         .map((post) => Post.fromJson(post))
         .toList();
   }
+
+  Future<void> reactToPost(String postId, String reaction) async {
+    await _httpClient.postRequest(
+        "/api/posts/$postId/reactions", {"reactionType": reaction});
+  }
 }

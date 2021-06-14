@@ -14,6 +14,7 @@ class Post {
   List<PostTag> tags;
   int commentQuantity;
   bool isFavorite;
+  String myReaction;
 
   Post(
       {this.message,
@@ -26,7 +27,8 @@ class Post {
       this.reactions,
       this.tags,
       this.commentQuantity,
-      this.isFavorite});
+      this.isFavorite,
+      this.myReaction});
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
@@ -48,6 +50,7 @@ class Post {
           .toList(),
       commentQuantity: json['commentQuantity'],
       isFavorite: json['isFavorite'],
+      myReaction: json['myReaction'],
       id: json['id'],
     );
   }
@@ -60,6 +63,7 @@ class Post {
         'type': type,
         'commentQuantity': commentQuantity,
         'isFavorite': isFavorite,
+        'myReaction': myReaction,
         'id': id
       };
 }

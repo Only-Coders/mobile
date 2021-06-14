@@ -5,14 +5,9 @@ import 'package:mobile/components/post/image_post.dart';
 import 'package:mobile/components/post/link_post.dart';
 import 'package:mobile/components/post/post_parser.dart';
 import 'package:mobile/components/post/text_post.dart';
-import 'package:mobile/models/person.dart';
 import 'package:mobile/models/post.dart';
-import 'package:flutter_highlight/flutter_highlight.dart';
-import 'package:flutter_highlight/themes/tomorrow-night.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mobile/models/post_tag.dart';
 import 'package:mobile/screens/profile/profile.dart';
-import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/services/post.dart';
 
 class PostItem extends StatefulWidget {
@@ -27,9 +22,13 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   final PostService _postService = PostService();
   final PostParser _postParser = PostParser();
+  bool disabledApprove = false;
+  bool disabledReject = false;
   int bronceMedals = 0;
   int silverMedals = 0;
   int goldMedals = 0;
+  int approvedAmount = 0;
+  int rejectedAmount = 0;
 
   void calculateMedals(int approves) {
     int bronce = approves % 5;
@@ -40,6 +39,51 @@ class _PostItemState extends State<PostItem> {
       bronceMedals = bronce;
       silverMedals = silver;
       goldMedals = gold;
+    });
+  }
+
+  Future<void> reactToPost(String reaction) async {
+    setState(() {
+      this.disabledApprove = reaction == "REJECT";
+      this.disabledReject = reaction == "APPROVE";
+    });
+    if (reaction == widget.post.myReaction) {
+      if (reaction == "APPROVE") {
+        setState(() {
+          this.approvedAmount--;
+        });
+      } else {
+        setState(() {
+          this.rejectedAmount--;
+        });
+      }
+      reaction = null;
+    } else {
+      if (reaction == "APPROVE") {
+        setState(() {
+          this.approvedAmount++;
+        });
+        if (widget.post.myReaction != null) {
+          setState(() {
+            this.rejectedAmount--;
+          });
+        }
+      } else {
+        setState(() {
+          this.rejectedAmount++;
+        });
+        if (widget.post.myReaction != null) {
+          setState(() {
+            this.approvedAmount--;
+          });
+        }
+      }
+    }
+    widget.post.myReaction = reaction;
+    await _postService.reactToPost(widget.post.id, reaction);
+    setState(() {
+      this.disabledApprove = false;
+      this.disabledReject = false;
     });
   }
 
@@ -252,9 +296,18 @@ class _PostItemState extends State<PostItem> {
                       children: [
                         SizedBox(
                           height: 25,
-                          child: OutlinedButton(
-                            onPressed: () {},
+                          child: OutlinedButton.icon(
+                            onPressed: disabledApprove
+                                ? null
+                                : () async => await reactToPost('APPROVE'),
+                            icon: Icon(
+                              Icons.arrow_drop_up_sharp,
+                            ),
                             style: OutlinedButton.styleFrom(
+                              backgroundColor:
+                                  widget.post.myReaction == "APPROVE"
+                                      ? Color(0xffD2F6F1)
+                                      : null,
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .accentColor
@@ -263,19 +316,10 @@ class _PostItemState extends State<PostItem> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                             ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.arrow_drop_up_sharp,
-                                  color: Theme.of(context).primaryColor,
-                                ),
-                                Text(
-                                  widget.post.reactions[0].quantity.toString(),
-                                  style: TextStyle(
-                                      fontSize: 12,
-                                      color: Theme.of(context).primaryColor),
-                                ),
-                              ],
+                            label: Text(
+                              (widget.post.reactions[0].quantity +
+                                      approvedAmount)
+                                  .toString(),
                             ),
                           ),
                         ),
@@ -284,9 +328,20 @@ class _PostItemState extends State<PostItem> {
                         ),
                         SizedBox(
                           height: 25,
-                          child: OutlinedButton(
-                            onPressed: () {},
+                          child: OutlinedButton.icon(
+                            onPressed: disabledApprove
+                                ? null
+                                : () async => await reactToPost('REJECT'),
+                            icon: Icon(
+                              Icons.arrow_drop_down_sharp,
+                              color: Colors.red,
+                            ),
                             style: OutlinedButton.styleFrom(
+                              primary: Colors.red,
+                              backgroundColor:
+                                  widget.post.myReaction == "REJECT"
+                                      ? Color(0xffFEE3E1)
+                                      : null,
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .accentColor
@@ -295,18 +350,10 @@ class _PostItemState extends State<PostItem> {
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30)),
                             ),
-                            child: Row(
-                              children: [
-                                Icon(
-                                  Icons.arrow_drop_down_sharp,
-                                  color: Colors.red,
-                                ),
-                                Text(
-                                  widget.post.reactions[1].quantity.toString(),
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.red),
-                                ),
-                              ],
+                            label: Text(
+                              (widget.post.reactions[1].quantity +
+                                      rejectedAmount)
+                                  .toString(),
                             ),
                           ),
                         ),
