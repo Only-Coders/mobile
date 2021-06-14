@@ -149,26 +149,27 @@ class _NewPostState extends State<NewPost> {
       if (linkPreview != null && type == "LINK") {
         uri = linkPreview.url;
       }
-      mentionCanonicalNames
-          .where((mention) => message.contains(mention["display"]));
+      List<Map<String, dynamic>> filteredMentions = mentionCanonicalNames
+          .where((mention) => message.contains("@${mention['display']}"))
+          .toList();
 
-      List<String> mentionsNames = mentionCanonicalNames.map((element) {
+      List<String> mentionsNames = filteredMentions.map((element) {
         message =
             message.replaceAll("@${element['display']}", "@${element['id']}");
         return element["id"] as String;
       }).toList();
 
       addNewTags();
-      await _postService.createPost(message, type,
-          selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       Provider.of<User>(context, listen: false)
           .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
+      await _postService.createPost(message, type,
+          selectedPostPrivacy == "To anyone", uri, mentionsNames, tagNames);
       setState(() {
         isLoading = false;
       });
-      Navigator.pop(context);
       _toast.showSuccess(
           context, AppLocalizations.of(context).newPostOkMessage);
+      Navigator.pop(context);
     } catch (error) {
       setState(() {
         isLoading = false;
