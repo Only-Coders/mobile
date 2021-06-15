@@ -13,6 +13,7 @@ import 'package:mobile/services/person.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/theme/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class Feed extends StatefulWidget {
   const Feed({Key key}) : super(key: key);
@@ -190,6 +191,7 @@ class _FeedState extends State<Feed> {
       ),
       bottomNavigationBar: BottomNav(
         refreshFeed: _pagingController.refresh,
+        user: Provider.of(context, listen: false),
       ),
     );
   }

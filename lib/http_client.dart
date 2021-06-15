@@ -22,7 +22,6 @@ class HttpClient {
           return handler.next(options);
         },
         onError: (error, handler) async {
-          print(error.response.requestOptions.path);
           if (error.response.statusCode != 401) {
             return handler.next(error);
           }

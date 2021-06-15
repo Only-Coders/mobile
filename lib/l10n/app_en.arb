@@ -100,5 +100,6 @@
   "somethingWentWrong": "Something went wrong",
   "unknownError": "The application has encountered an unknown error.",
   "tryAgainMessage": "Please try again later",
-  "tryAgain": "Try Again"
+  "tryAgain": "Try Again",
+  "notificationsNotFound": "You dont have notifications"
 }

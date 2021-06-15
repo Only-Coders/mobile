@@ -1,13 +1,14 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/profile/profile.dart';
-import 'package:provider/provider.dart';
 
 class BottomNav extends StatefulWidget {
   final refreshFeed;
+  final User user;
 
-  const BottomNav({Key key, this.refreshFeed}) : super(key: key);
+  const BottomNav({Key key, this.refreshFeed, this.user}) : super(key: key);
 
   @override
   _BottomNavState createState() => _BottomNavState();
@@ -15,6 +16,28 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int _currentIndex = 0;
+  int _notificationAmount = 0;
+
+  @override
+  void initState() {
+    FirebaseDatabase.instance
+        .reference()
+        .child("notifications/${widget.user.canonicalName}")
+        .orderByChild("read")
+        .equalTo(false)
+        .onValue
+        .listen((event) {
+      Map data = event.snapshot.value;
+      _notificationAmount = 0;
+      if (data != null)
+        data.forEach((key, value) {
+          setState(() {
+            _notificationAmount++;
+          });
+        });
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +60,14 @@ class _BottomNavState extends State<BottomNav> {
                   .then((value) => widget.refreshFeed());
               break;
             case 2:
-              Navigator.pushNamed(context, "/new-post");
+              Navigator.pushNamed(context, "/notifications");
               break;
             default:
               Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => Profile(
-                    canonicalName: Provider.of<User>(context).canonicalName,
+                    canonicalName: widget.user.canonicalName,
                   ),
                 ),
               );
@@ -64,7 +87,36 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
             label: t.notifications,
-            icon: Icon(Icons.notifications),
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                Icon(Icons.notifications),
+                if (_notificationAmount > 0)
+                  Positioned(
+                    right: -3,
+                    top: -3,
+                    child: Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 14,
+                        minHeight: 14,
+                      ),
+                      child: Text(
+                        "$_notificationAmount",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+              ],
+            ),
           ),
           BottomNavigationBarItem(
             label: t.profile,
