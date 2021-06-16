@@ -4,25 +4,38 @@ import 'package:mobile/models/link.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/link_preview.dart';
 
-class LinkPost extends StatelessWidget {
+class LinkPost extends StatefulWidget {
   final Post post;
   final List<Widget> content;
 
   const LinkPost({Key key, @required this.post, this.content})
       : super(key: key);
 
+  @override
+  _LinkPostState createState() => _LinkPostState();
+}
+
+class _LinkPostState extends State<LinkPost> {
+  Future renderContent;
+
   Future<List<Widget>> getContent() async {
     LinkPreviewService _linkPreviewService = LinkPreviewService();
-    List<Widget> formatedContent = content.map((item) => item).toList();
-    Link linkPreview = await _linkPreviewService.previewLink(post.url);
+    List<Widget> formatedContent = widget.content.map((item) => item).toList();
+    Link linkPreview = await _linkPreviewService.previewLink(widget.post.url);
     formatedContent.add(new LinkPreview(link: linkPreview));
     return formatedContent;
   }
 
   @override
+  void initState() {
+    renderContent = getContent();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder(
-      future: getContent(),
+      future: renderContent,
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.hasError) {
