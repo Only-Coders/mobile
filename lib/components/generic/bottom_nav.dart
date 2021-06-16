@@ -28,7 +28,9 @@ class _BottomNavState extends State<BottomNav> {
         .onValue
         .listen((event) {
       Map data = event.snapshot.value;
-      _notificationAmount = 0;
+      setState(() {
+        _notificationAmount = 0;
+      });
       if (data != null)
         data.forEach((key, value) {
           setState(() {
