@@ -15,7 +15,6 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
-  static const _pageSize = 10;
   final NotificationService _notificationService = NotificationService();
   final PagingController<int, FBNotification> _pagingController =
       PagingController(firstPageKey: 0);
@@ -31,13 +30,7 @@ class _NotificationsState extends State<Notifications> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await _notificationService.getNotifications();
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
-      }
+      _pagingController.appendLastPage(newItems);
     } catch (error) {
       _pagingController.error = error;
     }
