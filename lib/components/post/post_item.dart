@@ -227,6 +227,7 @@ class _PostItemState extends State<PostItem> {
                                 });
                                 Toast().showSuccess(
                                     context, t.removeFromFavoriteMessage);
+                                Navigator.of(context).pop();
                               },
                               child: ListTile(
                                 leading: Icon(
@@ -252,6 +253,7 @@ class _PostItemState extends State<PostItem> {
                                 });
                                 Toast().showSuccess(
                                     context, t.addToFavoriteMessage);
+                                Navigator.of(context).pop();
                               },
                               child: ListTile(
                                 leading: Icon(
