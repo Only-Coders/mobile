@@ -227,6 +227,7 @@ class _GeneralInformationSecondStepState
                     });
                   },
                   maxLines: 4,
+                  maxLength: 256,
                   style: TextStyle(color: Theme.of(context).accentColor),
                   decoration: InputDecoration(
                     floatingLabelBehavior: FloatingLabelBehavior.always,

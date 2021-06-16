@@ -91,7 +91,7 @@ class _ProfileState extends State<Profile> {
                         color: Theme.of(context).secondaryHeaderColor,
                         width: double.infinity,
                         padding: EdgeInsets.all(20),
-                        height: 200,
+                        height: 235,
                         child: Stack(
                           clipBehavior: Clip.none,
                           children: [
