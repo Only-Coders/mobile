@@ -59,11 +59,11 @@ class PostParser {
   }
 
   Widget parseTag(BuildContext context, String tag, List<PostTag> tags) {
-    String canonicalName = tag.substring(1, tag.length);
+    String displayName = tag.substring(1, tag.length);
 
     if (tags.isNotEmpty) {
       Iterable<PostTag> iterable =
-          tags.where((element) => element.canonicalName == canonicalName);
+          tags.where((element) => element.displayName == displayName);
       if (iterable.isNotEmpty) {
         PostTag tag = iterable.first;
         return Padding(
@@ -74,7 +74,7 @@ class PostParser {
                 context,
                 MaterialPageRoute(
                   builder: (context) => TagPosts(
-                    canonicalName: canonicalName,
+                    canonicalName: tag.canonicalName,
                   ),
                 ),
               );
