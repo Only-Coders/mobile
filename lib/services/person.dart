@@ -1,6 +1,9 @@
 import 'package:mobile/http_client.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/profile.dart';
+import 'package:mobile/models/skill.dart';
+import 'package:mobile/models/study.dart';
+import 'package:mobile/models/tag.dart';
 import 'package:mobile/models/work_position.dart';
 
 class PersonService {
@@ -26,6 +29,11 @@ class PersonService {
   Future<void> sendContactRequest(String canonicalName) async {
     await _httpClient.postRequest(
         "/api/users/contact-request", {"canonicalName": canonicalName});
+  }
+
+  Future<void> acceptContactRequest(String canonicalName) async {
+    await _httpClient.putRequest("/api/users/received-contact-requests",
+        {"requesterCanonicalName": canonicalName, "acceptContact": true});
   }
 
   Future<void> cancelContactRequest(String canonicalName) async {
@@ -59,6 +67,30 @@ class PersonService {
         await _httpClient.getRequest("/api/users/$canonicalName/workplaces");
     return (response.data["content"] as List)
         .map((work) => WorkPosition.fromJson(work))
+        .toList();
+  }
+
+  Future<List<Study>> getPersonStudies(String canonicalName) async {
+    var response =
+        await _httpClient.getRequest("/api/users/$canonicalName/institutes");
+    return (response.data["content"] as List)
+        .map((study) => Study.fromJson(study))
+        .toList();
+  }
+
+  Future<List<Skill>> getPersonSkills(String canonicalName) async {
+    var response =
+        await _httpClient.getRequest("/api/users/$canonicalName/skills");
+    return (response.data["content"] as List)
+        .map((skill) => Skill.fromJson(skill))
+        .toList();
+  }
+
+  Future<List<Tag>> getPersonTags(String canonicalName) async {
+    var response =
+        await _httpClient.getRequest("/api/users/$canonicalName/tags");
+    return (response.data["content"] as List)
+        .map((tag) => Tag.fromJson(tag))
         .toList();
   }
 

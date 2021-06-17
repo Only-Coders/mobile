@@ -100,7 +100,7 @@ class _PostItemState extends State<PostItem> {
     return Container(
       width: double.infinity,
       child: Card(
-        elevation: 1,
+        elevation: 0,
         child: Column(
           children: [
             Row(
@@ -307,12 +307,12 @@ class _PostItemState extends State<PostItem> {
                               Icons.arrow_drop_up_sharp,
                             ),
                             style: OutlinedButton.styleFrom(
-                              backgroundColor: widget.post.myReaction ==
-                                      "APPROVE"
-                                  ? currentTheme.currentTheme == ThemeMode.light
-                                      ? Color(0xffD2F6F1)
-                                      : Color(0xff1e353b)
-                                  : null,
+                              backgroundColor:
+                                  widget.post.myReaction == "APPROVE"
+                                      ? Theme.of(context)
+                                          .primaryColor
+                                          .withOpacity(0.1)
+                                      : null,
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .accentColor
@@ -343,12 +343,12 @@ class _PostItemState extends State<PostItem> {
                             ),
                             style: OutlinedButton.styleFrom(
                               primary: Colors.red,
-                              backgroundColor: widget.post.myReaction ==
-                                      "REJECT"
-                                  ? currentTheme.currentTheme == ThemeMode.light
-                                      ? Color(0xffFEE3E1)
-                                      : Color(0xff291818)
-                                  : null,
+                              backgroundColor:
+                                  widget.post.myReaction == "REJECT"
+                                      ? Theme.of(context)
+                                          .errorColor
+                                          .withOpacity(0.1)
+                                      : null,
                               side: BorderSide(
                                   color: Theme.of(context)
                                       .accentColor

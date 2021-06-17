@@ -1,15 +1,19 @@
+import 'package:mobile/models/institute.dart';
+
 class Study {
-  final String name;
   final String id;
   final String degree;
   final String since;
   final String until;
+  final Institute institute;
 
-  Study({this.name, this.id, this.degree, this.since, this.until});
+  Study({this.id, this.degree, this.since, this.until, this.institute});
 
   factory Study.fromJson(Map<String, dynamic> json) {
     return Study(
-      name: json['name'],
+      institute: json['institute'] != null
+          ? new Institute.fromJson(json['institute'])
+          : null,
       id: json['id'],
       degree: json['degree'],
       since: json['since'],
@@ -18,7 +22,7 @@ class Study {
   }
 
   Map<String, dynamic> toJson() => {
-        'name': name,
+        'name': institute != null ? institute.name : null,
         'id': id,
         'degree': degree,
         'since': since,

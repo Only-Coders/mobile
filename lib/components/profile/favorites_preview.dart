@@ -1,158 +1,128 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/components/generic/no_data.dart';
+import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/post.dart';
-import 'package:mobile/screens/post/profile_posts.dart';
 import 'package:mobile/services/post.dart';
 
-class FavoritesPreview extends StatelessWidget {
+class FavoritesPreview extends StatefulWidget {
   final String canonicalName;
 
   const FavoritesPreview({Key key, this.canonicalName}) : super(key: key);
 
   @override
+  _FavoritesPreviewState createState() => _FavoritesPreviewState();
+}
+
+class _FavoritesPreviewState extends State<FavoritesPreview> {
+  final PostService _postService = PostService();
+  Future favoritePreview;
+
+  void refreshFavoritePreview() {
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    favoritePreview = _postService.getFavoritesPost();
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final PostService _postService = PostService();
     var t = AppLocalizations.of(context);
 
-    return FutureBuilder(
-      future: _postService.getFavoritesPost(),
-      builder: (ctx, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          if (snapshot.hasError) {
-            return Container(
-              width: double.infinity,
-              margin: EdgeInsets.only(top: 5),
-              child: Card(
-                elevation: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        t.favorites,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 14,
-                          color: Theme.of(context).accentColor,
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          '${snapshot.error} occured',
-                          style: TextStyle(
-                              fontSize: 18,
-                              color: Theme.of(context).accentColor),
-                        ),
-                      ),
-                    ],
-                  ),
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(top: 25),
+      child: Card(
+        elevation: 0,
+        shape: BeveledRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(8),
                 ),
+                color: Colors.orange,
               ),
-            );
-          } else if (snapshot.hasData) {
-            final List<Post> posts = snapshot.data as List<Post>;
-
-            return Container(
-              margin: EdgeInsets.only(top: 5),
-              width: double.infinity,
-              child: Card(
-                elevation: 0,
-                child: Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        t.favorites,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            color: Theme.of(context).accentColor),
-                      ),
-                      SizedBox(
-                        height: 3,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 25),
-                        child: Center(
-                          child: posts.length == 0
-                              ? Column(
-                                  children: [
-                                    Image.asset(
-                                      "assets/images/no-data.png",
-                                      width: 128,
-                                    ),
-                                    Text(
-                                      t.postsNoData,
-                                      style: TextStyle(
-                                          color: Colors.grey.shade600),
-                                    ),
-                                  ],
-                                )
-                              : Column(
-                                  children: [
-                                    PostItem(
-                                      post: posts[0],
-                                    )
-                                  ],
-                                ),
-                        ),
-                      ),
-                      if (posts.length > 1)
-                        SizedBox(
-                          width: double.infinity,
-                          child: TextButton(
-                            onPressed: () {
-                              Navigator.of(context)
-                                  .pushNamed("/profile/favorites");
-                            },
-                            style: TextButton.styleFrom(primary: Colors.orange),
-                            child: Text(t.seeMore),
-                          ),
-                        )
-                    ],
-                  ),
+              height: 10,
+              width: 10,
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                t.favorites,
+                style: TextStyle(
+                  fontSize: 16,
                 ),
-              ),
-            );
-          }
-        }
-
-        return Container(
-          margin: EdgeInsets.only(top: 5),
-          child: Card(
-            elevation: 0,
-            child: Padding(
-              padding: const EdgeInsets.all(15),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    t.favorites,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                      color: Theme.of(context).accentColor,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Center(
-                      child: CircularProgressIndicator(
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
-                  ),
-                ],
               ),
             ),
-          ),
-        );
-      },
+            FutureBuilder(
+              future: favoritePreview,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.hasData) {
+                    final List<Post> posts = snapshot.data as List<Post>;
+
+                    if (posts.isEmpty) {
+                      return NoData(
+                        message: t.postsNoData,
+                        img: "assets/images/no-data.png",
+                      );
+                    } else {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 15),
+                        child: Column(
+                          children: [
+                            PostItem(
+                              post: posts[0],
+                            ),
+                            if (posts.length > 1)
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.symmetric(horizontal: 15),
+                                child: OutlinedButton(
+                                  onPressed: () => Navigator.of(context)
+                                      .pushNamed("/profile/favorites"),
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Text(t.seeMore),
+                                ),
+                              )
+                          ],
+                        ),
+                      );
+                    }
+                  } else if (snapshot.hasError) {
+                    return ServerError(
+                      refresh: refreshFavoritePreview,
+                    );
+                  }
+                }
+                return Container(
+                  padding: EdgeInsets.symmetric(vertical: 25),
+                  child: Center(
+                    child: CircularProgressIndicator(
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ),
+                );
+              },
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

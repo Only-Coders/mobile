@@ -74,13 +74,15 @@ class _AddLinkState extends State<AddLink> {
                 });
                 Link link = await _linkPreviewService.previewLink(url);
                 widget.addLink(link);
-                Navigator.pop(context);
-              } catch (error) {
-                Toast().showError(context, t.serverError);
-              } finally {
                 setState(() {
                   isLoading = false;
                 });
+                Navigator.pop(context);
+              } catch (error) {
+                setState(() {
+                  isLoading = false;
+                });
+                Toast().showError(context, t.serverError);
               }
             }
           },

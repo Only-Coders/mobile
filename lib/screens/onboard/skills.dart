@@ -60,6 +60,7 @@ class _SkillsState extends State<Skills> {
                 .map((s) => Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8),
                       child: Chip(
+                        backgroundColor: Colors.transparent,
                         shape: RoundedRectangleBorder(
                           side: BorderSide(
                               color: Colors.green.shade400, width: 1),

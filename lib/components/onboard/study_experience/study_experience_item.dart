@@ -32,7 +32,7 @@ class StudyExperienceItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                study.name,
+                study.institute.name,
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
               ),
               Text(

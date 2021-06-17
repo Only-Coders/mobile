@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:mobile/components/generic/no_data.dart';
+import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/post.dart';
@@ -69,33 +71,13 @@ class _FavoritePostsState extends State<FavoritePosts> {
                 ),
               );
             },
-            noItemsFoundIndicatorBuilder: (ctx) {
-              return Center(
-                child: Padding(
-                  padding: EdgeInsets.all(8),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        "assets/images/no-data.png",
-                        width: 100,
-                      ),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                        t.postsNotFound,
-                        style: TextStyle(
-                          color: Theme.of(context).accentColor,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            },
+            firstPageErrorIndicatorBuilder: (ctx) => ServerError(
+              refresh: _pagingController.refresh,
+            ),
+            noItemsFoundIndicatorBuilder: (ctx) => NoData(
+              title: t.postsNotFound,
+              img: "assets/images/no-data.png",
+            ),
           ),
         ),
       ),

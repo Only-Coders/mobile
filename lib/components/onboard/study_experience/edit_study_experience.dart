@@ -34,14 +34,14 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
   @override
   void initState() {
     setState(() {
-      institute = widget.study.name;
+      institute = widget.study.institute.name;
       instituteId = widget.study.id;
       degree = widget.study.degree;
       _startDate = DateTime.parse(widget.study.since);
       if (widget.study.until != null)
         _endDate = DateTime.parse(widget.study.until);
     });
-    _typeAheadController.text = widget.study.name;
+    _typeAheadController.text = widget.study.institute.name;
     _degreeController.text = widget.study.degree;
     _startDateController.text = parseDate(widget.study.since);
     _endDateController.text =

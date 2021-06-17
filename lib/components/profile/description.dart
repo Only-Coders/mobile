@@ -12,26 +12,42 @@ class Description extends StatelessWidget {
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
 
-    return Card(
-      elevation: 1,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(5), // if you need this
-      ),
-      child: Padding(
-        padding: const EdgeInsets.all(15),
+    return Container(
+      width: double.infinity,
+      margin: EdgeInsets.only(top: 65),
+      child: Card(
+        elevation: 0,
+        shape: BeveledRectangleBorder(
+          borderRadius: BorderRadius.circular(0),
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              t.description,
-              style: TextStyle(color: Theme.of(context).accentColor),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(8),
+                ),
+                color: Colors.orange,
+              ),
+              height: 10,
+              width: 10,
             ),
-            SizedBox(
-              height: 3,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Text(
+                t.description,
+                style: TextStyle(fontSize: 16),
+              ),
             ),
-            Text(
-              description,
-              style: TextStyle(color: Theme.of(context).accentColor),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              child: Text(
+                description.isEmpty ? "No tiene descripcion" : description,
+                style: TextStyle(
+                  color: Theme.of(context).accentColor.withOpacity(0.6),
+                ),
+              ),
             ),
           ],
         ),

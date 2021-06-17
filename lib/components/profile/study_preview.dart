@@ -1,36 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:mobile/components/generic/no_data.dart';
 import 'package:mobile/components/generic/server_error.dart';
-import 'package:mobile/components/onboard/work_experience/add_work_experience.dart';
-import 'package:mobile/components/onboard/work_experience/edit_work_experience.dart';
-import 'package:mobile/models/work_position.dart';
+import 'package:mobile/components/onboard/study_experience/add_study_experience.dart';
+import 'package:mobile/components/onboard/study_experience/edit_study_experience.dart';
+import 'package:mobile/models/study.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mobile/services/work.dart';
+import "package:flutter_gen/gen_l10n/app_localizations.dart";
 import 'package:provider/provider.dart';
 import 'package:timelines/timelines.dart';
 
-class WorkExperiencePreview extends StatefulWidget {
+class StudyPreview extends StatefulWidget {
   final String canonicalName;
 
-  const WorkExperiencePreview({Key key, this.canonicalName}) : super(key: key);
+  const StudyPreview({Key key, this.canonicalName}) : super(key: key);
 
   @override
-  _WorkExperiencePreviewState createState() => _WorkExperiencePreviewState();
+  _StudyPreviewState createState() => _StudyPreviewState();
 }
 
-class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
+class _StudyPreviewState extends State<StudyPreview> {
   final PersonService _personService = PersonService();
-  final WorkService _workService = WorkService();
-  Future getWorks;
+  Future getStudies;
 
-  void refreshWorkExperiences() {
+  void refreshStudyExperience() {
     setState(() {});
   }
 
-  String parseWorkDate(String date) {
+  String parseStudyDate(String date) {
     if (date != null) {
       List<String> splitedDate = date.substring(0, 10).split("-");
       return "${splitedDate[1]}/${splitedDate[0]}";
@@ -41,16 +38,8 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
 
   @override
   void initState() {
-    getWorks = _personService.getPersonWorks(widget.canonicalName);
+    getStudies = _personService.getPersonStudies(widget.canonicalName);
     super.initState();
-  }
-
-  Future<void> removeWork(WorkPosition work) async {
-    try {
-      await _workService.deleteWork(work.id);
-    } catch (error) {
-      print(error);
-    }
   }
 
   @override
@@ -87,8 +76,8 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                     splashRadius: 20,
                     onPressed: () => showDialog(
                       context: context,
-                      builder: (_) => AddWorkExperience(
-                        addWork: () {},
+                      builder: (_) => AddStudyExperience(
+                        addStudy: () {},
                       ),
                       barrierDismissible: true,
                     ),
@@ -99,20 +88,20 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 15),
               child: Text(
-                t.workExperience,
+                t.academicExperience,
                 style: TextStyle(
                   fontSize: 16,
                 ),
               ),
             ),
             FutureBuilder(
-              future: getWorks,
+              future: getStudies,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.done) {
                   if (snapshot.hasData) {
-                    List<WorkPosition> works = snapshot.data;
+                    List<Study> studies = snapshot.data;
 
-                    if (works.isNotEmpty) {
+                    if (studies.isNotEmpty) {
                       return Container(
                         padding: EdgeInsets.all(20),
                         child: FixedTimeline.tileBuilder(
@@ -147,7 +136,7 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                                           MainAxisAlignment.center,
                                       children: [
                                         Text(
-                                          "${parseWorkDate(works[index].since)}",
+                                          "${parseStudyDate(studies[index].since)}",
                                           style: TextStyle(
                                             fontSize: 11,
                                             color: Theme.of(context)
@@ -156,7 +145,7 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                                           ),
                                         ),
                                         Text(
-                                          "${parseWorkDate(works[index].until)}",
+                                          "${parseStudyDate(studies[index].until)}",
                                           style: TextStyle(
                                             fontSize: 11,
                                             color: Theme.of(context)
@@ -176,14 +165,14 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        works[index].workplace.name,
+                                        studies[index].institute.name,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 14,
                                         ),
                                       ),
                                       Text(
-                                        works[index].position,
+                                        studies[index].degree,
                                         style: TextStyle(
                                           fontSize: 11,
                                           color: Theme.of(context)
@@ -201,10 +190,10 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                                         iconSize: 20,
                                         onPressed: () => showDialog(
                                           context: context,
-                                          builder: (_) => EditWorkExperience(
-                                            work: works[index],
+                                          builder: (_) => EditStudyExperience(
+                                            study: studies[index],
                                             index: index,
-                                            updateWork: () {},
+                                            updateStudy: () {},
                                           ),
                                           barrierDismissible: true,
                                         ),
@@ -224,19 +213,19 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                                 ],
                               ),
                             ),
-                            itemCount: works.length,
+                            itemCount: studies.length,
                           ),
                         ),
                       );
                     } else {
                       return NoData(
-                        message: "No works found",
-                        img: "assets/images/no-data-work.png",
+                        message: "No studies found",
+                        img: "assets/images/no-data-study.png",
                       );
                     }
                   } else if (snapshot.hasError) {
                     return ServerError(
-                      refresh: refreshWorkExperiences,
+                      refresh: refreshStudyExperience,
                     );
                   }
                 }

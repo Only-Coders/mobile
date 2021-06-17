@@ -35,9 +35,9 @@ class PostService {
     await _httpClient.deleteRequest("/api/users/favorite-posts/" + postId);
   }
 
-  Future<List<Post>> getPostsByUser(String canonicalName) async {
-    var response =
-        await _httpClient.getRequest("/api/posts/user/" + canonicalName);
+  Future<List<Post>> getPostsByUser(String canonicalName, [int page]) async {
+    var response = await _httpClient
+        .getRequest("/api/posts/user/" + canonicalName, {"page": page});
     return (response.data["content"] as List)
         .map((post) => Post.fromJson(post))
         .toList();

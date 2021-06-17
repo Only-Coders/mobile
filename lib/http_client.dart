@@ -64,4 +64,8 @@ class HttpClient {
   Future<Response> postRequest(String url, dynamic data) async {
     return _dio.post(url, data: data);
   }
+
+  Future<Response> putRequest(String url, dynamic data) async {
+    return _dio.put(url, data: data);
+  }
 }
