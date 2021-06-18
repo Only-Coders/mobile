@@ -64,9 +64,13 @@ class _ProfileState extends State<Profile> {
                 return SingleChildScrollView(
                   child: Column(
                     children: [
-                      ProfileHeader(imageURI: user.imageURI),
+                      ProfileHeader(
+                        imageURI: user.imageURI,
+                        isMyProfile: user.canonicalName ==
+                            context.read<User>().canonicalName,
+                      ),
                       SizedBox(
-                        height: 65,
+                        height: 10,
                       ),
                       Text(
                         "${user.firstName} ${user.lastName}",

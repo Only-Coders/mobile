@@ -54,6 +54,10 @@ class PersonService {
     return Profile.fromJson(response.data);
   }
 
+  Future<void> updateUserPhoto(String imageURI) async {
+    await _httpClient.patchRequest("/api/users/image", {"imageURI": imageURI});
+  }
+
   Future<List<Person>> searchPerson(String partialName) async {
     var response = await _httpClient
         .getRequest("/api/users", {"partialName": partialName, "size": 4});
