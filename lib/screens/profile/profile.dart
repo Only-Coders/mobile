@@ -123,6 +123,8 @@ class _ProfileState extends State<Profile> {
                         postQty: user.postQty,
                         followerQty: user.followerQty,
                         contactQty: user.contactQty,
+                        isMyProfile: user.canonicalName ==
+                            context.read<User>().canonicalName,
                       ),
                       Description(
                         description: user.description,

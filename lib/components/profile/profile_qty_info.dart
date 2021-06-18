@@ -5,12 +5,14 @@ class ProfileQtyInfo extends StatelessWidget {
   final int postQty;
   final int followerQty;
   final int contactQty;
+  final bool isMyProfile;
 
   const ProfileQtyInfo(
       {Key key,
       @required this.postQty,
       @required this.followerQty,
-      @required this.contactQty})
+      @required this.contactQty,
+      @required this.isMyProfile})
       : super(key: key);
 
   @override
@@ -59,21 +61,26 @@ class ProfileQtyInfo extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: Column(
-              children: [
-                Text(
-                  "$contactQty",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
-                  textAlign: TextAlign.center,
-                ),
-                Text(
-                  "Contacts",
-                  style: TextStyle(
-                    color: Theme.of(context).accentColor.withOpacity(0.5),
+            child: InkWell(
+              onTap: isMyProfile
+                  ? () => Navigator.of(context).pushNamed("/profile/contacts")
+                  : null,
+              child: Column(
+                children: [
+                  Text(
+                    "$contactQty",
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 19),
+                    textAlign: TextAlign.center,
                   ),
-                  textAlign: TextAlign.center,
-                ),
-              ],
+                  Text(
+                    "Contacts",
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor.withOpacity(0.5),
+                    ),
+                    textAlign: TextAlign.center,
+                  ),
+                ],
+              ),
             ),
           ),
           SizedBox(
