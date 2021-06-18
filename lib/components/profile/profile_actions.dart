@@ -127,8 +127,8 @@ class _ProfileActionsState extends State<ProfileActions> {
               ),
             ),
           if (!connected &&
-              requestHasBeenSent &&
-              widget.canonicalName == context.read<User>().canonicalName)
+              pendingRequest &&
+              widget.canonicalName != context.read<User>().canonicalName)
             Expanded(
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
