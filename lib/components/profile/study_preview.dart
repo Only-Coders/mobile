@@ -125,54 +125,24 @@ class _StudyPreviewState extends State<StudyPreview> {
                                 SolidLineConnector(
                               color: Colors.grey.shade300,
                             ),
-                            contentsBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.all(24.0),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "${parseStudyDate(studies[index].since)}",
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            color: Theme.of(context)
-                                                .accentColor
-                                                .withOpacity(0.5),
-                                          ),
-                                        ),
-                                        Text(
-                                          "${parseStudyDate(studies[index].until)}",
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            color: Theme.of(context)
-                                                .accentColor
-                                                .withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                            contentsBuilder: (context, index) => Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        studies[index].institute.name,
+                                        "${parseStudyDate(studies[index].since)}",
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
+                                          fontSize: 11,
+                                          color: Theme.of(context)
+                                              .accentColor
+                                              .withOpacity(0.5),
                                         ),
                                       ),
                                       Text(
-                                        studies[index].degree,
+                                        "${parseStudyDate(studies[index].until)}",
                                         style: TextStyle(
                                           fontSize: 11,
                                           color: Theme.of(context)
@@ -182,36 +152,61 @@ class _StudyPreviewState extends State<StudyPreview> {
                                       ),
                                     ],
                                   ),
-                                  if (widget.canonicalName ==
-                                      context.read<User>().canonicalName)
-                                    Flexible(
-                                      child: IconButton(
-                                        splashRadius: 20,
-                                        iconSize: 20,
-                                        onPressed: () => showDialog(
-                                          context: context,
-                                          builder: (_) => EditStudyExperience(
-                                            study: studies[index],
-                                            index: index,
-                                            updateStudy: () {},
-                                          ),
-                                          barrierDismissible: true,
-                                        ),
-                                        icon: Icon(Icons.edit),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      studies[index].institute.name,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
                                       ),
                                     ),
-                                  if (widget.canonicalName ==
-                                      context.read<User>().canonicalName)
-                                    Flexible(
-                                      child: IconButton(
-                                        splashRadius: 20,
-                                        iconSize: 20,
-                                        onPressed: () {},
-                                        icon: Icon(Icons.delete),
+                                    Text(
+                                      studies[index].degree,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Theme.of(context)
+                                            .accentColor
+                                            .withOpacity(0.5),
                                       ),
-                                    )
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      if (widget.canonicalName ==
+                                          context.read<User>().canonicalName)
+                                        IconButton(
+                                          splashRadius: 20,
+                                          iconSize: 20,
+                                          onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (_) => EditStudyExperience(
+                                              study: studies[index],
+                                              index: index,
+                                              updateStudy: () {},
+                                            ),
+                                            barrierDismissible: true,
+                                          ),
+                                          icon: Icon(Icons.edit),
+                                        ),
+                                      if (widget.canonicalName ==
+                                          context.read<User>().canonicalName)
+                                        IconButton(
+                                          splashRadius: 20,
+                                          iconSize: 20,
+                                          onPressed: () {},
+                                          icon: Icon(Icons.delete),
+                                        )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                             itemCount: studies.length,
                           ),

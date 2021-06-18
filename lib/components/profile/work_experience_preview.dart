@@ -136,54 +136,24 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                                 SolidLineConnector(
                               color: Colors.grey.shade300,
                             ),
-                            contentsBuilder: (context, index) => Padding(
-                              padding: const EdgeInsets.all(24.0),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.only(top: 2),
-                                    child: Column(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "${parseWorkDate(works[index].since)}",
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            color: Theme.of(context)
-                                                .accentColor
-                                                .withOpacity(0.5),
-                                          ),
-                                        ),
-                                        Text(
-                                          "${parseWorkDate(works[index].until)}",
-                                          style: TextStyle(
-                                            fontSize: 11,
-                                            color: Theme.of(context)
-                                                .accentColor
-                                                .withOpacity(0.5),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
+                            contentsBuilder: (context, index) => Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(15),
+                                  child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Text(
-                                        works[index].workplace.name,
+                                        "${parseWorkDate(works[index].since)}",
                                         style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 14,
+                                          fontSize: 11,
+                                          color: Theme.of(context)
+                                              .accentColor
+                                              .withOpacity(0.5),
                                         ),
                                       ),
                                       Text(
-                                        works[index].position,
+                                        "${parseWorkDate(works[index].until)}",
                                         style: TextStyle(
                                           fontSize: 11,
                                           color: Theme.of(context)
@@ -193,36 +163,61 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                                       ),
                                     ],
                                   ),
-                                  if (widget.canonicalName ==
-                                      context.read<User>().canonicalName)
-                                    Flexible(
-                                      child: IconButton(
-                                        splashRadius: 20,
-                                        iconSize: 20,
-                                        onPressed: () => showDialog(
-                                          context: context,
-                                          builder: (_) => EditWorkExperience(
-                                            work: works[index],
-                                            index: index,
-                                            updateWork: () {},
-                                          ),
-                                          barrierDismissible: true,
-                                        ),
-                                        icon: Icon(Icons.edit),
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      works[index].workplace.name,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 14,
                                       ),
                                     ),
-                                  if (widget.canonicalName ==
-                                      context.read<User>().canonicalName)
-                                    Flexible(
-                                      child: IconButton(
-                                        splashRadius: 20,
-                                        iconSize: 20,
-                                        onPressed: () {},
-                                        icon: Icon(Icons.delete),
+                                    Text(
+                                      works[index].position,
+                                      style: TextStyle(
+                                        fontSize: 11,
+                                        color: Theme.of(context)
+                                            .accentColor
+                                            .withOpacity(0.5),
                                       ),
-                                    )
-                                ],
-                              ),
+                                    ),
+                                  ],
+                                ),
+                                Expanded(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      if (widget.canonicalName ==
+                                          context.read<User>().canonicalName)
+                                        IconButton(
+                                          splashRadius: 20,
+                                          iconSize: 20,
+                                          onPressed: () => showDialog(
+                                            context: context,
+                                            builder: (_) => EditWorkExperience(
+                                              work: works[index],
+                                              index: index,
+                                              updateWork: () {},
+                                            ),
+                                            barrierDismissible: true,
+                                          ),
+                                          icon: Icon(Icons.edit),
+                                        ),
+                                      if (widget.canonicalName ==
+                                          context.read<User>().canonicalName)
+                                        IconButton(
+                                          splashRadius: 20,
+                                          iconSize: 20,
+                                          onPressed: () {},
+                                          icon: Icon(Icons.delete),
+                                        )
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
                             itemCount: works.length,
                           ),
