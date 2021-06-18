@@ -29,8 +29,12 @@ class PersonalData extends StatefulWidget {
 
 class _PersonalDataState extends State<PersonalData> {
   String parseBirthDate(String date) {
-    List<String> splittedDate = date.substring(0, 10).split("-");
-    return "${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}";
+    if (date != null) {
+      List<String> splittedDate = date.substring(0, 10).split("-");
+      return "${splittedDate[2]}/${splittedDate[1]}/${splittedDate[0]}";
+    } else {
+      return "";
+    }
   }
 
   Future<void> launchUrl(String user, String gitPlatform) async {
@@ -166,26 +170,28 @@ class _PersonalDataState extends State<PersonalData> {
                   SizedBox(
                     height: 10,
                   ),
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.date_range,
-                        size: 24,
-                      ),
-                      SizedBox(
-                        width: 15,
-                      ),
-                      Flexible(
-                        child: Text(
-                          parseBirthDate(widget.birthDate),
-                          style: TextStyle(
-                            color:
-                                Theme.of(context).accentColor.withOpacity(0.6),
+                  if (widget.birthDate != null)
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.date_range,
+                          size: 24,
+                        ),
+                        SizedBox(
+                          width: 15,
+                        ),
+                        Flexible(
+                          child: Text(
+                            parseBirthDate(widget.birthDate),
+                            style: TextStyle(
+                              color: Theme.of(context)
+                                  .accentColor
+                                  .withOpacity(0.6),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
+                      ],
+                    ),
                   SizedBox(
                     height: 10,
                   ),
