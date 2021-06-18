@@ -76,7 +76,7 @@ class _AuthFormState extends State<AuthForm> {
                 });
               },
               validator: (val) {
-                return val.length > 6
+                return val.length >= 6
                     ? null
                     : t.login != widget.buttonText
                         ? t.weakPassword
