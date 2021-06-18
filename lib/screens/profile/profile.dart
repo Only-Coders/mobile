@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:mobile/components/generic/git_platform.dart';
 import 'package:mobile/components/generic/server_error.dart';
-import 'package:mobile/components/profile/description.dart';
+import 'package:mobile/components/profile/personal_data.dart';
 import 'package:mobile/components/profile/favorites_preview.dart';
 import 'package:mobile/components/profile/nav_drawer.dart';
 import 'package:mobile/components/profile/post_preview.dart';
@@ -17,8 +17,6 @@ import 'package:mobile/models/profile.dart' as ProfileType;
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Profile extends StatefulWidget {
   final String canonicalName;
@@ -43,35 +41,8 @@ class _ProfileState extends State<Profile> {
     super.initState();
   }
 
-  Future<void> launchUrl(String user, String gitPlatform) async {
-    switch (gitPlatform) {
-      case "GITHUB":
-        String url = "https://github.com/$user";
-        if (await canLaunch(url)) {
-          await launch(url);
-        }
-        break;
-      case "GITLAB":
-        String url = "https://gitlab.com/$user";
-        if (await canLaunch(url)) {
-          await launch(url);
-        }
-        break;
-      case "BITBUCKET":
-        String url = "https://bitbucket.com/$user";
-        if (await canLaunch(url)) {
-          await launch(url);
-        }
-        break;
-      default:
-        break;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
-    var t = AppLocalizations.of(context);
-
     return Scaffold(
       endDrawer: NavDrawer(),
       appBar: AppBar(
@@ -126,8 +97,13 @@ class _ProfileState extends State<Profile> {
                         isMyProfile: user.canonicalName ==
                             context.read<User>().canonicalName,
                       ),
-                      Description(
+                      PersonalData(
                         description: user.description,
+                        mail: user.email,
+                        country: user.country.name,
+                        birthDate: user.birthDate,
+                        gitPlatform: user.gitProfile.platform,
+                        gitProfile: user.gitProfile.userName,
                       ),
                       PostPreview(
                         canonicalName: user.canonicalName,

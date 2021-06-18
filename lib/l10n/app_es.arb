@@ -101,5 +101,7 @@
   "unknownError": "La aplicación ha encontrado un error desconocido",
   "tryAgainMessage": "Por favor, inténtelo de nuevo más tarde",
   "tryAgain": "Inténtalo de nuevo",
-  "notificationsNotFound": "No tienes notificaciones"
+  "notificationsNotFound": "No tienes notificaciones",
+  "personalData": "Datos personales",
+  "noDescription": "No description"
 }

@@ -1,3 +1,4 @@
+import 'package:mobile/models/country.dart';
 import 'package:mobile/models/git_platform.dart';
 import 'package:mobile/models/work_position.dart';
 
@@ -18,6 +19,8 @@ class Profile {
   final bool following;
   final bool connected;
   final GitPlatform gitProfile;
+  final Country country;
+  final String birthDate;
 
   Profile({
     this.email,
@@ -36,6 +39,8 @@ class Profile {
     this.following,
     this.connected,
     this.gitProfile,
+    this.country,
+    this.birthDate,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) {
@@ -60,6 +65,10 @@ class Profile {
       gitProfile: json['gitProfile'] != null
           ? new GitPlatform.fromJson(json['gitProfile'])
           : null,
+      country: json['country'] != null
+          ? new Country.fromJson(json['country'])
+          : null,
+      birthDate: json["birthDate"],
     );
   }
 
@@ -81,5 +90,7 @@ class Profile {
         'following': following,
         'connected': connected,
         'gitProfile': gitProfile != null ? gitProfile.toJson() : null,
+        'country': country != null ? country.toJson() : null,
+        "birthDate": birthDate
       };
 }

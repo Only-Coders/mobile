@@ -101,5 +101,7 @@
   "unknownError": "The application has encountered an unknown error.",
   "tryAgainMessage": "Please try again later",
   "tryAgain": "Try Again",
-  "notificationsNotFound": "You dont have notifications"
+  "notificationsNotFound": "You dont have notifications",
+  "personalData": "Personal Data",
+  "noDescription": "Sin descripcion"
 }
