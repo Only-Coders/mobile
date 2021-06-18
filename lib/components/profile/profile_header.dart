@@ -82,7 +82,7 @@ class _ProfileHeaderState extends State<ProfileHeader> {
             top: 35,
             child: !isLoading
                 ? GestureDetector(
-                    onTap: () async => getImage(),
+                    onTap: widget.isMyProfile ? () async => getImage() : null,
                     child: CircleAvatar(
                       radius: 63,
                       backgroundColor: Colors.grey.shade100,
