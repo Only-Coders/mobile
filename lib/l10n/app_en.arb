@@ -103,5 +103,6 @@
   "tryAgain": "Try Again",
   "notificationsNotFound": "You dont have notifications",
   "personalData": "Personal Data",
-  "noDescription": "Sin descripcion"
+  "noDescription": "Sin descripcion",
+  "contactRequests": "Contact requests"
 }

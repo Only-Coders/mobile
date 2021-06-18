@@ -1,4 +1,5 @@
 import 'package:mobile/http_client.dart';
+import 'package:mobile/models/contact_request.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/profile.dart';
 import 'package:mobile/models/skill.dart';
@@ -52,6 +53,14 @@ class PersonService {
   Future<Profile> getPersonProfile(String canonicalName) async {
     var response = await _httpClient.getRequest("/api/users/" + canonicalName);
     return Profile.fromJson(response.data);
+  }
+
+  Future<List<ContactRequest>> getContactRequests([int page]) async {
+    var response = await _httpClient
+        .getRequest("/api/users/received-contact-requests", {"page": page});
+    return (response.data["content"] as List)
+        .map((contactRequest) => ContactRequest.fromJson(contactRequest))
+        .toList();
   }
 
   Future<void> updateUserPhoto(String imageURI) async {

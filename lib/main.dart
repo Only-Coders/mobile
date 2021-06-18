@@ -8,6 +8,8 @@ import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/auth/forgot_password.dart';
 import 'package:mobile/screens/auth/login.dart';
 import 'package:mobile/screens/auth/wrapper.dart';
+
+// import 'package:mobile/screens/chat/chats_list.dart';
 import 'package:mobile/screens/feed/feed.dart';
 import 'package:mobile/screens/notifications/notifications.dart';
 import 'package:mobile/screens/onboard/onboard.dart';
@@ -17,6 +19,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/screens/post/new_post.dart';
 import 'package:mobile/screens/post/profile_posts.dart';
+import 'package:mobile/screens/profile/contact_requests.dart';
 import 'package:mobile/screens/profile/favorite_posts.dart';
 import 'package:mobile/screens/profile/my_contacts.dart';
 import 'package:mobile/screens/profile/profile.dart';
@@ -126,10 +129,12 @@ class _AppState extends State<App> {
           "/onboard": (context) => Onboard(),
           "/new-post": (context) => NewPost(),
           "/profile": (context) => Profile(),
+          // "/chats": (context) => ChatsList(user: widget.user),
           "/notifications": (context) => Notifications(),
           "/profile/posts": (context) => ProfilePosts(),
           "/profile/favorites": (context) => FavoritePosts(),
           "/profile/contacts": (context) => MyContacts(),
+          "/profile/contact-requests": (context) => ContactRequests(),
           "/tag/posts": (context) => TagPosts()
         },
       ),

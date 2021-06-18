@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:mobile/components/generic/git_platform.dart';
 import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/components/profile/personal_data.dart';
 import 'package:mobile/components/profile/favorites_preview.dart';
@@ -13,10 +12,12 @@ import 'package:mobile/components/profile/skills_preview.dart';
 import 'package:mobile/components/profile/study_preview.dart';
 import 'package:mobile/components/profile/tags_preview.dart';
 import 'package:mobile/components/profile/work_experience_preview.dart';
+import 'package:mobile/models/contact_request.dart';
 import 'package:mobile/models/profile.dart' as ProfileType;
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Profile extends StatefulWidget {
   final String canonicalName;
@@ -30,6 +31,7 @@ class Profile extends StatefulWidget {
 class _ProfileState extends State<Profile> {
   final PersonService _personService = PersonService();
   Future getProfile;
+  Future getContactRequests;
 
   void refreshProfile() {
     setState(() {});
@@ -38,11 +40,14 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     getProfile = _personService.getPersonProfile(widget.canonicalName);
+    getContactRequests = _personService.getContactRequests();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Scaffold(
       endDrawer: NavDrawer(),
       appBar: AppBar(
@@ -56,11 +61,12 @@ class _ProfileState extends State<Profile> {
         elevation: 0,
       ),
       body: FutureBuilder(
-          future: getProfile,
+          future: Future.wait([getProfile, getContactRequests]),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
               if (snapshot.hasData) {
-                ProfileType.Profile user = snapshot.data;
+                ProfileType.Profile user = snapshot.data[0];
+                List<ContactRequest> contactRequests = snapshot.data[1];
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -93,6 +99,33 @@ class _ProfileState extends State<Profile> {
                           pendingRequest: user.pendingRequest,
                           following: user.following,
                           canonicalName: user.canonicalName,
+                        ),
+                      if (user.canonicalName ==
+                              context.read<User>().canonicalName &&
+                          contactRequests.length > 0)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                child: OutlinedButton(
+                                  onPressed: () => Navigator.of(context)
+                                      .pushNamed("/profile/contact-requests"),
+                                  style: OutlinedButton.styleFrom(
+                                    side: BorderSide(
+                                      color: Theme.of(context).primaryColor,
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Text(
+                                    "${contactRequests.length} ${t.contactRequests}",
+                                    style: TextStyle(
+                                        color: Theme.of(context).primaryColor),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ProfileQtyInfo(
                         postQty: user.postQty,
