@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/components/post/link_preview.dart';
 import 'package:mobile/models/link.dart';
@@ -29,17 +30,25 @@ class _LinkPostState extends State<LinkPost> {
     if (regExp.hasMatch(widget.post.url)) {
       try {
         String videoID = YoutubePlayer.convertUrlToId(widget.post.url);
-        formatedContent.add(YoutubePlayer(
-          controller: YoutubePlayerController(
-            initialVideoId: videoID,
-            flags: YoutubePlayerFlags(
-              hideControls: false,
-              controlsVisibleAtStart: true,
-              autoPlay: false,
-              mute: false,
+        formatedContent.add(YoutubePlayerBuilder(
+          player: YoutubePlayer(
+            aspectRatio: 16 / 9,
+            controller: YoutubePlayerController(
+              initialVideoId: videoID,
+              flags: YoutubePlayerFlags(
+                hideControls: false,
+                controlsVisibleAtStart: true,
+                autoPlay: false,
+                mute: false,
+              ),
             ),
+            showVideoProgressIndicator: true,
           ),
-          showVideoProgressIndicator: true,
+          builder: (context, player) => Column(
+            children: [
+              player,
+            ],
+          ),
         ));
         return formatedContent;
       } catch (error) {
