@@ -3,6 +3,7 @@ import 'package:mobile/components/post/link_preview.dart';
 import 'package:mobile/models/link.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/link_preview.dart';
+import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class LinkPost extends StatefulWidget {
   final Post post;
@@ -16,14 +17,42 @@ class LinkPost extends StatefulWidget {
 }
 
 class _LinkPostState extends State<LinkPost> {
+  final LinkPreviewService _linkPreviewService = LinkPreviewService();
   Future renderContent;
+  RegExp regExp = new RegExp(
+    r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.*",
+    multiLine: true,
+  );
 
   Future<List<Widget>> getContent() async {
-    LinkPreviewService _linkPreviewService = LinkPreviewService();
     List<Widget> formatedContent = widget.content.map((item) => item).toList();
-    Link linkPreview = await _linkPreviewService.previewLink(widget.post.url);
-    formatedContent.add(new LinkPreview(link: linkPreview));
-    return formatedContent;
+    if (regExp.hasMatch(widget.post.url)) {
+      try {
+        String videoID = YoutubePlayer.convertUrlToId(widget.post.url);
+        formatedContent.add(YoutubePlayer(
+          controller: YoutubePlayerController(
+            initialVideoId: videoID,
+            flags: YoutubePlayerFlags(
+              hideControls: false,
+              controlsVisibleAtStart: true,
+              autoPlay: false,
+              mute: false,
+            ),
+          ),
+          showVideoProgressIndicator: true,
+        ));
+        return formatedContent;
+      } catch (error) {
+        Link linkPreview =
+            await _linkPreviewService.previewLink(widget.post.url);
+        formatedContent.add(new LinkPreview(link: linkPreview));
+        return formatedContent;
+      }
+    } else {
+      Link linkPreview = await _linkPreviewService.previewLink(widget.post.url);
+      formatedContent.add(new LinkPreview(link: linkPreview));
+      return formatedContent;
+    }
   }
 
   @override
