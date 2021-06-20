@@ -1,4 +1,5 @@
 import 'package:mobile/http_client.dart';
+import 'package:mobile/models/comment.dart';
 import 'package:mobile/models/post.dart';
 
 class PostService {
@@ -62,5 +63,24 @@ class PostService {
   Future<void> reactToPost(String postId, String reaction) async {
     await _httpClient.postRequest(
         "/api/posts/$postId/reactions", {"reactionType": reaction});
+  }
+
+  Future<List<Comment>> getComments(String postId, [int page]) async {
+    var response = await _httpClient
+        .getRequest("/api/posts/$postId/comments", {"page": page});
+    return (response.data["content"] as List)
+        .map((comment) => Comment.fromJson(comment))
+        .toList();
+  }
+
+  Future<Comment> newComment(String comment, String postId) async {
+    var response = await _httpClient
+        .postRequest("/api/posts/$postId/comments", {"message": comment});
+    return Comment.fromJson(response.data);
+  }
+
+  Future<void> reactToComment(String commentId, String reaction) async {
+    await _httpClient.postRequest(
+        "/api/comments/$commentId/reactions", {"reactionType": reaction});
   }
 }

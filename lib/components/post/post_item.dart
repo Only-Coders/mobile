@@ -7,14 +7,17 @@ import 'package:mobile/components/post/post_parser.dart';
 import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/post.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/screens/comments/new_comment.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/post.dart';
-import 'package:mobile/theme/themes.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
+  final bool isNewComment;
+  final openNewComment;
 
-  const PostItem({Key key, this.post}) : super(key: key);
+  const PostItem({Key key, this.post, this.isNewComment, this.openNewComment})
+      : super(key: key);
 
   @override
   _PostItemState createState() => _PostItemState();
@@ -91,10 +94,8 @@ class _PostItemState extends State<PostItem> {
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
-
     List<Widget> widgets = _postParser.parsePost(
         context, widget.post.message, widget.post.tags, widget.post.mentions);
-
     calculateMedals(widget.post.publisher.amountOfMedals);
 
     return Container(
@@ -367,10 +368,23 @@ class _PostItemState extends State<PostItem> {
                       ],
                     ),
                   ),
-                  Text(
-                    widget.post.commentQuantity.toString() + t.comments,
-                    style: TextStyle(
-                      color: Theme.of(context).accentColor,
+                  TextButton(
+                    onPressed: widget.isNewComment == null
+                        ? () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewComment(
+                                  post: widget.post,
+                                  isNewComment: false,
+                                ),
+                              ),
+                            )
+                        : null,
+                    child: Text(
+                      widget.post.commentQuantity.toString() + t.comments,
+                      style: TextStyle(
+                        color: Theme.of(context).accentColor,
+                      ),
                     ),
                   ),
                 ],
@@ -387,18 +401,31 @@ class _PostItemState extends State<PostItem> {
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 10),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: widget.isNewComment == null
+                        ? () => Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => NewComment(
+                                  post: widget.post,
+                                  isNewComment: true,
+                                ),
+                              ),
+                            )
+                        : () => widget.openNewComment(),
                     style: TextButton.styleFrom(primary: Colors.black54),
-                    child: Row(
+                    child: Column(
                       children: [
                         Icon(
                           Icons.message,
+                          size: 22,
                           color: Theme.of(context).accentColor,
                         ),
                         Text(
-                          "Comentar",
-                          style:
-                              TextStyle(color: Theme.of(context).accentColor),
+                          t.comment,
+                          style: TextStyle(
+                            color: Theme.of(context).accentColor,
+                            fontSize: 12,
+                          ),
                         ),
                       ],
                     ),

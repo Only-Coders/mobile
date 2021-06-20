@@ -104,5 +104,7 @@
   "notificationsNotFound": "No tienes notificaciones",
   "personalData": "Datos personales",
   "noDescription": "No description",
-  "contactRequests": "Solicitudes de contacto"
+  "contactRequests": "Solicitudes de contacto",
+  "leaveAComment": "Deja un comentario...",
+  "comment": "Comentar"
 }
