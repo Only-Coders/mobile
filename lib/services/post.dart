@@ -36,6 +36,10 @@ class PostService {
     await _httpClient.deleteRequest("/api/users/favorite-posts/" + postId);
   }
 
+  Future<void> removePost(String postId) async {
+    await _httpClient.deleteRequest("/api/posts/$postId");
+  }
+
   Future<List<Post>> getPostsByUser(String canonicalName, [int page]) async {
     var response = await _httpClient
         .getRequest("/api/posts/user/" + canonicalName, {"page": page});

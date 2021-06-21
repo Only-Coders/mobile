@@ -106,5 +106,10 @@
   "noDescription": "Sin descripcion",
   "contactRequests": "Contact requests",
   "leaveAComment": "Leave a comment...",
-  "comment": "Comment"
+  "comment": "Comment",
+  "followers": "Followers",
+  "followersNotFound": "Followers not found",
+  "removePost": "Delete post",
+  "removePostMessage": "Are you sure you want to delete this post ?",
+  "removePostSuccess": "Post was successfully removed"
 }

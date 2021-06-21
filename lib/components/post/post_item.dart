@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/generic/toast.dart';
+import 'package:mobile/components/post/delete_post.dart';
 import 'package:mobile/components/post/file_post.dart';
 import 'package:mobile/components/post/image_post.dart';
 import 'package:mobile/components/post/link_post.dart';
@@ -7,16 +8,24 @@ import 'package:mobile/components/post/post_parser.dart';
 import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/post.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/comments/new_comment.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/post.dart';
+import 'package:provider/provider.dart';
 
 class PostItem extends StatefulWidget {
   final Post post;
   final bool isNewComment;
   final openNewComment;
+  final refreshPosts;
 
-  const PostItem({Key key, this.post, this.isNewComment, this.openNewComment})
+  const PostItem(
+      {Key key,
+      this.post,
+      this.isNewComment,
+      this.openNewComment,
+      this.refreshPosts})
       : super(key: key);
 
   @override
@@ -44,6 +53,11 @@ class _PostItemState extends State<PostItem> {
       silverMedals = silver;
       goldMedals = gold;
     });
+  }
+
+  void removePost(BuildContext context) {
+    Navigator.of(context).pop();
+    widget.refreshPosts();
   }
 
   Future<void> reactToPost(String reaction) async {
@@ -270,6 +284,32 @@ class _PostItemState extends State<PostItem> {
                               ),
                             ),
                           ),
+                    if (widget.post.publisher.canonicalName ==
+                        context.read<User>().canonicalName)
+                      PopupMenuItem(
+                        padding: EdgeInsets.all(0),
+                        child: GestureDetector(
+                          onTap: () => showDialog(
+                            context: context,
+                            builder: (context) => DeletePost(
+                              postId: widget.post.id,
+                              refreshPosts: removePost,
+                            ),
+                          ),
+                          child: ListTile(
+                            leading: Icon(
+                              Icons.delete,
+                              color: Theme.of(context).accentColor,
+                            ),
+                            title: Text(
+                              t.remove,
+                              style: TextStyle(
+                                color: Theme.of(context).accentColor,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                     PopupMenuItem(
                       padding: EdgeInsets.all(0),
                       child: ListTile(

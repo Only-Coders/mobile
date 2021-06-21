@@ -106,5 +106,10 @@
   "noDescription": "No description",
   "contactRequests": "Solicitudes de contacto",
   "leaveAComment": "Deja un comentario...",
-  "comment": "Comentar"
+  "comment": "Comentar",
+  "followers": "Seguidores",
+  "followersNotFound": "No tienes seguidores",
+  "removePost": "Eliminar publicacion",
+  "removePostMessage": "¿ Estas seguro de quieres eliminar esta publicación ?",
+  "removePostSuccess": "La publicación se eliminó correctamente"
 }
