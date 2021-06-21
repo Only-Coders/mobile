@@ -108,7 +108,9 @@
   "leaveAComment": "Deja un comentario...",
   "comment": "Comentar",
   "followers": "Seguidores",
+  "following": "Siguiendo",
   "followersNotFound": "No tienes seguidores",
+  "followingNotFound": "No sigues a ningun usuario",
   "removePost": "Eliminar publicacion",
   "removePostMessage": "¿ Estas seguro de quieres eliminar esta publicación ?",
   "removePostSuccess": "La publicación se eliminó correctamente"

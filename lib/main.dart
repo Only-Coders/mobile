@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobile/http_client.dart';
@@ -22,6 +21,7 @@ import 'package:mobile/screens/post/profile_posts.dart';
 import 'package:mobile/screens/profile/contact_requests.dart';
 import 'package:mobile/screens/profile/favorite_posts.dart';
 import 'package:mobile/screens/profile/my_contacts.dart';
+import 'package:mobile/screens/profile/my_followings.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/services/fb_messaging.dart';
@@ -134,6 +134,7 @@ class _AppState extends State<App> {
           "/profile/posts": (context) => ProfilePosts(),
           "/profile/favorites": (context) => FavoritePosts(),
           "/profile/contacts": (context) => MyContacts(),
+          "/profile/followers": (context) => MyFollowings(),
           "/profile/contact-requests": (context) => ContactRequests(),
           "/tag/posts": (context) => TagPosts()
         },

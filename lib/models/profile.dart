@@ -13,6 +13,7 @@ class Profile {
   final int medalQty;
   final int followerQty;
   final int contactQty;
+  final int followingQty;
   final int postQty;
   final bool pendingRequest;
   final bool requestHasBeenSent;
@@ -33,6 +34,7 @@ class Profile {
     this.medalQty,
     this.followerQty,
     this.contactQty,
+    this.followingQty,
     this.postQty,
     this.pendingRequest,
     this.requestHasBeenSent,
@@ -57,6 +59,7 @@ class Profile {
       medalQty: json["medalQty"],
       followerQty: json["followerQty"],
       contactQty: json["contactQty"],
+      followingQty: json["followingQty"],
       postQty: json["postQty"],
       pendingRequest: json["pendingRequest"],
       requestHasBeenSent: json["requestHasBeenSent"],
@@ -84,6 +87,7 @@ class Profile {
         'medalQty': medalQty,
         'followerQty': followerQty,
         'contactQty': contactQty,
+        'followingQty': followingQty,
         'postQty': postQty,
         'pendingRequest': pendingRequest,
         'requestHasBeenSent': requestHasBeenSent,

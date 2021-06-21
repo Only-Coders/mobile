@@ -108,7 +108,9 @@
   "leaveAComment": "Leave a comment...",
   "comment": "Comment",
   "followers": "Followers",
+  "following": "Following",
   "followersNotFound": "Followers not found",
+  "followingNotFound": "You do not follow any user",
   "removePost": "Delete post",
   "removePostMessage": "Are you sure you want to delete this post ?",
   "removePostSuccess": "Post was successfully removed"
