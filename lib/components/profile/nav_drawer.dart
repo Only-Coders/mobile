@@ -89,6 +89,20 @@ class NavDrawer extends StatelessWidget {
               ),
               ListTile(
                 leading: Icon(
+                  Icons.person,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  t.contacts,
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+                onTap: () =>
+                    Navigator.of(context).pushNamed("/profile/contacts"),
+              ),
+              ListTile(
+                leading: Icon(
                   Icons.logout,
                   color: Theme.of(context).accentColor,
                 ),
