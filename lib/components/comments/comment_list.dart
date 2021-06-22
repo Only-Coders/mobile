@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/components/comments/comment_item.dart';
 import 'package:mobile/models/comment.dart';
+import 'package:mobile/theme/themes.dart';
 
 class CommentList extends StatelessWidget {
   final List<Comment> comments;
@@ -15,7 +16,11 @@ class CommentList extends StatelessWidget {
     return Container(
       width: double.infinity,
       padding: EdgeInsets.all(20),
-      decoration: BoxDecoration(color: Colors.white),
+      decoration: BoxDecoration(
+        color: currentTheme.currentTheme == ThemeMode.light
+            ? Colors.white
+            : Theme.of(context).scaffoldBackgroundColor,
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

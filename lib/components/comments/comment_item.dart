@@ -4,6 +4,7 @@ import 'package:mobile/components/post/post_parser.dart';
 import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/comment.dart';
 import 'package:mobile/services/post.dart';
+import 'package:mobile/theme/themes.dart';
 
 class CommentItem extends StatefulWidget {
   final Comment comment;
@@ -100,7 +101,9 @@ class _CommentItemState extends State<CommentItem> {
           child: Container(
             padding: EdgeInsets.only(top: 10, left: 10, right: 10),
             decoration: BoxDecoration(
-              color: Colors.grey.shade200,
+              color: currentTheme.currentTheme == ThemeMode.light
+                  ? Colors.grey.shade200
+                  : Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(5),
             ),
             child: Column(
@@ -120,8 +123,12 @@ class _CommentItemState extends State<CommentItem> {
                       color: Theme.of(context).accentColor.withOpacity(0.6),
                     ),
                   ),
-                TextPost(
-                  content: widgets,
+                Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 2, vertical: 10),
+                  child: TextPost(
+                    content: widgets,
+                  ),
                 ),
                 Row(
                   children: [

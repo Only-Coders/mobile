@@ -482,9 +482,12 @@ class _PostItemState extends State<PostItem> {
   Widget postType(String type, List<Widget> widgets) {
     switch (type) {
       case "TEXT":
-        return TextPost(
-          post: widget.post,
-          content: widgets,
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+          child: TextPost(
+            post: widget.post,
+            content: widgets,
+          ),
         );
         break;
       case "IMAGE":
