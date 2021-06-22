@@ -113,5 +113,12 @@
   "followingNotFound": "No sigues a ningun usuario",
   "removePost": "Eliminar publicacion",
   "removePostMessage": "¿ Estas seguro de quieres eliminar esta publicación ?",
-  "removePostSuccess": "La publicación se eliminó correctamente"
+  "removePostSuccess": "La publicación se eliminó correctamente",
+  "removeAccount": "Eliminar cuenta",
+  "removeAccountMessage": "Su cuenta y todos sus datos serán eliminados dentro de los 30 días. Usted solo puede cancelar esta operacion en ese periodo de tiempo",
+  "areYouSure": "¿ Estas seguro de esto ?",
+  "removeAccountInfo": "Tu cuenta se encuentra en proceso de eliminacion",
+  "progress": "en progreso",
+  "cancelRemoveAccount": "Cancelar eliminacion de cuenta",
+  "cancelRemoveAccountMessage": "Se cancelo la eliminacion de tu cuenta"
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/components/profile/cancel_delete_account.dart';
+import 'package:mobile/components/profile/delete_account.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/auth.dart';
 import 'package:mobile/theme/themes.dart';
@@ -101,6 +103,40 @@ class NavDrawer extends StatelessWidget {
                 onTap: () =>
                     Navigator.of(context).pushNamed("/profile/contacts"),
               ),
+              if (context.read<User>().eliminationDate == null)
+                ListTile(
+                  leading: Icon(
+                    Icons.admin_panel_settings,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  title: Text(
+                    t.removeAccount,
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => DeleteAccount(),
+                  ),
+                ),
+              if (context.read<User>().eliminationDate != null)
+                ListTile(
+                  leading: Icon(
+                    Icons.cancel,
+                    color: Theme.of(context).accentColor,
+                  ),
+                  title: Text(
+                    t.cancelRemoveAccount,
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor,
+                    ),
+                  ),
+                  onTap: () => showDialog(
+                    context: context,
+                    builder: (context) => CancelDeleteAccount(),
+                  ),
+                ),
               ListTile(
                 leading: Icon(
                   Icons.logout,

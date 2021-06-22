@@ -126,4 +126,12 @@ class PersonService {
   Future<void> removeMyContact(String canonicalName) async {
     await _httpClient.deleteRequest("/api/users/contacts/$canonicalName");
   }
+
+  Future<void> removeMyAccount() async {
+    await _httpClient.putRequest("/api/users/elimination", {});
+  }
+
+  Future<void> cancelUserElimination() async {
+    await _httpClient.deleteRequest("/api/users/elimination");
+  }
 }

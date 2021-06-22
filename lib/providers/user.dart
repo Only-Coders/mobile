@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:shared_preferences/shared_preferences.dart';
 
 class User {
@@ -10,6 +9,7 @@ class User {
   String roles;
   String fullName;
   bool complete;
+  int eliminationDate;
 
   User(String user) {
     if (user != null && user.isNotEmpty) {
@@ -21,6 +21,7 @@ class User {
       this.roles = u.roles;
       this.fullName = u.fullName;
       this.complete = u.complete;
+      this.eliminationDate = u.eliminationDate;
     }
   }
 
@@ -32,6 +33,7 @@ class User {
     roles = json["roles"];
     fullName = json["fullName"];
     complete = json["complete"];
+    eliminationDate = json["eliminationDate"];
   }
 
   Future<void> saveUserOnPrefs() async {
@@ -50,7 +52,8 @@ class User {
         defaultPrivacy = json['defaultPrivacy'],
         roles = json['roles'],
         fullName = json['fullName'],
-        complete = json['complete'];
+        complete = json['complete'],
+        eliminationDate = json['eliminationDate'];
 
   Map<String, dynamic> toJson() => {
         'email': email,
@@ -60,5 +63,6 @@ class User {
         'roles': roles,
         'fullName': fullName,
         'complete': complete,
+        'eliminationDate': eliminationDate,
       };
 }
