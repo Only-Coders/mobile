@@ -40,6 +40,10 @@ class PostService {
     await _httpClient.deleteRequest("/api/posts/$postId");
   }
 
+  Future<void> removeComment(String postId, String commentId) async {
+    await _httpClient.deleteRequest("/api/posts/$postId/comments/$commentId");
+  }
+
   Future<List<Post>> getPostsByUser(String canonicalName, [int page]) async {
     var response = await _httpClient
         .getRequest("/api/posts/user/" + canonicalName, {"page": page});

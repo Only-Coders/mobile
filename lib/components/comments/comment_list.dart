@@ -4,10 +4,41 @@ import 'package:mobile/components/comments/comment_item.dart';
 import 'package:mobile/models/comment.dart';
 import 'package:mobile/theme/themes.dart';
 
-class CommentList extends StatelessWidget {
+class CommentList extends StatefulWidget {
   final List<Comment> comments;
+  final String ownerCanonicalName;
+  final String postId;
+  final updateCommentsQty;
 
-  const CommentList({Key key, @required this.comments}) : super(key: key);
+  const CommentList({
+    Key key,
+    @required this.comments,
+    @required this.ownerCanonicalName,
+    @required this.postId,
+    @required this.updateCommentsQty,
+  }) : super(key: key);
+
+  @override
+  _CommentListState createState() => _CommentListState();
+}
+
+class _CommentListState extends State<CommentList> {
+  List<Comment> comments;
+
+  void removeComment(Comment comment) {
+    setState(() {
+      comments.remove(comment);
+    });
+    widget.updateCommentsQty(comments.length);
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      comments = widget.comments;
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +68,12 @@ class CommentList extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(8),
-                child: CommentItem(comment: comments[index]),
+                child: CommentItem(
+                  comment: comments[index],
+                  ownerCanonicalName: widget.ownerCanonicalName,
+                  postId: widget.postId,
+                  removeComment: removeComment,
+                ),
               );
             },
             itemCount: comments.length,

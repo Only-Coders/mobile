@@ -1,15 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
+import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/components/post/post_parser.dart';
 import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/comment.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/theme/themes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class CommentItem extends StatefulWidget {
   final Comment comment;
+  final String ownerCanonicalName;
+  final String postId;
+  final removeComment;
 
-  const CommentItem({Key key, @required this.comment}) : super(key: key);
+  const CommentItem({
+    Key key,
+    @required this.comment,
+    @required this.ownerCanonicalName,
+    @required this.postId,
+    @required this.removeComment,
+  }) : super(key: key);
 
   @override
   _CommentItemState createState() => _CommentItemState();
@@ -18,6 +31,7 @@ class CommentItem extends StatefulWidget {
 class _CommentItemState extends State<CommentItem> {
   final PostService _postService = PostService();
   final PostParser _postParser = PostParser();
+  final Toast _toast = Toast();
   int approvedAmount = 0;
   int rejectedAmount = 0;
   bool disabledApprove = false;
@@ -81,6 +95,8 @@ class _CommentItemState extends State<CommentItem> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     List<Widget> widgets =
         _postParser.parsePost(context, widget.comment.message, [], []);
 
@@ -99,7 +115,7 @@ class _CommentItemState extends State<CommentItem> {
         ),
         Expanded(
           child: Container(
-            padding: EdgeInsets.only(top: 10, left: 10, right: 10),
+            padding: EdgeInsets.only(left: 10, right: 10),
             decoration: BoxDecoration(
               color: currentTheme.currentTheme == ThemeMode.light
                   ? Colors.grey.shade200
@@ -109,11 +125,61 @@ class _CommentItemState extends State<CommentItem> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  "${widget.comment.publisher.firstName} ${widget.comment.publisher.lastName}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.only(top: 15),
+                      child: Text(
+                        "${widget.comment.publisher.firstName} ${widget.comment.publisher.lastName}",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    if (context.read<User>().canonicalName ==
+                            widget.comment.publisher.canonicalName ||
+                        context.read<User>().canonicalName ==
+                            widget.ownerCanonicalName)
+                      PopupMenuButton(
+                        icon: Icon(
+                          Icons.more_horiz,
+                          color: Theme.of(context).accentColor,
+                        ),
+                        itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                          PopupMenuItem(
+                            padding: EdgeInsets.zero,
+                            child: InkWell(
+                              onTap: () async {
+                                try {
+                                  await _postService.removeComment(
+                                      widget.postId, widget.comment.id);
+                                  widget.removeComment(widget.comment);
+                                  _toast.showSuccess(
+                                      context, t.deleteCommentMessage);
+                                  Navigator.of(context).pop();
+                                } catch (error) {
+                                  _toast.showError(context, t.serverError);
+                                }
+                              },
+                              child: ListTile(
+                                leading: Icon(
+                                  Icons.delete,
+                                  color: Theme.of(context).accentColor,
+                                ),
+                                title: Text(
+                                  t.delete,
+                                  style: TextStyle(
+                                    color: Theme.of(context).accentColor,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                  ],
                 ),
                 if (widget.comment.publisher.currentPosition != null)
                   Text(

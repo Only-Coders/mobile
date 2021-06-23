@@ -120,5 +120,6 @@
   "removeAccountInfo": "Your account is now in the delete process",
   "progress": "in progress",
   "cancelRemoveAccount": "Cancel delete account",
-  "cancelRemoveAccountMessage": "The deletion of your account was canceled"
+  "cancelRemoveAccountMessage": "The deletion of your account was canceled",
+  "deleteCommentMessage": "The message was removed successfully"
 }

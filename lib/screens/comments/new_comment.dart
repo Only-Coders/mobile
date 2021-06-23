@@ -45,6 +45,12 @@ class _NewCommentState extends State<NewComment> {
     });
   }
 
+  void updateCommentsQty(int qty) {
+    setState(() {
+      post.commentQuantity = qty;
+    });
+  }
+
   Future<void> newComment(BuildContext context) async {
     if (comment.isNotEmpty) {
       try {
@@ -177,7 +183,10 @@ class _NewCommentState extends State<NewComment> {
                     openNewComment: showNewComment,
                   ),
                   CommentList(
+                    ownerCanonicalName: post.publisher.canonicalName,
                     comments: comments,
+                    postId: post.id,
+                    updateCommentsQty: updateCommentsQty,
                   ),
                 ],
               );
