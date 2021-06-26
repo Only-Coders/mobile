@@ -31,41 +31,44 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       body: Center(
         child: SingleChildScrollView(
           child: SafeArea(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Image.asset(
-                  "assets/images/no-data-work.png",
-                  width: 140,
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  t.forgotPassword,
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 32),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Text(
-                  t.dontWorry,
-                  style: TextStyle(
-                    color: Theme.of(context).accentColor.withOpacity(0.6),
+            child: Padding(
+              padding: const EdgeInsets.all(25),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/images/no-data-work.png",
+                    width: 140,
                   ),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  t.sendLink,
-                  style: TextStyle(
-                    color: Theme.of(context).accentColor.withOpacity(0.6),
+                  SizedBox(
+                    height: 10,
                   ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.all(25),
-                  child: Form(
+                  Text(
+                    t.forgotPassword,
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 26),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Text(
+                    t.dontWorry,
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor.withOpacity(0.6),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Text(
+                    t.sendLink,
+                    style: TextStyle(
+                      color: Theme.of(context).accentColor.withOpacity(0.6),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Form(
                     key: formKey,
                     child: TextFormField(
                       onChanged: (val) {
@@ -101,55 +104,58 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                       ),
                     ),
                   ),
-                ),
-                Container(
-                  width: double.infinity,
-                  margin: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
-                  height: 45,
-                  child: ElevatedButton(
-                    onPressed: () async {
-                      if (formKey.currentState.validate() && !isLoading) {
-                        try {
-                          setState(() {
-                            isLoading = true;
-                          });
-                          await _fbAuth.resetPassword(email);
-                          emailController.text = "";
-                          _toast.showSuccess(context, t.forgotPasswordMessage);
-                        } catch (error) {
-                          _toast.showError(context, t.serverError);
-                        } finally {
-                          setState(() {
-                            email = "";
-                            isLoading = false;
-                          });
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    width: double.infinity,
+                    height: 45,
+                    child: ElevatedButton(
+                      onPressed: () async {
+                        if (formKey.currentState.validate() && !isLoading) {
+                          try {
+                            setState(() {
+                              isLoading = true;
+                            });
+                            await _fbAuth.resetPassword(email);
+                            emailController.text = "";
+                            _toast.showSuccess(
+                                context, t.forgotPasswordMessage);
+                          } catch (error) {
+                            _toast.showError(context, t.serverError);
+                          } finally {
+                            setState(() {
+                              email = "";
+                              isLoading = false;
+                            });
+                          }
                         }
-                      }
-                    },
-                    child: isLoading
-                        ? SizedBox(
-                            width: 25,
-                            height: 25,
-                            child: CircularProgressIndicator(
-                              backgroundColor: Theme.of(context).primaryColor,
-                              valueColor:
-                                  AlwaysStoppedAnimation(Colors.grey.shade200),
-                              strokeWidth: 3,
+                      },
+                      child: isLoading
+                          ? SizedBox(
+                              width: 25,
+                              height: 25,
+                              child: CircularProgressIndicator(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                valueColor: AlwaysStoppedAnimation(
+                                    Colors.grey.shade200),
+                                strokeWidth: 3,
+                              ),
+                            )
+                          : Text(
+                              t.confirm,
+                              style: TextStyle(color: Colors.white),
                             ),
-                          )
-                        : Text(
-                            t.confirm,
-                            style: TextStyle(color: Colors.white),
-                          ),
-                    style: ElevatedButton.styleFrom(
-                      textStyle: TextStyle(
-                        fontSize: 18,
+                      style: ElevatedButton.styleFrom(
+                        textStyle: TextStyle(
+                          fontSize: 18,
+                        ),
+                        primary: Theme.of(context).primaryColor, // background
                       ),
-                      primary: Theme.of(context).primaryColor, // background
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),
