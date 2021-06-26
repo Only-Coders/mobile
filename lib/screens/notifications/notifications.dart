@@ -4,7 +4,7 @@ import 'package:mobile/components/generic/no_data.dart';
 import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/components/notifications/notification_item.dart';
 import 'package:mobile/services/notifications.dart';
-import 'package:mobile/models/notification.dart';
+import 'package:mobile/models/fb_notification.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class Notifications extends StatefulWidget {
@@ -44,6 +44,7 @@ class _NotificationsState extends State<Notifications> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).secondaryHeaderColor,
         iconTheme: IconThemeData(color: Colors.white),
+        brightness: Brightness.dark,
         title: Text(
           t.notifications,
           style: TextStyle(color: Colors.white),
