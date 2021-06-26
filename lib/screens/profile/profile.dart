@@ -139,8 +139,8 @@ class _ProfileState extends State<Profile> {
                         mail: user.email,
                         country: user.country.name,
                         birthDate: user.birthDate,
-                        gitPlatform: user.gitProfile.platform,
-                        gitProfile: user.gitProfile.userName,
+                        gitPlatform: user.gitProfile?.platform ?? null,
+                        gitProfile: user.gitProfile?.userName ?? null,
                       ),
                       PostPreview(
                         canonicalName: user.canonicalName,
