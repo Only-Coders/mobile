@@ -275,7 +275,8 @@ class _AddWorkExperienceState extends State<AddWorkExperience> {
               WorkPosition work = WorkPosition.fromJson({
                 "workplace": {
                   "id": workplaceId,
-                  "name": workplace,
+                  "name":
+                      workplace.isEmpty ? _typeAheadController.text : workplace,
                 },
                 "position": position,
                 "since": _startDate.toIso8601String(),
