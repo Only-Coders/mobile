@@ -266,8 +266,11 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
         TextButton(
           onPressed: () {
             Study study = Study.fromJson({
+              "institute": {
+                "id": instituteId,
+                "name": institute,
+              },
               "id": instituteId,
-              "name": institute,
               "degree": degree,
               "since": _startDate == null
                   ? widget.study.since

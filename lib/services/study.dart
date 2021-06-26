@@ -17,7 +17,7 @@ class StudyService {
 
   Future<void> createStudy(Study study) async {
     var studyJson = study.toJson();
-    if (study.id.isEmpty) studyJson.remove("id");
+    if (study.institute.id.isEmpty) studyJson.remove("id");
     await _httpClient.postRequest("/api/users/institutes", studyJson);
   }
 }

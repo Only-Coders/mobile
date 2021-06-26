@@ -237,8 +237,12 @@ class _AddStudyExperienceState extends State<AddStudyExperience> {
         TextButton(
           onPressed: () async {
             Study study = Study.fromJson({
+              "institute": {
+                "id": instituteId,
+                "name":
+                    institute.isEmpty ? _typeAheadController.text : institute,
+              },
               "id": instituteId,
-              "name": institute,
               "degree": degree,
               "since": _startDate.toIso8601String(),
               "until": _endDate == null ? null : _endDate.toIso8601String(),
