@@ -191,6 +191,7 @@ class _NewPostState extends State<NewPost> {
         appBar: AppBar(
           iconTheme: IconThemeData(color: Colors.white),
           backgroundColor: Theme.of(context).secondaryHeaderColor,
+          brightness: Brightness.dark,
           title: Text(
             t.newPost,
             style: TextStyle(color: Colors.white),
