@@ -87,8 +87,9 @@ class _ContactItemState extends State<ContactItem> {
                     children: [
                       CircleAvatar(
                         radius: 30,
-                        backgroundImage:
-                            AssetImage("assets/images/default-avatar.png"),
+                        backgroundImage: widget.contact.imageURI.isEmpty
+                            ? AssetImage("assets/images/default-avatar.png")
+                            : NetworkImage(widget.contact.imageURI),
                         backgroundColor: Colors.transparent,
                       ),
                       SizedBox(
