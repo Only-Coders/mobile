@@ -30,7 +30,7 @@ class PostParser {
             },
             child: Text(
               "@${person.firstName} ${person.lastName}",
-              style: TextStyle(color: Colors.blue),
+              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w800),
             ),
           ),
         );
@@ -81,7 +81,7 @@ class PostParser {
             },
             child: Text(
               "#${tag.displayName}",
-              style: TextStyle(color: Colors.blue),
+              style: TextStyle(color: Colors.blue, fontWeight: FontWeight.w800),
             ),
           ),
         );
