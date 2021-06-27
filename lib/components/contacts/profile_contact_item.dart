@@ -3,6 +3,7 @@ import 'package:flutter/painting.dart';
 import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/models/person.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/person.dart';
 
 class ProfileContactItem extends StatelessWidget {
@@ -19,6 +20,14 @@ class ProfileContactItem extends StatelessWidget {
     var t = AppLocalizations.of(context);
 
     return ListTile(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profile(
+            canonicalName: contact.canonicalName,
+          ),
+        ),
+      ),
       leading: CircleAvatar(
         radius: 30,
         backgroundImage: contact.imageURI.isEmpty
