@@ -5,6 +5,7 @@ import 'package:mobile/components/post/post_parser.dart';
 import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/comment.dart';
 import 'package:mobile/providers/user.dart';
+import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/theme/themes.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -131,10 +132,21 @@ class _CommentItemState extends State<CommentItem> {
                   children: [
                     Container(
                       padding: EdgeInsets.only(top: 15),
-                      child: Text(
-                        "${widget.comment.publisher.firstName} ${widget.comment.publisher.lastName}",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
+                      child: GestureDetector(
+                        onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => Profile(
+                              canonicalName:
+                                  widget.comment.publisher.canonicalName,
+                            ),
+                          ),
+                        ),
+                        child: Text(
+                          "${widget.comment.publisher.firstName} ${widget.comment.publisher.lastName}",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                     ),
