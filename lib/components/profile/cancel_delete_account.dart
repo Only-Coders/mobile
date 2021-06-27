@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/components/generic/toast.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
+import 'package:provider/provider.dart';
 
 class CancelDeleteAccount extends StatelessWidget {
   const CancelDeleteAccount({Key key}) : super(key: key);
@@ -51,6 +53,7 @@ class CancelDeleteAccount extends StatelessWidget {
 
             try {
               await _personService.cancelUserElimination();
+              context.read<User>().setEliminationDate(null);
               _toast.showSuccess(context, t.cancelRemoveAccountMessage);
               Navigator.pop(context);
             } catch (error) {

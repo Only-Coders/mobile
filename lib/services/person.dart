@@ -1,5 +1,6 @@
 import 'package:mobile/http_client.dart';
 import 'package:mobile/models/contact_request.dart';
+import 'package:mobile/models/oc_notification.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/profile.dart';
 import 'package:mobile/models/skill.dart';
@@ -127,11 +128,19 @@ class PersonService {
     await _httpClient.deleteRequest("/api/users/contacts/$canonicalName");
   }
 
-  Future<void> removeMyAccount() async {
-    await _httpClient.putRequest("/api/users/elimination", {});
+  Future<int> removeMyAccount() async {
+    var response = await _httpClient.putRequest("/api/users/elimination", {});
+    return response.data["eliminationDate"];
   }
 
   Future<void> cancelUserElimination() async {
     await _httpClient.deleteRequest("/api/users/elimination");
+  }
+
+  Future<List<OCNotification>> getUserNotificationsConfig() async {
+    var response = await _httpClient.getRequest("/api/notifications-config");
+    return (response.data as List)
+        .map((notification) => OCNotification.fromJson(notification))
+        .toList();
   }
 }

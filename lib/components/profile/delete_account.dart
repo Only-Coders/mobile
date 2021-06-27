@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/components/generic/toast.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
+import 'package:provider/provider.dart';
 
 class DeleteAccount extends StatelessWidget {
   const DeleteAccount({Key key}) : super(key: key);
@@ -61,7 +63,8 @@ class DeleteAccount extends StatelessWidget {
             final PersonService _personService = PersonService();
 
             try {
-              await _personService.removeMyAccount();
+              int eliminationDate = await _personService.removeMyAccount();
+              context.read<User>().setEliminationDate(eliminationDate);
               _toast.showInfo(context, t.removeAccountInfo);
               Navigator.pop(context);
             } catch (error) {

@@ -45,6 +45,10 @@ class User {
     this.defaultPrivacy = defaultPrivacy;
   }
 
+  void setEliminationDate(int eliminationDate) {
+    this.eliminationDate = eliminationDate;
+  }
+
   User.fromJson(Map<String, dynamic> json)
       : email = json['email'],
         imageURI = json['imageURI'],
