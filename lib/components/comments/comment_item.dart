@@ -216,6 +216,9 @@ class _CommentItemState extends State<CommentItem> {
                           : () async => await reactToComment('APPROVE'),
                       style: TextButton.styleFrom(
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        backgroundColor: myReaction == "APPROVE"
+                            ? Theme.of(context).primaryColor.withOpacity(0.1)
+                            : null,
                         minimumSize: Size(10, 10),
                       ),
                       label: Text(
@@ -234,6 +237,9 @@ class _CommentItemState extends State<CommentItem> {
                           : () async => await reactToComment('REJECT'),
                       style: TextButton.styleFrom(
                         primary: Theme.of(context).errorColor,
+                        backgroundColor: myReaction == "REJECT"
+                            ? Theme.of(context).errorColor.withOpacity(0.1)
+                            : null,
                         tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                         minimumSize: Size(10, 10),
                       ),
@@ -248,6 +254,9 @@ class _CommentItemState extends State<CommentItem> {
                       ),
                     ),
                   ],
+                ),
+                SizedBox(
+                  height: 5,
                 ),
               ],
             ),
