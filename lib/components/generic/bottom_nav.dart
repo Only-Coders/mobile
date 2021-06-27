@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/profile/profile.dart';
+import 'package:provider/provider.dart';
 
 class BottomNav extends StatefulWidget {
   final refreshFeed;
@@ -122,7 +123,36 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
             label: t.profile,
-            icon: Icon(Icons.person),
+            icon: Stack(
+              clipBehavior: Clip.none,
+              children: <Widget>[
+                Icon(Icons.person),
+                if (context.read<User>().eliminationDate != null)
+                  Positioned(
+                    right: -3,
+                    top: -3,
+                    child: Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: Colors.orangeAccent,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 14,
+                        minHeight: 14,
+                      ),
+                      child: Text(
+                        "!",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  )
+              ],
+            ),
           ),
         ],
       ),
