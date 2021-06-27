@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:mobile/components/post/link_preview.dart';
 import 'package:mobile/models/link.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/link_preview.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
 class LinkPost extends StatefulWidget {
@@ -96,13 +98,51 @@ class _LinkPostState extends State<LinkPost> {
             );
           }
         }
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          width: MediaQuery.of(context).size.width - 8,
-          child: Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
-            ),
+        return Padding(
+          padding: const EdgeInsets.all(10),
+          child: Column(
+            children: [
+              SkeletonAnimation(
+                shimmerColor: Colors.grey[400],
+                borderRadius: BorderRadius.circular(35),
+                shimmerDuration: 1000,
+                child: Container(
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(35),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey[200],
+                        blurRadius: 30,
+                        offset: Offset(0, 10),
+                      )
+                    ],
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                ),
+              ),
+              SkeletonAnimation(
+                shimmerColor: Colors.grey[400],
+                borderRadius: BorderRadius.circular(35),
+                shimmerDuration: 1000,
+                child: Container(
+                  height: 20,
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    borderRadius: BorderRadius.circular(35),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey[200],
+                        blurRadius: 30,
+                        offset: Offset(0, 10),
+                      )
+                    ],
+                  ),
+                  margin: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                ),
+              ),
+            ],
           ),
         );
       },
