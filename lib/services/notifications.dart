@@ -1,5 +1,5 @@
 import 'package:firebase_database/firebase_database.dart';
-import 'package:mobile/models/notification.dart';
+import 'package:mobile/models/fb_notification.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,10 +23,11 @@ class NotificationService {
       data.forEach((key, value) {
         FBNotification notification = FBNotification.fromJson({
           "imageURI": value["imageURI"],
+          "canonicalName": value["canonicalName"],
+          "createdAt": value["createdAt"],
           "message": value["message"],
           "key": key,
           "from": value["from"],
-          "to": value["to"],
           "eventType": value["eventType"],
           "read": value["read"],
         });

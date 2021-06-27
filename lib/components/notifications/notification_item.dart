@@ -1,7 +1,8 @@
 import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
-import 'package:mobile/models/notification.dart';
+import 'package:mobile/models/fb_notification.dart';
 import 'package:mobile/providers/user.dart';
+import 'package:mobile/screens/profile/profile.dart';
 import 'package:provider/provider.dart';
 
 class NotificationItem extends StatelessWidget {
@@ -14,6 +15,14 @@ class NotificationItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profile(
+            canonicalName: notification.canonicalName,
+          ),
+        ),
+      ),
       leading: Row(
         mainAxisSize: MainAxisSize.min,
         children: [

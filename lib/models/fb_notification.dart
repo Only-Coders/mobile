@@ -2,7 +2,8 @@ class FBNotification {
   final String eventType;
   final String message;
   final bool read;
-  final String to;
+  final String canonicalName;
+  final int createdAt;
   final String from;
   final String key;
   final String imageURI;
@@ -11,7 +12,8 @@ class FBNotification {
       {this.eventType,
       this.message,
       this.read,
-      this.to,
+      this.canonicalName,
+      this.createdAt,
       this.key,
       this.imageURI,
       this.from});
@@ -21,7 +23,8 @@ class FBNotification {
       eventType: json['eventType'],
       message: json['message'],
       read: json['read'],
-      to: json['to'],
+      canonicalName: json['canonicalName'],
+      createdAt: json['createdAt'],
       from: json['from'],
       key: json['key'],
       imageURI: json['imageURI'],
@@ -32,7 +35,8 @@ class FBNotification {
         'eventType': eventType,
         'message': message,
         'read': read,
-        'to': to,
+        'canonicalName': canonicalName,
+        'createdAt': createdAt,
         'from': from,
         'key': key,
         'imageURI': imageURI,
