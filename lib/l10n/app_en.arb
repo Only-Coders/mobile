@@ -115,11 +115,13 @@
   "removePostMessage": "Are you sure you want to delete this post ?",
   "removePostSuccess": "Post was successfully removed",
   "removeAccount": "Delete account",
+  "removeAccountAlert": "Your account will be deleted on the",
   "removeAccountMessage": "Your account and all your data be deleted within 30 days. You can only cancel this operation in that period of time",
   "areYouSure": "Are you sure about this ?",
   "removeAccountInfo": "Your account is now in the delete process",
   "progress": "in progress",
   "cancelRemoveAccount": "Cancel delete account",
   "cancelRemoveAccountMessage": "The deletion of your account was canceled",
-  "deleteCommentMessage": "The message was removed successfully"
+  "deleteCommentMessage": "The message was removed successfully",
+  "settings": "Settings"
 }

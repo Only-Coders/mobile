@@ -8,6 +8,7 @@ import 'package:mobile/components/profile/post_preview.dart';
 import 'package:mobile/components/profile/profile_actions.dart';
 import 'package:mobile/components/profile/profile_header.dart';
 import 'package:mobile/components/profile/profile_qty_info.dart';
+import 'package:mobile/components/profile/remove_account_alert.dart';
 import 'package:mobile/components/profile/skills_preview.dart';
 import 'package:mobile/components/profile/study_preview.dart';
 import 'package:mobile/components/profile/tags_preview.dart';
@@ -134,6 +135,8 @@ class _ProfileState extends State<Profile> {
                         isMyProfile: user.canonicalName ==
                             context.read<User>().canonicalName,
                       ),
+                      if (context.read<User>().eliminationDate != null)
+                        RemoveAccountAlert(),
                       PersonalData(
                         description: user.description,
                         mail: user.email,
