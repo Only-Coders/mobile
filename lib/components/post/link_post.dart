@@ -5,6 +5,7 @@ import 'package:mobile/components/post/link_preview.dart';
 import 'package:mobile/models/link.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/services/link_preview.dart';
+import 'package:mobile/theme/themes.dart';
 import 'package:skeleton_text/skeleton_text.dart';
 import 'package:youtube_player_flutter/youtube_player_flutter.dart';
 
@@ -89,6 +90,63 @@ class _LinkPostState extends State<LinkPost> {
               ),
             );
           } else {
+            return Padding(
+              padding: const EdgeInsets.all(10),
+              child: Column(
+                children: [
+                  SkeletonAnimation(
+                    shimmerColor: currentTheme.currentTheme == ThemeMode.light
+                        ? Colors.grey[400]
+                        : Colors.grey[800],
+                    borderRadius: BorderRadius.circular(35),
+                    shimmerDuration: 1000,
+                    child: Container(
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: currentTheme.currentTheme == ThemeMode.light
+                            ? Colors.grey[200]
+                            : Colors.grey[800],
+                        borderRadius: BorderRadius.circular(35),
+                        boxShadow: [
+                          BoxShadow(
+                            color: currentTheme.currentTheme == ThemeMode.light
+                                ? Colors.grey[200]
+                                : Colors.grey[850],
+                            blurRadius: 15,
+                          )
+                        ],
+                      ),
+                      margin: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                    ),
+                  ),
+                  SkeletonAnimation(
+                    shimmerColor: currentTheme.currentTheme == ThemeMode.light
+                        ? Colors.grey[400]
+                        : Colors.grey[800],
+                    borderRadius: BorderRadius.circular(35),
+                    shimmerDuration: 1000,
+                    child: Container(
+                      height: 20,
+                      decoration: BoxDecoration(
+                        color: currentTheme.currentTheme == ThemeMode.light
+                            ? Colors.grey[200]
+                            : Colors.grey[800],
+                        borderRadius: BorderRadius.circular(35),
+                        boxShadow: [
+                          BoxShadow(
+                            color: currentTheme.currentTheme == ThemeMode.light
+                                ? Colors.grey[200]
+                                : Colors.grey[850],
+                            blurRadius: 15,
+                          )
+                        ],
+                      ),
+                      margin: EdgeInsets.symmetric(horizontal: 25, vertical: 5),
+                    ),
+                  ),
+                ],
+              ),
+            );
             return Container(
               child: Padding(
                 padding: const EdgeInsets.all(20),
