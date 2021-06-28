@@ -44,6 +44,10 @@ class _LinkPostState extends State<LinkPost> {
                 mute: false,
               ),
             ),
+            bottomActions: [
+              CurrentPosition(),
+              ProgressBar(isExpanded: true),
+            ],
             showVideoProgressIndicator: true,
           ),
           builder: (context, player) => Column(
