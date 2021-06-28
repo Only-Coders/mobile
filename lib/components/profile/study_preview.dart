@@ -214,7 +214,7 @@ class _StudyPreviewState extends State<StudyPreview> {
                       );
                     } else {
                       return NoData(
-                        message: "No studies found",
+                        message: t.noStudiesFound,
                         img: "assets/images/no-data-study.png",
                       );
                     }

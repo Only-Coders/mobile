@@ -5,6 +5,7 @@ import 'package:mobile/models/person.dart';
 import 'package:mobile/models/post_tag.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/screens/tags/tag_posts.dart';
+import 'package:flutter/services.dart';
 
 class PostParser {
   Widget parseMention(
@@ -114,14 +115,33 @@ class PostParser {
       padding: EdgeInsets.only(bottom: 5),
       child: Container(
         width: double.infinity,
-        child: HighlightView(
-          code,
-          language: lang,
-          theme: tomorrowNightTheme,
-          padding: EdgeInsets.all(10),
-          textStyle: TextStyle(
-            fontSize: 10,
-          ),
+        child: Stack(
+          children: [
+            HighlightView(
+              code,
+              language: lang,
+              theme: tomorrowNightTheme,
+              padding: EdgeInsets.all(20),
+              textStyle: TextStyle(
+                fontSize: 10,
+              ),
+            ),
+            Positioned(
+              right: -8,
+              top: -8,
+              child: IconButton(
+                onPressed: () {
+                  Clipboard.setData(ClipboardData(text: code));
+                },
+                splashRadius: 20,
+                icon: Icon(
+                  Icons.copy,
+                  size: 22,
+                  color: Colors.grey[200],
+                ),
+              ),
+            ),
+          ],
         ),
         decoration: BoxDecoration(
           border: Border.all(

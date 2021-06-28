@@ -225,7 +225,7 @@ class _WorkExperiencePreviewState extends State<WorkExperiencePreview> {
                       );
                     } else {
                       return NoData(
-                        message: "No works found",
+                        message: t.noWorksFound,
                         img: "assets/images/no-data-work.png",
                       );
                     }
