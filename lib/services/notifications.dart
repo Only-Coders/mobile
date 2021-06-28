@@ -34,6 +34,9 @@ class NotificationService {
         notifications.add(notification);
       });
     }
+    notifications.sort((a, b) {
+      return b.createdAt.compareTo(a.createdAt);
+    });
     return notifications;
   }
 }
