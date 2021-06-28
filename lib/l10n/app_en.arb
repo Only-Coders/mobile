@@ -123,5 +123,7 @@
   "cancelRemoveAccount": "Cancel delete account",
   "cancelRemoveAccountMessage": "The deletion of your account was canceled",
   "deleteCommentMessage": "The message was removed successfully",
-  "settings": "Settings"
+  "settings": "Settings",
+  "noWorksFound": "No works found",
+  "noStudiesFound": "No studies found"
 }

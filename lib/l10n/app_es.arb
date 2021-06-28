@@ -123,5 +123,7 @@
   "cancelRemoveAccount": "Cancelar eliminacion de cuenta",
   "cancelRemoveAccountMessage": "Se cancelo la eliminacion de tu cuenta",
   "deleteCommentMessage": "El comentario se elimino exitosamente",
-  "settings": "Configuraciones"
+  "settings": "Configuraciones",
+  "noWorksFound": "No se encontro experiencias laborales",
+  "noStudiesFound": "No se encontro actividad academica"
 }
