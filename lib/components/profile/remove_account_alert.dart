@@ -15,7 +15,8 @@ class RemoveAccountAlert extends StatelessWidget {
       margin: EdgeInsets.only(top: 25, right: 15, left: 15),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        color: Color(0xffF5E9D7),
+        // color: Color(0xffF5E9D7),
+        color: Colors.orangeAccent.withOpacity(0.3),
         border: Border(
           left: BorderSide(
             width: 5,
