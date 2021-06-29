@@ -38,7 +38,7 @@ class ProfileFollowerItem extends StatelessWidget {
       ),
       subtitle: person.currentPosition != null
           ? Text(
-              "${person.currentPosition.position} ${person.currentPosition.workplace.name}",
+              "${person.currentPosition.position} ${t.at} ${person.currentPosition.workplace.name}",
               style: TextStyle(
                 color: Theme.of(context).accentColor.withOpacity(0.6),
                 fontSize: 12,

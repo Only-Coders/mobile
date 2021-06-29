@@ -41,7 +41,7 @@ class ProfileContactItem extends StatelessWidget {
       ),
       subtitle: contact.currentPosition != null
           ? Text(
-              "${contact.currentPosition.position} ${contact.currentPosition.workplace.name}",
+              "${contact.currentPosition.position} ${t.at} ${contact.currentPosition.workplace.name}",
               style: TextStyle(
                 color: Theme.of(context).accentColor.withOpacity(0.6),
                 fontSize: 12,

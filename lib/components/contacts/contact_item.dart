@@ -72,6 +72,8 @@ class _ContactItemState extends State<ContactItem> {
 
   @override
   Widget build(BuildContext context) {
+    var t = AppLocalizations.of(context);
+
     return Container(
       padding: EdgeInsets.only(top: 5, bottom: 5),
       width: double.infinity,
@@ -106,7 +108,7 @@ class _ContactItemState extends State<ContactItem> {
                           Text(
                             widget.contact.currentPosition == null
                                 ? ""
-                                : "${widget.contact.currentPosition.workplace.name} ${widget.contact.currentPosition.position}",
+                                : "${widget.contact.currentPosition.workplace.name} ${t.at} ${widget.contact.currentPosition.position}",
                             style: TextStyle(
                                 color: Theme.of(context)
                                     .accentColor

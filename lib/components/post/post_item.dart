@@ -211,7 +211,7 @@ class _PostItemState extends State<PostItem> {
                           ),
                           if (widget.post.publisher.currentPosition != null)
                             Text(
-                              "${widget.post.publisher.currentPosition.workplace.name} ${widget.post.publisher.currentPosition.position}",
+                              "${widget.post.publisher.currentPosition.position} ${t.at} ${widget.post.publisher.currentPosition.workplace.name}",
                               style: TextStyle(
                                 fontSize: 11,
                                 color: Theme.of(context)

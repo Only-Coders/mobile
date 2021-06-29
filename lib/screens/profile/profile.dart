@@ -85,7 +85,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       Text(
                         user.currentPosition != null
-                            ? "${user.currentPosition.position} ${user.currentPosition.workplace.name}"
+                            ? "${user.currentPosition.position} ${t.at} ${user.currentPosition.workplace.name}"
                             : "",
                         style: TextStyle(
                             color:

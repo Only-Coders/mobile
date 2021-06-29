@@ -128,5 +128,6 @@
   "noStudiesFound": "No se encontro actividad academica",
   "reportPost": "Reportar publicacion",
   "reason": "Motivo...",
-  "reportSuccess": "La publicacion fue reportada"
+  "reportSuccess": "La publicacion fue reportada",
+  "at": "en"
 }
