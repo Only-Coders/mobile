@@ -1,6 +1,7 @@
 import 'package:mobile/http_client.dart';
 import 'package:mobile/models/comment.dart';
 import 'package:mobile/models/post.dart';
+import 'package:mobile/models/report_type.dart';
 
 class PostService {
   final HttpClient _httpClient = HttpClient();
@@ -90,5 +91,18 @@ class PostService {
   Future<void> reactToComment(String commentId, String reaction) async {
     await _httpClient.postRequest(
         "/api/comments/$commentId/reactions", {"reactionType": reaction});
+  }
+
+  Future<List<ReportType>> getReportTypes() async {
+    var response =
+        await _httpClient.getRequest("/api/report-types", {"language": "es"});
+    return (response.data as List)
+        .map((report) => ReportType.fromJson(report))
+        .toList();
+  }
+
+  Future<void> reportPost(String postId, String typeId, String reason) async {
+    await _httpClient.postRequest(
+        "/api/posts/$postId/reports", {"reason": reason, "typeID": typeId});
   }
 }

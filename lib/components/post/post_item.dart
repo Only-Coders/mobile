@@ -5,6 +5,7 @@ import 'package:mobile/components/post/file_post.dart';
 import 'package:mobile/components/post/image_post.dart';
 import 'package:mobile/components/post/link_post.dart';
 import 'package:mobile/components/post/post_parser.dart';
+import 'package:mobile/components/post/report_post.dart';
 import 'package:mobile/components/post/text_post.dart';
 import 'package:mobile/models/post.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -313,6 +314,12 @@ class _PostItemState extends State<PostItem> {
                     PopupMenuItem(
                       padding: EdgeInsets.all(0),
                       child: ListTile(
+                        onTap: () => showDialog(
+                          context: context,
+                          builder: (context) => ReportPost(
+                            postId: widget.post.id,
+                          ),
+                        ),
                         leading: Icon(
                           Icons.policy,
                           color: Theme.of(context).accentColor,

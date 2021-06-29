@@ -125,5 +125,8 @@
   "deleteCommentMessage": "El comentario se elimino exitosamente",
   "settings": "Configuraciones",
   "noWorksFound": "No se encontro experiencias laborales",
-  "noStudiesFound": "No se encontro actividad academica"
+  "noStudiesFound": "No se encontro actividad academica",
+  "reportPost": "Reportar publicacion",
+  "reason": "Motivo...",
+  "reportSuccess": "La publicacion fue reportada"
 }

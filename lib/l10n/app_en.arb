@@ -125,5 +125,8 @@
   "deleteCommentMessage": "The message was removed successfully",
   "settings": "Settings",
   "noWorksFound": "No works found",
-  "noStudiesFound": "No studies found"
+  "noStudiesFound": "No studies found",
+  "reportPost": "Report post",
+  "reason": "Reason...",
+  "reportSuccess": "The post was reported"
 }
