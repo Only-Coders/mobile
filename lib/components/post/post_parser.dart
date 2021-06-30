@@ -117,13 +117,16 @@ class PostParser {
         width: double.infinity,
         child: Stack(
           children: [
-            HighlightView(
-              code,
-              language: lang,
-              theme: tomorrowNightTheme,
-              padding: EdgeInsets.all(20),
-              textStyle: TextStyle(
-                fontSize: 10,
+            Container(
+              width: double.infinity,
+              child: HighlightView(
+                code,
+                language: lang,
+                theme: tomorrowNightTheme,
+                padding: EdgeInsets.all(20),
+                textStyle: TextStyle(
+                  fontSize: 10,
+                ),
               ),
             ),
             Positioned(
