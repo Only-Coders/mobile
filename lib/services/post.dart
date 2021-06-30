@@ -105,4 +105,24 @@ class PostService {
     await _httpClient.postRequest(
         "/api/posts/$postId/reports", {"reason": reason, "typeID": typeId});
   }
+
+  Future<void> editPost(
+    String postId,
+    String message,
+    String type,
+    bool isPublic,
+    String url,
+    List<dynamic> mentions,
+    List<String> tags,
+  ) async {
+    Map<String, dynamic> post = {
+      "message": message,
+      "type": type,
+      "isPublic": isPublic,
+      "url": url,
+      "mentionCanonicalNames": mentions,
+      "tagNames": tags
+    };
+    await _httpClient.putRequest("/api/posts/$postId", post);
+  }
 }

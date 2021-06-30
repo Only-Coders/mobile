@@ -129,5 +129,7 @@
   "reportPost": "Report post",
   "reason": "Reason...",
   "reportSuccess": "The post was reported",
-  "at": "at"
+  "at": "at",
+  "editPost": "Edit post",
+  "editPostMessage": "The post was edited"
 }

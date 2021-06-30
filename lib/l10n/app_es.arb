@@ -129,5 +129,7 @@
   "reportPost": "Reportar publicacion",
   "reason": "Motivo...",
   "reportSuccess": "La publicacion fue reportada",
-  "at": "en"
+  "at": "en",
+  "editPost": "Editar publicacion",
+  "editPostMessage": "La publicacion fue editada"
 }

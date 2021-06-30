@@ -11,6 +11,7 @@ import 'package:mobile/models/post.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/comments/new_comment.dart';
+import 'package:mobile/screens/post/new_post.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/post.dart';
 import 'package:provider/provider.dart';
@@ -230,6 +231,31 @@ class _PostItemState extends State<PostItem> {
                     color: Theme.of(context).accentColor,
                   ),
                   itemBuilder: (BuildContext context) => <PopupMenuEntry>[
+                    if (widget.post.publisher.canonicalName ==
+                        context.read<User>().canonicalName)
+                      PopupMenuItem(
+                        padding: EdgeInsets.all(0),
+                        child: ListTile(
+                          onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => NewPost(
+                                post: widget.post,
+                              ),
+                            ),
+                          ),
+                          leading: Icon(
+                            Icons.edit,
+                            color: Theme.of(context).accentColor,
+                          ),
+                          title: Text(
+                            t.edit,
+                            style: TextStyle(
+                              color: Theme.of(context).accentColor,
+                            ),
+                          ),
+                        ),
+                      ),
                     widget.post.isFavorite == true
                         ? PopupMenuItem(
                             value: widget.post.isFavorite,

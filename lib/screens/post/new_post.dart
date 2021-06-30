@@ -7,21 +7,26 @@ import 'package:mobile/components/post/add_link.dart';
 import 'package:mobile/components/post/link_preview.dart';
 import 'package:mobile/models/link.dart';
 import 'package:mobile/models/person.dart';
+import 'package:mobile/models/post.dart';
 import 'package:mobile/models/tag.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/fb_storage.dart';
+import 'package:mobile/services/link_preview.dart';
 import 'package:mobile/services/person.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/services/tag.dart';
+import 'package:mobile/theme/themes.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:skeleton_text/skeleton_text.dart';
 
 class NewPost extends StatefulWidget {
   final refreshFeed;
+  final Post post;
 
-  const NewPost({Key key, this.refreshFeed}) : super(key: key);
+  const NewPost({Key key, this.refreshFeed, this.post}) : super(key: key);
 
   @override
   _NewPostState createState() => _NewPostState();
@@ -31,6 +36,7 @@ class _NewPostState extends State<NewPost> {
   final PostService _postService = PostService();
   final PersonService _personService = PersonService();
   final TagService _tagService = TagService();
+  final LinkPreviewService _linkPreviewService = LinkPreviewService();
   final FirebaseStorage _firebaseStorage = FirebaseStorage();
   final Toast _toast = Toast();
   GlobalKey<FlutterMentionsState> key = GlobalKey<FlutterMentionsState>();
@@ -41,6 +47,8 @@ class _NewPostState extends State<NewPost> {
   bool isLoading = false;
   File _image;
   File _file;
+  String postUrl = "";
+  Future previewLink;
   bool showMentions = false;
   final imagePicker = ImagePicker();
   Link linkPreview;
@@ -118,6 +126,7 @@ class _NewPostState extends State<NewPost> {
     setState(() {
       type = "TEXT";
       linkPreview = null;
+      postUrl = "";
     });
   }
 
@@ -132,6 +141,48 @@ class _NewPostState extends State<NewPost> {
         tagNames.add(match.group(1));
       });
     });
+  }
+
+  Future<void> editPost() async {
+    try {
+      setState(() {
+        isLoading = true;
+      });
+      if (_image != null) {
+        postUrl = await _firebaseStorage.uploadFile(_image, "images/");
+      }
+      if (_file != null) {
+        postUrl = await _firebaseStorage.uploadFile(_file, "files/");
+      }
+      if (linkPreview != null && type == "LINK") {
+        postUrl = linkPreview.url;
+      }
+      List<Map<String, dynamic>> filteredMentions = mentionCanonicalNames
+          .where((mention) => message.contains("@${mention['display']}"))
+          .toList();
+
+      List<String> mentionsNames = filteredMentions.map((element) {
+        message =
+            message.replaceAll("@${element['display']}", "@${element['id']}");
+        return element["id"] as String;
+      }).toList();
+
+      addNewTags();
+      Provider.of<User>(context, listen: false)
+          .setDefaultPrivacy(selectedPostPrivacy == "To anyone");
+      await _postService.editPost(widget.post.id, message, type,
+          selectedPostPrivacy == "To anyone", postUrl, mentionsNames, tagNames);
+      setState(() {
+        isLoading = false;
+      });
+      _toast.showSuccess(context, AppLocalizations.of(context).editPostMessage);
+      Navigator.pop(context);
+    } catch (error) {
+      setState(() {
+        isLoading = false;
+      });
+      _toast.showError(context, error.response.data["error"]);
+    }
   }
 
   Future<void> newPost() async {
@@ -179,12 +230,32 @@ class _NewPostState extends State<NewPost> {
   }
 
   @override
+  void initState() {
+    if (widget.post != null) {
+      message = widget.post.message;
+      type = widget.post.type;
+      postUrl = widget.post.url;
+      if (widget.post.mentions.isNotEmpty) {
+        mentionCanonicalNames = widget.post.mentions.map((mention) {
+          message = message.replaceAll("@${mention.canonicalName}",
+              "@${mention.firstName} ${mention.lastName}");
+          return {
+            "display": '${mention.firstName} ${mention.lastName}',
+            "id": mention.canonicalName
+          };
+        }).toList();
+      }
+      previewLink = _linkPreviewService.previewLink(widget.post.url);
+      selectedPostPrivacy =
+          widget.post.isPublic ? "To anyone" : "To my contacts";
+    }
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
     User user = Provider.of<User>(context);
-    selectedPostPrivacy = Provider.of<User>(context).defaultPrivacy
-        ? "To anyone"
-        : "To my contacts";
 
     return Portal(
       child: Scaffold(
@@ -193,31 +264,53 @@ class _NewPostState extends State<NewPost> {
           backgroundColor: Theme.of(context).secondaryHeaderColor,
           brightness: Brightness.dark,
           title: Text(
-            t.newPost,
+            widget.post != null ? t.editPost : t.newPost,
             style: TextStyle(color: Colors.white),
           ),
           actions: [
-            TextButton(
-              onPressed: () async {
-                await newPost();
-              },
-              style: TextButton.styleFrom(primary: Colors.white),
-              child: isLoading
-                  ? SizedBox(
-                      width: 25,
-                      height: 25,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Theme.of(context).primaryColor,
-                        valueColor:
-                            AlwaysStoppedAnimation(Colors.grey.shade200),
-                        strokeWidth: 3,
-                      ),
-                    )
-                  : Text(
-                      t.publish,
-                      style: TextStyle(color: Colors.white),
-                    ),
-            ),
+            widget.post != null
+                ? TextButton(
+                    onPressed: () async {
+                      await editPost();
+                    },
+                    style: TextButton.styleFrom(primary: Colors.white),
+                    child: isLoading
+                        ? SizedBox(
+                            width: 25,
+                            height: 25,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              valueColor:
+                                  AlwaysStoppedAnimation(Colors.grey.shade200),
+                              strokeWidth: 3,
+                            ),
+                          )
+                        : Text(
+                            t.edit,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                  )
+                : TextButton(
+                    onPressed: () async {
+                      await newPost();
+                    },
+                    style: TextButton.styleFrom(primary: Colors.white),
+                    child: isLoading
+                        ? SizedBox(
+                            width: 25,
+                            height: 25,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              valueColor:
+                                  AlwaysStoppedAnimation(Colors.grey.shade200),
+                              strokeWidth: 3,
+                            ),
+                          )
+                        : Text(
+                            t.publish,
+                            style: TextStyle(color: Colors.white),
+                          ),
+                  ),
           ],
         ),
         body: Builder(
@@ -316,10 +409,12 @@ class _NewPostState extends State<NewPost> {
                                                     selectedPostPrivacy ==
                                                         "To anyone");
                                           },
-                                          value: Provider.of<User>(context)
-                                                  .defaultPrivacy
-                                              ? "To anyone"
-                                              : "To my contacts",
+                                          value: selectedPostPrivacy != null
+                                              ? selectedPostPrivacy
+                                              : Provider.of<User>(context)
+                                                      .defaultPrivacy
+                                                  ? "To anyone"
+                                                  : "To my contacts",
                                         ),
                                       )
                                     ],
@@ -332,6 +427,7 @@ class _NewPostState extends State<NewPost> {
                                 children: [
                                   FlutterMentions(
                                     key: key,
+                                    defaultText: message,
                                     suggestionPosition:
                                         SuggestionPosition.Bottom,
                                     keyboardType: TextInputType.multiline,
@@ -460,6 +556,140 @@ class _NewPostState extends State<NewPost> {
                                           removeLink: removeLinkPreview,
                                         )
                                       : Container(),
+                                  if (type == "LINK" && postUrl.isNotEmpty)
+                                    FutureBuilder(
+                                        future: previewLink,
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.done) {
+                                            if (snapshot.hasData) {
+                                              return LinkPreview(
+                                                link: snapshot.data,
+                                                removeLink: removeLinkPreview,
+                                              );
+                                            }
+                                          }
+                                          return Padding(
+                                            padding: const EdgeInsets.all(10),
+                                            child: Column(
+                                              children: [
+                                                SkeletonAnimation(
+                                                  shimmerColor: currentTheme
+                                                              .currentTheme ==
+                                                          ThemeMode.light
+                                                      ? Colors.grey[400]
+                                                      : Colors.grey[800],
+                                                  borderRadius:
+                                                      BorderRadius.circular(35),
+                                                  shimmerDuration: 1000,
+                                                  child: Container(
+                                                    height: 20,
+                                                    decoration: BoxDecoration(
+                                                      color: currentTheme
+                                                                  .currentTheme ==
+                                                              ThemeMode.light
+                                                          ? Colors.grey[200]
+                                                          : Colors.grey[800],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              35),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: currentTheme
+                                                                      .currentTheme ==
+                                                                  ThemeMode
+                                                                      .light
+                                                              ? Colors.grey[200]
+                                                              : Colors
+                                                                  .grey[850],
+                                                          blurRadius: 15,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 25,
+                                                            vertical: 5),
+                                                  ),
+                                                ),
+                                                SkeletonAnimation(
+                                                  shimmerColor: currentTheme
+                                                              .currentTheme ==
+                                                          ThemeMode.light
+                                                      ? Colors.grey[400]
+                                                      : Colors.grey[800],
+                                                  borderRadius:
+                                                      BorderRadius.circular(35),
+                                                  shimmerDuration: 1000,
+                                                  child: Container(
+                                                    height: 20,
+                                                    decoration: BoxDecoration(
+                                                      color: currentTheme
+                                                                  .currentTheme ==
+                                                              ThemeMode.light
+                                                          ? Colors.grey[200]
+                                                          : Colors.grey[800],
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              35),
+                                                      boxShadow: [
+                                                        BoxShadow(
+                                                          color: currentTheme
+                                                                      .currentTheme ==
+                                                                  ThemeMode
+                                                                      .light
+                                                              ? Colors.grey[200]
+                                                              : Colors
+                                                                  .grey[850],
+                                                          blurRadius: 15,
+                                                        )
+                                                      ],
+                                                    ),
+                                                    margin:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 25,
+                                                            vertical: 5),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        }),
+                                  if (type == "IMAGE" && postUrl.isNotEmpty)
+                                    Stack(
+                                      children: [
+                                        ClipRRect(
+                                          child: Image.network(postUrl),
+                                          borderRadius:
+                                              BorderRadius.circular(4),
+                                        ),
+                                        Positioned(
+                                          right: 0,
+                                          child: Padding(
+                                            padding: const EdgeInsets.all(5),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(25),
+                                                  color: Colors.grey.shade800),
+                                              child: IconButton(
+                                                splashRadius: 20,
+                                                onPressed: () {
+                                                  setState(() {
+                                                    postUrl = "";
+                                                    type = "TEXT";
+                                                  });
+                                                },
+                                                icon: Icon(
+                                                  Icons.close,
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   _image != null
                                       ? Stack(
                                           children: [
