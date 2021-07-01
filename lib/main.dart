@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobile/http_client.dart';
 import 'package:mobile/navigation.dart';
 import 'package:mobile/providers/user.dart';
@@ -56,6 +57,21 @@ void deviceTokenListener() async {
   FirebaseMessaging.instance.onTokenRefresh.listen(saveDeviceToken);
 }
 
+Future<void> setNotificationChannel() async {
+  const AndroidNotificationChannel channel = AndroidNotificationChannel(
+    'high_importance_channel',
+    'High Importance Notifications',
+    'This channel is used for important notifications.',
+    importance: Importance.max,
+  );
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
+}
+
 Future<void> registerPushNotifications() async {
   MessagingService _messagingService =
       MessagingService(FirebaseMessaging.instance);
@@ -75,6 +91,7 @@ Future<void> main() async {
   await Firebase.initializeApp();
   User user = await loadPrefs();
   await registerPushNotifications();
+  await setNotificationChannel();
   runApp(App(
     user: user,
   ));
