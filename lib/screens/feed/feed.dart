@@ -37,6 +37,12 @@ class _FeedState extends State<Feed> {
     super.initState();
   }
 
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
+  }
+
   Future<void> _fetchPage(int pageKey) async {
     try {
       int page = pageKey ~/ 10;
@@ -133,7 +139,7 @@ class _FeedState extends State<Feed> {
             margin: EdgeInsets.only(right: 5),
             child: IconButton(
               splashRadius: 25,
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).pushNamed("/chats"),
               icon: Icon(
                 Icons.message,
                 size: 30,
@@ -153,6 +159,7 @@ class _FeedState extends State<Feed> {
                 padding: const EdgeInsets.symmetric(vertical: 8),
                 child: PostItem(
                   post: item,
+                  refreshPosts: _pagingController.refresh,
                 ),
               );
             },
