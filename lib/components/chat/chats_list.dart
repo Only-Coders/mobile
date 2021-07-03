@@ -89,6 +89,12 @@ class _ChatsListState extends State<ChatsList> {
               return b.lastMessage.time.compareTo(a.lastMessage.time);
             });
 
+            if (chats.isEmpty)
+              return NoData(
+                message: t.noChats,
+                img: "assets/images/no-data.png",
+              );
+
             return ListView.separated(
               itemCount: chats.length,
               separatorBuilder: (context, index) => Divider(),
@@ -106,12 +112,6 @@ class _ChatsListState extends State<ChatsList> {
                             snapshot.data.snapshot.value);
                         lastMessage = Message.fromJson(json);
                       }
-
-                      if (chats.isEmpty)
-                        return NoData(
-                          message: t.noChats,
-                          img: "assets/images/no-data.png",
-                        );
 
                       return ListTile(
                         onTap: () => Navigator.push(

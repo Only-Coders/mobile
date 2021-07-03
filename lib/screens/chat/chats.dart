@@ -119,9 +119,11 @@ class _ChatsState extends State<Chats> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             List<String> chatsKeys = [];
-            (snapshot.data.snapshot.value as Map).forEach((key, value) {
-              chatsKeys.add(value["key"]);
-            });
+
+            if (snapshot.data.snapshot.value != null)
+              (snapshot.data.snapshot.value as Map).forEach((key, value) {
+                chatsKeys.add(value["key"]);
+              });
             return ChatsList(
               chatsKeys: chatsKeys,
               newChatStream: _controller.stream,
