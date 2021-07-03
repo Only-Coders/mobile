@@ -131,5 +131,8 @@
   "reportSuccess": "La publicacion fue reportada",
   "at": "en",
   "editPost": "Editar publicacion",
-  "editPostMessage": "La publicacion fue editada"
+  "editPostMessage": "La publicacion fue editada",
+  "typeAMessage": "Escribe un mensaje...",
+  "noMessages": "Mmm ... Parece que no hay mensajes aquí",
+  "noChats": "Mmm ... Parece que no hay chats aquí"
 }

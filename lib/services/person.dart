@@ -108,9 +108,10 @@ class PersonService {
         .toList();
   }
 
-  Future<List<Person>> getMyContacts([int page]) async {
-    var response =
-        await _httpClient.getRequest("/api/users/contacts", {"page": page});
+  Future<List<Person>> getMyContacts(
+      [int page, String partialName, int size]) async {
+    var response = await _httpClient.getRequest("/api/users/contacts",
+        {"page": page, "partialName": partialName, "size": size});
     return (response.data["content"] as List)
         .map((person) => Person.fromJson(person))
         .toList();

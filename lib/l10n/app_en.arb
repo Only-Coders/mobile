@@ -131,5 +131,8 @@
   "reportSuccess": "The post was reported",
   "at": "at",
   "editPost": "Edit post",
-  "editPostMessage": "The post was edited"
+  "editPostMessage": "The post was edited",
+  "typeAMessage": "Type a message...",
+  "noMessages": "Mmm... Looks like there's no messages here",
+  "noChats": "Mmm... Looks like there's no chats here"
 }

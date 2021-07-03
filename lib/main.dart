@@ -8,8 +8,7 @@ import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/auth/forgot_password.dart';
 import 'package:mobile/screens/auth/login.dart';
 import 'package:mobile/screens/auth/wrapper.dart';
-
-// import 'package:mobile/screens/chat/chats_list.dart';
+import 'package:mobile/screens/chat/chats.dart';
 import 'package:mobile/screens/feed/feed.dart';
 import 'package:mobile/screens/notifications/notifications.dart';
 import 'package:mobile/screens/onboard/onboard.dart';
@@ -24,6 +23,7 @@ import 'package:mobile/screens/profile/favorite_posts.dart';
 import 'package:mobile/screens/profile/my_contacts.dart';
 import 'package:mobile/screens/profile/my_followings.dart';
 import 'package:mobile/screens/profile/profile.dart';
+// import 'package:mobile/screens/profile/settings.dart';
 import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/services/fb_messaging.dart';
 import 'package:mobile/theme/themes.dart';
@@ -146,8 +146,9 @@ class _AppState extends State<App> {
           "/onboard": (context) => Onboard(),
           "/new-post": (context) => NewPost(),
           "/profile": (context) => Profile(),
-          // "/chats": (context) => ChatsList(user: widget.user),
+          "/chats": (context) => Chats(user: widget.user),
           "/notifications": (context) => Notifications(),
+          // "/profile/settings": (context) => Settings(),
           "/profile/posts": (context) => ProfilePosts(),
           "/profile/favorites": (context) => FavoritePosts(),
           "/profile/contacts": (context) => MyContacts(),
