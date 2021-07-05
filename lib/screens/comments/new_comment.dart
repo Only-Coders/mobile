@@ -7,6 +7,7 @@ import 'package:mobile/models/comment.dart';
 import 'package:mobile/models/post.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/post.dart';
+import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -80,9 +81,16 @@ class _NewCommentState extends State<NewComment> {
         (context) => Container(
           decoration: BoxDecoration(
             border: Border(
-              top: BorderSide(width: 1.5, color: Colors.grey.shade300),
+              top: BorderSide(
+                width: 1.5,
+                color: currentTheme.currentTheme == ThemeMode.light
+                    ? Colors.grey.shade200
+                    : Theme.of(context).cardColor,
+              ),
             ),
-            color: Colors.white,
+            color: currentTheme.currentTheme == ThemeMode.light
+                ? Colors.white
+                : Theme.of(context).cardColor,
           ),
           child: Container(
             child: Row(
