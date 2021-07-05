@@ -6,6 +6,11 @@ import 'package:provider/provider.dart';
 class RemoveAccountAlert extends StatelessWidget {
   const RemoveAccountAlert({Key key}) : super(key: key);
 
+  String parseDate(int timestamp) {
+    DateTime date = DateTime.fromMillisecondsSinceEpoch(timestamp);
+    return date.toLocal().toString().substring(0, 10);
+  }
+
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
@@ -15,7 +20,6 @@ class RemoveAccountAlert extends StatelessWidget {
       margin: EdgeInsets.only(top: 25, right: 15, left: 15),
       padding: EdgeInsets.all(20),
       decoration: BoxDecoration(
-        // color: Color(0xffF5E9D7),
         color: Colors.orangeAccent.withOpacity(0.3),
         border: Border(
           left: BorderSide(
@@ -36,7 +40,7 @@ class RemoveAccountAlert extends StatelessWidget {
           ),
           Flexible(
             child: Text(
-              "${t.removeAccountAlert} ${context.read<User>().eliminationDate}",
+              "${t.removeAccountAlert} ${parseDate(context.read<User>().eliminationDate)}",
               style: TextStyle(
                 color: Color(0xffff9800),
               ),
