@@ -5,11 +5,12 @@ import 'package:path_provider/path_provider.dart';
 
 class FirebaseStorage {
   Future<String> uploadFile(File image, String folder) async {
+    firebase_storage.SettableMetadata metadata = firebase_storage.SettableMetadata(cacheControl: 'public,max-age=4000');
     firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
         .ref()
         .child(folder + path.basename(image.path));
     String imageURI;
-    await ref.putFile(image).whenComplete(() async {
+    await ref.putFile(image, metadata).whenComplete(() async {
       imageURI = await ref.getDownloadURL();
     });
     return imageURI;
