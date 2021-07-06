@@ -18,13 +18,24 @@ class _WrapperState extends State<Wrapper> {
   Widget build(BuildContext context) {
     return FutureBuilder(
       future: UserStorage.getToken(),
-      builder: (ctx, snapshot) {
-        if (snapshot.data != null) {
-          Provider.of<User>(context).setUser(Jwt.parseJwt(snapshot.data));
-          return Feed();
-        } else {
-          return Login();
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.data != null) {
+            Provider.of<User>(context).setUser(Jwt.parseJwt(snapshot.data));
+            return Feed();
+          } else {
+            return Login();
+          }
         }
+        return Container(
+          padding: EdgeInsets.symmetric(vertical: 15),
+          width: MediaQuery.of(context).size.width - 8,
+          child: Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).primaryColor,
+            ),
+          ),
+        );
       },
     );
   }
