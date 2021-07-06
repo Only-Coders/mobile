@@ -46,6 +46,25 @@ class _LoginState extends State<Login> {
     }
   }
 
+  Future<void> loginWithGoogle() async {
+    try {
+      UserCredential credentials = await _fbAuth.signInWithGoogle();
+      String fbToken = await credentials.user.getIdToken();
+      String token = await _auth.login(fbToken);
+      var payload = Jwt.parseJwt(token);
+      if (payload["complete"] != null) {
+        Provider.of<UserData.User>(context, listen: false).setUser(payload);
+        await Provider.of<UserData.User>(context, listen: false)
+            .saveUserOnPrefs();
+        Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
+      } else {
+        Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
+      }
+    } catch (e) {
+      _toast.showError(context, AppLocalizations.of(context).serverError);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var t = AppLocalizations.of(context);
@@ -69,7 +88,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(
                     height:
-                        currentTheme.currentTheme == ThemeMode.dark ? 20 : 60),
+                        currentTheme.currentTheme == ThemeMode.dark ? 10 : 50),
                 Center(
                   child: currentTheme.currentTheme != ThemeMode.dark
                       ? Image.asset(
@@ -83,7 +102,7 @@ class _LoginState extends State<Login> {
                 ),
                 SizedBox(
                     height:
-                        currentTheme.currentTheme == ThemeMode.dark ? 20 : 60),
+                        currentTheme.currentTheme == ThemeMode.dark ? 10 : 50),
                 AuthForm(
                   buttonText: t.login,
                   action: login,
@@ -116,7 +135,17 @@ class _LoginState extends State<Login> {
                       ),
                     ),
                   ],
-                )
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                GestureDetector(
+                  onTap: () async => loginWithGoogle(),
+                  child: Image.asset(
+                    "assets/images/google.png",
+                    width: 32,
+                  ),
+                ),
               ],
             ),
           ),
