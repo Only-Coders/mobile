@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:mobile/models/country.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/onboard/provider/register_model.dart';
 import 'package:mobile/services/country.dart';
 import 'package:mobile/theme/themes.dart';
@@ -23,6 +24,7 @@ class _GeneralInformationFirstStepState
   CountryService _countryService = CountryService();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   final _dateController = TextEditingController();
+  final _nameController = TextEditingController();
   String firstName = "";
   String lastName = "";
   DateTime birthDate;
@@ -33,6 +35,7 @@ class _GeneralInformationFirstStepState
   @override
   void dispose() {
     _dateController.dispose();
+    _nameController.dispose();
     super.dispose();
   }
 
@@ -49,6 +52,14 @@ class _GeneralInformationFirstStepState
   @override
   void initState() {
     getCountries = fetchCountries();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      String name = context.read<User>().fullName;
+      setState(() {
+        firstName = name;
+      });
+      _nameController.text = name;
+    });
     super.initState();
   }
 
@@ -137,6 +148,7 @@ class _GeneralInformationFirstStepState
                                       firstName = val;
                                     });
                                   },
+                                  controller: _nameController,
                                   validator: (val) {
                                     return val.isNotEmpty
                                         ? null

@@ -45,6 +45,11 @@ class User {
     this.defaultPrivacy = defaultPrivacy;
   }
 
+  void setGoogleUser(Map<String, dynamic> googleInfo) {
+    fullName = googleInfo["displayName"];
+    imageURI = googleInfo["photoURL"];
+  }
+
   void setEliminationDate(int eliminationDate) {
     this.eliminationDate = eliminationDate;
   }

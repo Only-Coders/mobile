@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:jwt_decode/jwt_decode.dart';
 import 'package:mobile/components/generic/git_platform.dart';
 import 'package:mobile/providers/user.dart';
@@ -47,6 +46,17 @@ class _GeneralInformationSecondStepState
       setState(() {
         _image = File(image.path);
       });
+  }
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      String photo = context.read<User>().imageURI;
+      setState(() {
+        imageURI = photo;
+      });
+    });
+    super.initState();
   }
 
   @override
@@ -137,15 +147,27 @@ class _GeneralInformationSecondStepState
                       ? CircleAvatar(
                           radius: 55,
                           backgroundColor: Theme.of(context).primaryColor,
-                          child: Icon(
-                            Icons.camera_alt,
-                            color: Colors.white,
-                            size: 38,
-                          ),
+                          child: imageURI.isEmpty
+                              ? Icon(
+                                  Icons.camera_alt,
+                                  color: Colors.white,
+                                  size: 38,
+                                )
+                              : CircleAvatar(
+                                  radius: 55,
+                                  backgroundImage: NetworkImage(imageURI),
+                                  child: Icon(
+                                    Icons.camera_alt,
+                                    color: Colors.white,
+                                    size: 38,
+                                  ),
+                                ),
                         )
                       : CircleAvatar(
                           radius: 55,
-                          backgroundImage: FileImage(_image),
+                          backgroundImage: imageURI.isNotEmpty
+                              ? NetworkImage(imageURI)
+                              : FileImage(_image),
                           child: Icon(
                             Icons.camera_alt,
                             color: Colors.white,

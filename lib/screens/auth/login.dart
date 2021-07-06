@@ -46,7 +46,7 @@ class _LoginState extends State<Login> {
     }
   }
 
-  Future<void> loginWithGoogle() async {
+  Future<void> loginWithGoogle(BuildContext context) async {
     try {
       UserCredential credentials = await _fbAuth.signInWithGoogle();
       String fbToken = await credentials.user.getIdToken();
@@ -58,6 +58,10 @@ class _LoginState extends State<Login> {
             .saveUserOnPrefs();
         Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
+        context.read<UserData.User>().setGoogleUser({
+          "displayName": credentials.user.displayName,
+          "photoURL": credentials.user.photoURL
+        });
         Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
       }
     } catch (e) {
@@ -140,7 +144,7 @@ class _LoginState extends State<Login> {
                   height: 20,
                 ),
                 GestureDetector(
-                  onTap: () async => loginWithGoogle(),
+                  onTap: () async => loginWithGoogle(context),
                   child: Image.asset(
                     "assets/images/google.png",
                     width: 32,
