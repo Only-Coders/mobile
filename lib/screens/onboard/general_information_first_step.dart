@@ -115,247 +115,244 @@ class _GeneralInformationFirstStepState
     return FutureBuilder(
       future: getCountries,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
-        return snapshot.hasData
-            ? Container(
-                height: MediaQuery.of(context).size.height - 80,
-                padding: EdgeInsets.all(25),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Container(
-                      child: Column(
-                        children: [
-                          Text(
-                            t.generalInformation,
-                            style: TextStyle(fontSize: 24),
-                          ),
-                          SizedBox(
-                            height: 10,
-                          ),
-                          Text(t.generalInformationDescription),
-                          SizedBox(
-                            height: 60,
-                          ),
-                          Form(
-                            key: formKey,
-                            autovalidateMode:
-                                AutovalidateMode.onUserInteraction,
-                            child: Column(
-                              children: [
-                                TextFormField(
-                                  onChanged: (val) {
-                                    setState(() {
-                                      firstName = val;
-                                    });
-                                  },
-                                  controller: _nameController,
-                                  validator: (val) {
-                                    return val.isNotEmpty
-                                        ? null
-                                        : t.fieldRequired;
-                                  },
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      borderSide: BorderSide(
-                                        width: 0,
-                                        style: BorderStyle.none,
-                                      ),
-                                    ),
-                                    labelText: t.name,
-                                    labelStyle: TextStyle(
-                                        color: Theme.of(context).accentColor),
-                                    filled: true,
-                                    fillColor: currentTheme.currentTheme ==
-                                            ThemeMode.dark
-                                        ? Theme.of(context).cardColor
-                                        : Colors.grey.shade200,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextFormField(
-                                  onChanged: (val) {
-                                    setState(() {
-                                      lastName = val;
-                                    });
-                                  },
-                                  validator: (val) {
-                                    return val.isNotEmpty
-                                        ? null
-                                        : t.fieldRequired;
-                                  },
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      borderSide: BorderSide(
-                                        width: 0,
-                                        style: BorderStyle.none,
-                                      ),
-                                    ),
-                                    labelText: t.lastName,
-                                    labelStyle: TextStyle(
-                                        color: Theme.of(context).accentColor),
-                                    filled: true,
-                                    fillColor: currentTheme.currentTheme ==
-                                            ThemeMode.dark
-                                        ? Theme.of(context).cardColor
-                                        : Colors.grey.shade200,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                TextField(
-                                  readOnly: true,
-                                  controller: _dateController,
-                                  onTap: () async {
-                                    DateTime date = await showDatePicker(
-                                        context: context,
-                                        builder: (BuildContext context,
-                                            Widget child) {
-                                          return Theme(
-                                            data: currentTheme.currentTheme ==
-                                                    ThemeMode.light
-                                                ? CustomTheme.lightTheme
-                                                    .copyWith(
-                                                    colorScheme:
-                                                        ColorScheme.light(
-                                                      primary: Theme.of(context)
-                                                          .primaryColor,
-                                                    ),
-                                                  )
-                                                : CustomTheme.darkTheme
-                                                    .copyWith(
-                                                    colorScheme:
-                                                        ColorScheme.dark(
-                                                      primary: Theme.of(context)
-                                                          .primaryColor,
-                                                    ),
-                                                  ),
-                                            child: child,
-                                          );
-                                        },
-                                        initialDate: birthDate == null
-                                            ? DateTime.now()
-                                            : birthDate,
-                                        firstDate: DateTime(1970),
-                                        lastDate: DateTime(2022));
-                                    if (date != null) {
-                                      _dateController.text =
-                                          parseDate(date.toString());
-                                      setState(() {
-                                        birthDate = date;
-                                      });
-                                    }
-                                  },
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      borderSide: BorderSide(
-                                        width: 0,
-                                        style: BorderStyle.none,
-                                      ),
-                                    ),
-                                    labelText: t.birthDate,
-                                    labelStyle: TextStyle(
-                                        color: Theme.of(context).accentColor),
-                                    filled: true,
-                                    fillColor: currentTheme.currentTheme ==
-                                            ThemeMode.dark
-                                        ? Theme.of(context).cardColor
-                                        : Colors.grey.shade200,
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: 20,
-                                ),
-                                DropdownButtonFormField(
-                                  items: snapshot.data
-                                      .map<DropdownMenuItem<String>>(
-                                          (Country c) {
-                                    return DropdownMenuItem(
-                                      value: c.code,
-                                      child: Text(c.name),
-                                    );
-                                  }).toList(),
-                                  validator: (val) {
-                                    return val.isNotEmpty
-                                        ? null
-                                        : t.fieldRequired;
-                                  },
-                                  style: TextStyle(
-                                      color: Theme.of(context).accentColor),
-                                  decoration: InputDecoration(
-                                    border: OutlineInputBorder(
-                                      borderRadius: BorderRadius.circular(5),
-                                      borderSide: BorderSide(
-                                        width: 0,
-                                        style: BorderStyle.none,
-                                      ),
-                                    ),
-                                    labelText: t.country,
-                                    labelStyle: TextStyle(
-                                        color: Theme.of(context).accentColor),
-                                    filled: true,
-                                    fillColor: currentTheme.currentTheme ==
-                                            ThemeMode.dark
-                                        ? Theme.of(context).cardColor
-                                        : Colors.grey.shade200,
-                                  ),
-                                  value: country,
-                                  isExpanded: true,
-                                  onChanged: (val) {
-                                    setState(() {
-                                      country = val;
-                                    });
-                                  },
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          nextButton(),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            : Container(
-                width: double.infinity,
-                height: MediaQuery.of(context).size.height - 80,
-                child: Center(
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        width: 45,
-                        height: 45,
-                        child: CircularProgressIndicator(
-                          backgroundColor: Theme.of(context).primaryColor,
-                          valueColor:
-                              AlwaysStoppedAnimation(Colors.grey.shade200),
-                          strokeWidth: 3,
+        if (snapshot.connectionState == ConnectionState.done) {
+          if (snapshot.hasData) {
+            return Container(
+              height: MediaQuery.of(context).size.height - 80,
+              padding: EdgeInsets.all(25),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    child: Column(
+                      children: [
+                        Text(
+                          t.generalInformation,
+                          style: TextStyle(fontSize: 24),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(t.generalInformationDescription),
+                        SizedBox(
+                          height: 60,
+                        ),
+                        Form(
+                          key: formKey,
+                          autovalidateMode: AutovalidateMode.onUserInteraction,
+                          child: Column(
+                            children: [
+                              TextFormField(
+                                onChanged: (val) {
+                                  setState(() {
+                                    firstName = val;
+                                  });
+                                },
+                                controller: _nameController,
+                                validator: (val) {
+                                  return val.isNotEmpty
+                                      ? null
+                                      : t.fieldRequired;
+                                },
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  labelText: t.name,
+                                  labelStyle: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                  filled: true,
+                                  fillColor: currentTheme.currentTheme ==
+                                          ThemeMode.dark
+                                      ? Theme.of(context).cardColor
+                                      : Colors.grey.shade200,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextFormField(
+                                onChanged: (val) {
+                                  setState(() {
+                                    lastName = val;
+                                  });
+                                },
+                                validator: (val) {
+                                  return val.isNotEmpty
+                                      ? null
+                                      : t.fieldRequired;
+                                },
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  labelText: t.lastName,
+                                  labelStyle: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                  filled: true,
+                                  fillColor: currentTheme.currentTheme ==
+                                          ThemeMode.dark
+                                      ? Theme.of(context).cardColor
+                                      : Colors.grey.shade200,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              TextField(
+                                readOnly: true,
+                                controller: _dateController,
+                                onTap: () async {
+                                  DateTime date = await showDatePicker(
+                                      context: context,
+                                      builder:
+                                          (BuildContext context, Widget child) {
+                                        return Theme(
+                                          data: currentTheme.currentTheme ==
+                                                  ThemeMode.light
+                                              ? CustomTheme.lightTheme.copyWith(
+                                                  colorScheme:
+                                                      ColorScheme.light(
+                                                    primary: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                )
+                                              : CustomTheme.darkTheme.copyWith(
+                                                  colorScheme: ColorScheme.dark(
+                                                    primary: Theme.of(context)
+                                                        .primaryColor,
+                                                  ),
+                                                ),
+                                          child: child,
+                                        );
+                                      },
+                                      initialDate: birthDate == null
+                                          ? DateTime.now()
+                                          : birthDate,
+                                      firstDate: DateTime(1970),
+                                      lastDate: DateTime(2022));
+                                  if (date != null) {
+                                    _dateController.text =
+                                        parseDate(date.toString());
+                                    setState(() {
+                                      birthDate = date;
+                                    });
+                                  }
+                                },
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  labelText: t.birthDate,
+                                  labelStyle: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                  filled: true,
+                                  fillColor: currentTheme.currentTheme ==
+                                          ThemeMode.dark
+                                      ? Theme.of(context).cardColor
+                                      : Colors.grey.shade200,
+                                ),
+                              ),
+                              SizedBox(
+                                height: 20,
+                              ),
+                              DropdownButtonFormField(
+                                items: snapshot.data
+                                    .map<DropdownMenuItem<String>>((Country c) {
+                                  return DropdownMenuItem(
+                                    value: c.code,
+                                    child: Text(c.name),
+                                  );
+                                }).toList(),
+                                validator: (val) {
+                                  return val.isNotEmpty
+                                      ? null
+                                      : t.fieldRequired;
+                                },
+                                style: TextStyle(
+                                    color: Theme.of(context).accentColor),
+                                decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(5),
+                                    borderSide: BorderSide(
+                                      width: 0,
+                                      style: BorderStyle.none,
+                                    ),
+                                  ),
+                                  labelText: t.country,
+                                  labelStyle: TextStyle(
+                                      color: Theme.of(context).accentColor),
+                                  filled: true,
+                                  fillColor: currentTheme.currentTheme ==
+                                          ThemeMode.dark
+                                      ? Theme.of(context).cardColor
+                                      : Colors.grey.shade200,
+                                ),
+                                value: country,
+                                isExpanded: true,
+                                onChanged: (val) {
+                                  setState(() {
+                                    country = val;
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        nextButton(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          }
+        }
+        return Container(
+          width: double.infinity,
+          height: MediaQuery.of(context).size.height - 80,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 45,
+                  height: 45,
+                  child: CircularProgressIndicator(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    valueColor: AlwaysStoppedAnimation(Colors.grey.shade200),
+                    strokeWidth: 3,
                   ),
                 ),
-              );
+              ],
+            ),
+          ),
+        );
       },
     );
   }

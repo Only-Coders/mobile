@@ -22,17 +22,23 @@ class _WrapperState extends State<Wrapper> {
         if (snapshot.connectionState == ConnectionState.done) {
           if (snapshot.data != null) {
             Provider.of<User>(context).setUser(Jwt.parseJwt(snapshot.data));
-            return Feed();
+            if (context.read<User>().complete != null) {
+              return Feed();
+            } else {
+              return Login();
+            }
           } else {
             return Login();
           }
         }
-        return Container(
-          padding: EdgeInsets.symmetric(vertical: 15),
-          width: MediaQuery.of(context).size.width - 8,
-          child: Center(
-            child: CircularProgressIndicator(
-              color: Theme.of(context).primaryColor,
+        return Scaffold(
+          body: Container(
+            padding: EdgeInsets.symmetric(vertical: 15),
+            width: MediaQuery.of(context).size.width - 8,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: Theme.of(context).primaryColor,
+              ),
             ),
           ),
         );
