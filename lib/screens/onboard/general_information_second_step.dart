@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:mobile/components/generic/toast.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/services/auth.dart';
+import 'package:uuid/uuid.dart';
 
 class GeneralInformationSecondStep extends StatefulWidget {
   final increment;
@@ -86,8 +87,8 @@ class _GeneralInformationSecondStepState
             });
             try {
               if (_image != null) {
-                String uri =
-                    await _firebaseStorage.uploadFile(_image, "images/");
+                String uri = await _firebaseStorage.uploadFile(
+                    _image, "images/${Uuid().v4()}");
                 setState(() {
                   imageURI = uri;
                 });

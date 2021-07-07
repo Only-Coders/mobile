@@ -1,19 +1,19 @@
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
-import 'package:path/path.dart' as path;
 import 'package:path_provider/path_provider.dart';
+import 'package:mobile/utils/conts/google_cloud_bucket.dart';
 
 class FirebaseStorage {
-  Future<String> uploadFile(File image, String folder) async {
-    firebase_storage.SettableMetadata metadata = firebase_storage.SettableMetadata(cacheControl: 'public,max-age=4000');
-    firebase_storage.Reference ref = firebase_storage.FirebaseStorage.instance
-        .ref()
-        .child(folder + path.basename(image.path));
-    String imageURI;
-    await ref.putFile(image, metadata).whenComplete(() async {
-      imageURI = await ref.getDownloadURL();
-    });
-    return imageURI;
+  Future<String> uploadFile(File file, String fileName,
+      [firebase_storage.SettableMetadata metadata]) async {
+    if (metadata == null)
+      metadata = firebase_storage.SettableMetadata(
+          cacheControl: 'private, max-age=0, no-transform');
+    firebase_storage.Reference ref =
+        firebase_storage.FirebaseStorage.instance.ref().child(fileName);
+    await ref.putFile(file, metadata);
+    String fileURI = Constants.bucket + fileName;
+    return fileURI;
   }
 
   Future<String> downloadFile(String url) async {

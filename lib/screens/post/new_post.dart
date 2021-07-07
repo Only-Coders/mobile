@@ -21,6 +21,8 @@ import 'package:path/path.dart' as path;
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 import 'package:skeleton_text/skeleton_text.dart';
+import 'package:uuid/uuid.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class NewPost extends StatefulWidget {
   final refreshFeed;
@@ -148,11 +150,16 @@ class _NewPostState extends State<NewPost> {
       setState(() {
         isLoading = true;
       });
+      firebase_storage.SettableMetadata metadata =
+          firebase_storage.SettableMetadata(
+              cacheControl: 'public,max-age=4000');
       if (_image != null) {
-        postUrl = await _firebaseStorage.uploadFile(_image, "images/");
+        postUrl = await _firebaseStorage.uploadFile(
+            _image, "images/${Uuid().v4()}", metadata);
       }
       if (_file != null) {
-        postUrl = await _firebaseStorage.uploadFile(_file, "files/");
+        postUrl = await _firebaseStorage.uploadFile(
+            _file, "files/${Uuid().v4()}", metadata);
       }
       if (linkPreview != null && type == "LINK") {
         postUrl = linkPreview.url;
@@ -192,10 +199,11 @@ class _NewPostState extends State<NewPost> {
       });
       String uri = "";
       if (_image != null) {
-        uri = await _firebaseStorage.uploadFile(_image, "images/");
+        uri =
+            await _firebaseStorage.uploadFile(_image, "images/${Uuid().v4()}");
       }
       if (_file != null) {
-        uri = await _firebaseStorage.uploadFile(_file, "files/");
+        uri = await _firebaseStorage.uploadFile(_file, "files/${Uuid().v4()}");
       }
       if (linkPreview != null && type == "LINK") {
         uri = linkPreview.url;

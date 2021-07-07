@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mobile/services/fb_storage.dart';
 import 'package:mobile/services/person.dart';
+import 'package:uuid/uuid.dart';
 
 class ProfileHeader extends StatefulWidget {
   final String imageURI;
@@ -33,12 +34,26 @@ class _ProfileHeaderState extends State<ProfileHeader> {
       });
   }
 
+  String getFileName() {
+    RegExp regExp = new RegExp(
+      r"\/images\/(?<fileName>.*)",
+      multiLine: true,
+    );
+    String fileName = regExp.firstMatch(imageURI).namedGroup("fileName");
+    return fileName;
+  }
+
   Future<void> updatePhoto() async {
     try {
       setState(() {
         isLoading = true;
       });
-      String img = await _firebaseStorage.uploadFile(_image, "images/");
+      String img = imageURI.isEmpty
+          ? await _firebaseStorage.uploadFile(_image, "images/${Uuid().v4()}")
+          : await _firebaseStorage.uploadFile(
+              _image, "images/${getFileName()}");
+      final NetworkImage provider = NetworkImage(img);
+      await provider.evict();
       await _personService.updateUserPhoto(img);
       setState(() {
         _image = null;
