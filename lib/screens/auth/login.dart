@@ -21,6 +21,7 @@ class _LoginState extends State<Login> {
   final _fbAuth = FBAuthService(FirebaseAuth.instance);
   final _auth = AuthService();
   final _toast = Toast();
+  bool isLoading = false;
 
   Future<void> login(
       BuildContext context, String email, String password) async {
@@ -54,6 +55,9 @@ class _LoginState extends State<Login> {
 
   Future<void> loginWithGoogle(BuildContext context) async {
     try {
+      setState(() {
+        isLoading = true;
+      });
       UserCredential credentials = await _fbAuth.signInWithGoogle();
       String fbToken = await credentials.user.getIdToken();
       String token = await _auth.login(fbToken);
@@ -71,6 +75,9 @@ class _LoginState extends State<Login> {
         Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
       }
     } catch (e) {
+      setState(() {
+        isLoading = false;
+      });
       _toast.showError(context, AppLocalizations.of(context).serverError);
     }
   }
@@ -175,13 +182,24 @@ class _LoginState extends State<Login> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    GestureDetector(
-                      onTap: () async => loginWithGoogle(context),
-                      child: Image.asset(
-                        "assets/images/google.png",
-                        width: 32,
-                      ),
-                    ),
+                    !isLoading
+                        ? GestureDetector(
+                            onTap: () async => loginWithGoogle(context),
+                            child: Image.asset(
+                              "assets/images/google.png",
+                              width: 32,
+                            ),
+                          )
+                        : SizedBox(
+                            width: 25,
+                            height: 25,
+                            child: CircularProgressIndicator(
+                              backgroundColor: Theme.of(context).primaryColor,
+                              valueColor:
+                                  AlwaysStoppedAnimation(Colors.grey.shade200),
+                              strokeWidth: 3,
+                            ),
+                          ),
                     SizedBox(
                       width: 15,
                     ),
