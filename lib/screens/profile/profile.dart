@@ -33,9 +33,24 @@ class _ProfileState extends State<Profile> {
   final PersonService _personService = PersonService();
   Future getProfile;
   Future getContactRequests;
+  int bronceMedals = 0;
+  int silverMedals = 0;
+  int goldMedals = 0;
 
   void refreshProfile() {
     setState(() {});
+  }
+
+  void calculateMedals(int approves) {
+    int bronce = approves % 5;
+    approves = (approves - bronce) ~/ 5;
+    int silver = approves % 5;
+    int gold = (approves - silver) ~/ 5;
+    setState(() {
+      bronceMedals = bronce;
+      silverMedals = silver;
+      goldMedals = gold;
+    });
   }
 
   @override
@@ -92,6 +107,50 @@ class _ProfileState extends State<Profile> {
                                 Theme.of(context).accentColor.withOpacity(0.5),
                             fontSize: 14),
                       ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            "assets/images/gold-medal.png",
+                            width: 12,
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            goldMedals.toString(),
+                            style: TextStyle(fontSize: 11),
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Image.asset(
+                            "assets/images/silver-medal.png",
+                            width: 12,
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            silverMedals.toString(),
+                            style: TextStyle(fontSize: 11),
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Image.asset(
+                            "assets/images/bronce-medal.png",
+                            width: 12,
+                          ),
+                          SizedBox(
+                            width: 2,
+                          ),
+                          Text(
+                            bronceMedals.toString(),
+                            style: TextStyle(fontSize: 11),
+                          ),
+                        ],
+                      ),
                       if (user.canonicalName !=
                           context.read<User>().canonicalName)
                         ProfileActions(
@@ -108,7 +167,8 @@ class _ProfileState extends State<Profile> {
                           children: [
                             Expanded(
                               child: Container(
-                                margin: EdgeInsets.symmetric(horizontal: 20),
+                                margin: EdgeInsets.symmetric(
+                                    horizontal: 20, vertical: 4),
                                 child: OutlinedButton(
                                   onPressed: () => Navigator.of(context)
                                       .pushNamed("/profile/contact-requests"),
