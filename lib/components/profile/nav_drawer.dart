@@ -103,7 +103,21 @@ class NavDrawer extends StatelessWidget {
                 onTap: () =>
                     Navigator.of(context).pushNamed("/profile/contacts"),
               ),
-              if (context.read<User>().eliminationDate == null)
+              ListTile(
+                leading: Icon(
+                  Icons.settings,
+                  color: Theme.of(context).accentColor,
+                ),
+                title: Text(
+                  t.settings,
+                  style: TextStyle(
+                    color: Theme.of(context).accentColor,
+                  ),
+                ),
+                onTap: () =>
+                    Navigator.of(context).pushNamed("/profile/settings"),
+              ),
+              if (user.eliminationDate == null)
                 ListTile(
                   leading: Icon(
                     Icons.admin_panel_settings,
@@ -120,7 +134,7 @@ class NavDrawer extends StatelessWidget {
                     builder: (context) => DeleteAccount(),
                   ),
                 ),
-              if (context.read<User>().eliminationDate != null)
+              if (user.eliminationDate != null)
                 ListTile(
                   leading: Icon(
                     Icons.cancel,

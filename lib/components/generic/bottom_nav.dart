@@ -127,7 +127,7 @@ class _BottomNavState extends State<BottomNav> {
               clipBehavior: Clip.none,
               children: <Widget>[
                 Icon(Icons.person),
-                if (context.read<User>().eliminationDate != null)
+                if (Provider.of<User>(context).eliminationDate != null)
                   Positioned(
                     right: -3,
                     top: -3,

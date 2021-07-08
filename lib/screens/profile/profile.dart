@@ -135,7 +135,7 @@ class _ProfileState extends State<Profile> {
                         isMyProfile: user.canonicalName ==
                             context.read<User>().canonicalName,
                       ),
-                      if (context.read<User>().eliminationDate != null &&
+                      if (Provider.of<User>(context).eliminationDate != null &&
                           context.read<User>().canonicalName ==
                               user.canonicalName)
                         RemoveAccountAlert(),

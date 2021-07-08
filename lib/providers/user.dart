@@ -1,7 +1,8 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class User {
+class User with ChangeNotifier {
   String email;
   String imageURI;
   String canonicalName;
@@ -52,6 +53,7 @@ class User {
 
   void setEliminationDate(int eliminationDate) {
     this.eliminationDate = eliminationDate;
+    notifyListeners();
   }
 
   User.fromJson(Map<String, dynamic> json)
