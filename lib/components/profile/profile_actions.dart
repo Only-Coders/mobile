@@ -158,7 +158,7 @@ class _ProfileActionsState extends State<ProfileActions> {
                 ),
               ),
             ),
-          if (!following)
+          if (!following && !connected)
             Expanded(
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),
@@ -175,7 +175,7 @@ class _ProfileActionsState extends State<ProfileActions> {
                 ),
               ),
             ),
-          if (following)
+          if (following && !connected)
             Expanded(
               child: Container(
                 margin: EdgeInsets.symmetric(horizontal: 20),

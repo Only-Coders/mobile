@@ -107,47 +107,57 @@ class _ProfileState extends State<Profile> {
                                 Theme.of(context).accentColor.withOpacity(0.5),
                             fontSize: 14),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
+                      Column(
                         children: [
-                          Image.asset(
-                            "assets/images/gold-medal.png",
-                            width: 12,
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                "assets/images/gold-medal.png",
+                                width: 12,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                goldMedals.toString(),
+                                style: TextStyle(fontSize: 11),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Image.asset(
+                                "assets/images/silver-medal.png",
+                                width: 12,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                silverMedals.toString(),
+                                style: TextStyle(fontSize: 11),
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Image.asset(
+                                "assets/images/bronce-medal.png",
+                                width: 12,
+                              ),
+                              SizedBox(
+                                width: 2,
+                              ),
+                              Text(
+                                bronceMedals.toString(),
+                                style: TextStyle(fontSize: 11),
+                              ),
+                            ],
                           ),
                           SizedBox(
-                            width: 2,
-                          ),
-                          Text(
-                            goldMedals.toString(),
-                            style: TextStyle(fontSize: 11),
-                          ),
-                          SizedBox(
-                            width: 2,
-                          ),
-                          Image.asset(
-                            "assets/images/silver-medal.png",
-                            width: 12,
-                          ),
-                          SizedBox(
-                            width: 2,
-                          ),
-                          Text(
-                            silverMedals.toString(),
-                            style: TextStyle(fontSize: 11),
-                          ),
-                          SizedBox(
-                            width: 2,
-                          ),
-                          Image.asset(
-                            "assets/images/bronce-medal.png",
-                            width: 12,
-                          ),
-                          SizedBox(
-                            width: 2,
-                          ),
-                          Text(
-                            bronceMedals.toString(),
-                            style: TextStyle(fontSize: 11),
+                            height: 5,
                           ),
                         ],
                       ),
@@ -167,8 +177,7 @@ class _ProfileState extends State<Profile> {
                           children: [
                             Expanded(
                               child: Container(
-                                margin: EdgeInsets.symmetric(
-                                    horizontal: 20, vertical: 4),
+                                margin: EdgeInsets.symmetric(horizontal: 20),
                                 child: OutlinedButton(
                                   onPressed: () => Navigator.of(context)
                                       .pushNamed("/profile/contact-requests"),
