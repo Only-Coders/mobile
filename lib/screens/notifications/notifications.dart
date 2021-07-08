@@ -55,38 +55,43 @@ class _NotificationsState extends State<Notifications> {
         actions: [
           IconButton(
             splashRadius: 20,
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                builder: (context) {
-                  return Wrap(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 25),
-                        child: ListTile(
-                          onTap: () async {
-                            Iterable<Future<void>> futures =
-                                _pagingController.itemList.map(
-                              (notification) => FirebaseDatabase.instance
-                                  .reference()
-                                  .child(
-                                      "notifications/${context.read<User>().canonicalName}/${notification.key}")
-                                  .update({"read": true}),
-                            );
-                            await Future.wait(futures);
-                            Navigator.of(context).pop();
-                            _pagingController.refresh();
-                          },
-                          leading: Icon(Icons.delete),
-                          title: Text(t.deleteAllNotifications),
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              );
-            },
-            icon: Icon(Icons.delete),
+            onPressed: _pagingController.itemList.length > 0
+                ? () {
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context) {
+                        return Wrap(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 25),
+                              child: ListTile(
+                                onTap: () async {
+                                  Iterable<Future<void>> futures =
+                                      _pagingController.itemList.map(
+                                    (notification) => FirebaseDatabase.instance
+                                        .reference()
+                                        .child(
+                                            "notifications/${context.read<User>().canonicalName}/${notification.key}")
+                                        .update({"read": true}),
+                                  );
+                                  await Future.wait(futures);
+                                  Navigator.of(context).pop();
+                                  _pagingController.refresh();
+                                },
+                                leading: Icon(Icons.delete),
+                                title: Text(t.deleteAllNotifications),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                : null,
+            icon: Icon(
+              Icons.delete,
+              color: Colors.white,
+            ),
           ),
         ],
       ),
