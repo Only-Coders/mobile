@@ -55,7 +55,8 @@ class _NotificationsState extends State<Notifications> {
         actions: [
           IconButton(
             splashRadius: 20,
-            onPressed: _pagingController.itemList.length > 0
+            onPressed: _pagingController.itemList != null &&
+                    _pagingController.itemList.length > 0
                 ? () {
                     showModalBottomSheet(
                       context: context,
