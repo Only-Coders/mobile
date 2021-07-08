@@ -1,7 +1,7 @@
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
-import 'package:mobile/utils/conts/google_cloud_bucket.dart';
+import 'package:mobile/utils/consts/consts.dart';
 
 class FirebaseStorage {
   Future<String> uploadFile(File file, String fileName,

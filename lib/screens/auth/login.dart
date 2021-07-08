@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/components/auth/auth_form.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:mobile/components/generic/toast.dart';
@@ -50,6 +51,29 @@ class _LoginState extends State<Login> {
   Future<void> loginWithGoogle(BuildContext context) async {
     try {
       UserCredential credentials = await _fbAuth.signInWithGoogle();
+      String fbToken = await credentials.user.getIdToken();
+      String token = await _auth.login(fbToken);
+      var payload = Jwt.parseJwt(token);
+      if (payload["complete"] != null) {
+        Provider.of<UserData.User>(context, listen: false).setUser(payload);
+        await Provider.of<UserData.User>(context, listen: false)
+            .saveUserOnPrefs();
+        Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
+      } else {
+        context.read<UserData.User>().setGoogleUser({
+          "displayName": credentials.user.displayName,
+          "photoURL": credentials.user.photoURL
+        });
+        Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
+      }
+    } catch (e) {
+      _toast.showError(context, AppLocalizations.of(context).serverError);
+    }
+  }
+
+  Future<void> loginWithGithub(BuildContext context) async {
+    try {
+      UserCredential credentials = await _fbAuth.signInWithGitHub(context);
       String fbToken = await credentials.user.getIdToken();
       String token = await _auth.login(fbToken);
       var payload = Jwt.parseJwt(token);
@@ -144,12 +168,32 @@ class _LoginState extends State<Login> {
                 SizedBox(
                   height: 20,
                 ),
-                GestureDetector(
-                  onTap: () async => loginWithGoogle(context),
-                  child: Image.asset(
-                    "assets/images/google.png",
-                    width: 32,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    GestureDetector(
+                      onTap: () async => loginWithGoogle(context),
+                      child: Image.asset(
+                        "assets/images/google.png",
+                        width: 32,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 15,
+                    ),
+                    GestureDetector(
+                      onTap: () async => loginWithGithub(context),
+                      child: currentTheme.currentTheme == ThemeMode.dark
+                          ? Image.asset(
+                              "assets/images/github-dark.png",
+                              width: 32,
+                            )
+                          : SvgPicture.asset(
+                              "assets/images/github.svg",
+                              width: 32,
+                            ),
+                    ),
+                  ],
                 ),
               ],
             ),

@@ -1,5 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:github_sign_in/github_sign_in.dart';
+import 'package:mobile/utils/consts/consts.dart';
 
 class FBAuthService {
   final FirebaseAuth _auth;
@@ -32,8 +35,22 @@ class FBAuthService {
       idToken: googleAuth.idToken,
     );
 
-    // Once signed in, return the UserCredential
     return await FirebaseAuth.instance.signInWithCredential(credential);
+  }
+
+  Future<UserCredential> signInWithGitHub(BuildContext context) async {
+    final GitHubSignIn gitHubSignIn = GitHubSignIn(
+        clientId: Constants.clientId,
+        clientSecret: Constants.clientSecret,
+        redirectUrl:
+            'https://onlycoders-cc609.firebaseapp.com/__/auth/handler');
+
+    final result = await gitHubSignIn.signIn(context);
+
+    final githubAuthCredential = GithubAuthProvider.credential(result.token);
+
+    return await FirebaseAuth.instance
+        .signInWithCredential(githubAuthCredential);
   }
 
   Future<void> resetPassword(String email) async {

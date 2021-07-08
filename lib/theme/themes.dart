@@ -44,6 +44,11 @@ class CustomTheme extends ChangeNotifier {
     return ThemeData(
       primaryColor: Color(0xff00CDAE),
       primarySwatch: createMaterialColor(Color(0xff00CDAE)),
+      appBarTheme: AppBarTheme(
+        backgroundColor: Color(0xff34374B),
+        brightness: Brightness.dark,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       accentColor: Colors.black.withOpacity(0.8),
       secondaryHeaderColor: Color(0xff34374B),
       errorColor: Color(0xffff5252),
@@ -54,6 +59,11 @@ class CustomTheme extends ChangeNotifier {
     return ThemeData(
       primaryColor: Color(0xff00CDAE),
       brightness: Brightness.dark,
+      appBarTheme: AppBarTheme(
+        backgroundColor: Color(0xff34374B),
+        brightness: Brightness.dark,
+        iconTheme: IconThemeData(color: Colors.white),
+      ),
       primarySwatch: createMaterialColor(Color(0xff00CDAE)),
       accentColor: Colors.white.withOpacity(0.9),
       secondaryHeaderColor: Color(0xff26272D),
