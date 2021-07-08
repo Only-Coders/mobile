@@ -3,6 +3,7 @@ import 'package:mobile/models/post_tag.dart';
 import 'package:mobile/models/reaction.dart';
 
 class Post {
+  String createdAt;
   String message;
   String id;
   Person publisher;
@@ -17,7 +18,8 @@ class Post {
   String myReaction;
 
   Post(
-      {this.message,
+      {this.createdAt,
+      this.message,
       this.publisher,
       this.url,
       this.id,
@@ -32,6 +34,7 @@ class Post {
 
   factory Post.fromJson(Map<String, dynamic> json) {
     return Post(
+      createdAt: json["createdAt"],
       message: json["message"],
       publisher: json['publisher'] != null
           ? new Person.fromJson(json['publisher'])
@@ -56,6 +59,7 @@ class Post {
   }
 
   Map<String, dynamic> toJson() => {
+        'createdAt': createdAt,
         'message': message,
         'publisher': publisher != null ? publisher.toJson() : null,
         'url': url,

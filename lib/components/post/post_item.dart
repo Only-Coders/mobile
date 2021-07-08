@@ -14,6 +14,7 @@ import 'package:mobile/screens/comments/new_comment.dart';
 import 'package:mobile/screens/post/new_post.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/post.dart';
+import 'package:mobile/utils/date_formatter.dart';
 import 'package:provider/provider.dart';
 
 class PostItem extends StatefulWidget {
@@ -121,22 +122,19 @@ class _PostItemState extends State<PostItem> {
         child: Column(
           children: [
             Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                  padding: EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                   child: Row(
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(top: 10),
-                        child: CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.grey.shade300,
-                          backgroundImage: widget
-                                  .post.publisher.imageURI.isEmpty
-                              ? AssetImage("assets/images/default-avatar.png")
-                              : NetworkImage(widget.post.publisher.imageURI),
-                        ),
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.grey.shade300,
+                        backgroundImage: widget.post.publisher.imageURI.isEmpty
+                            ? AssetImage("assets/images/default-avatar.png")
+                            : NetworkImage(widget.post.publisher.imageURI),
                       ),
                       SizedBox(
                         width: 10,
@@ -220,6 +218,18 @@ class _PostItemState extends State<PostItem> {
                                     .withOpacity(0.6),
                               ),
                             ),
+                          SizedBox(
+                            height: 2,
+                          ),
+                          Text(
+                            "${DateFormatter().getVerboseDateTime(DateTime.parse(widget.post.createdAt))}",
+                            style: TextStyle(
+                              fontSize: 10,
+                              color: Theme.of(context)
+                                  .accentColor
+                                  .withOpacity(0.6),
+                            ),
+                          ),
                         ],
                       ),
                     ],
