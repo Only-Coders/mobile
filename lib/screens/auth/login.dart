@@ -34,6 +34,10 @@ class _LoginState extends State<Login> {
             .saveUserOnPrefs();
         Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
+        context.read<UserData.User>().setGoogleUser({
+          "displayName": "",
+          "photoURL": "",
+        });
         Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
       }
     } on FirebaseAuthException catch (e) {
