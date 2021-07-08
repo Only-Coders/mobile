@@ -118,7 +118,7 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return Provider(
+    return ChangeNotifierProvider(
       create: (context) => widget.user,
       child: MaterialApp(
         navigatorKey: NavigationService.instance.navigationKey,
