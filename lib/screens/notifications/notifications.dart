@@ -1,11 +1,14 @@
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 import 'package:mobile/components/generic/no_data.dart';
 import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/components/notifications/notification_item.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/notifications.dart';
 import 'package:mobile/models/fb_notification.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
 class Notifications extends StatefulWidget {
   const Notifications({Key key}) : super(key: key);
@@ -49,6 +52,43 @@ class _NotificationsState extends State<Notifications> {
           t.notifications,
           style: TextStyle(color: Colors.white),
         ),
+        actions: [
+          IconButton(
+            splashRadius: 20,
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                builder: (context) {
+                  return Wrap(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 25),
+                        child: ListTile(
+                          onTap: () async {
+                            Iterable<Future<void>> futures =
+                                _pagingController.itemList.map(
+                              (notification) => FirebaseDatabase.instance
+                                  .reference()
+                                  .child(
+                                      "notifications/${context.read<User>().canonicalName}/${notification.key}")
+                                  .update({"read": true}),
+                            );
+                            await Future.wait(futures);
+                            Navigator.of(context).pop();
+                            _pagingController.refresh();
+                          },
+                          leading: Icon(Icons.delete),
+                          title: Text(t.deleteAllNotifications),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
+            icon: Icon(Icons.delete),
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10),

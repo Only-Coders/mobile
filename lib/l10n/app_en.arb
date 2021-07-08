@@ -134,5 +134,6 @@
   "editPostMessage": "The post was edited",
   "typeAMessage": "Type a message...",
   "noMessages": "Mmm... Looks like there's no messages here",
-  "noChats": "Mmm... Looks like there's no chats here"
+  "noChats": "Mmm... Looks like there's no chats here",
+  "deleteAllNotifications": "Delete all notifications"
 }
