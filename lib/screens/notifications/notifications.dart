@@ -104,18 +104,31 @@ class _NotificationsState extends State<Notifications> {
             pagingController: _pagingController,
             builderDelegate: PagedChildBuilderDelegate<FBNotification>(
               itemBuilder: (ctx, item, index) {
-                return Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Column(
-                    children: [
-                      NotificationItem(
-                          notification: item,
-                          refresh: _pagingController.refresh),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Divider()
-                    ],
+                return Dismissible(
+                  key: Key(item.key),
+                  onDismissed: (direction) async {
+                    await FirebaseDatabase.instance
+                        .reference()
+                        .child(
+                            "notifications/${context.read<User>().canonicalName}/${item.key}")
+                        .update({"read": true});
+                    setState(() {
+                      _pagingController.itemList.removeAt(index);
+                    });
+                  },
+                  child: Padding(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      children: [
+                        NotificationItem(
+                            notification: item,
+                            refresh: _pagingController.refresh),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        Divider()
+                      ],
+                    ),
                   ),
                 );
               },
