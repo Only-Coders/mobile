@@ -17,28 +17,9 @@ class BottomNav extends StatefulWidget {
 
 class _BottomNavState extends State<BottomNav> {
   int _currentIndex = 0;
-  int _notificationAmount = 0;
 
   @override
   void initState() {
-    FirebaseDatabase.instance
-        .reference()
-        .child("notifications/${widget.user.canonicalName}")
-        .orderByChild("read")
-        .equalTo(false)
-        .onValue
-        .listen((event) {
-      Map data = event.snapshot.value;
-      setState(() {
-        _notificationAmount = 0;
-      });
-      if (data != null)
-        data.forEach((key, value) {
-          setState(() {
-            _notificationAmount++;
-          });
-        });
-    });
     super.initState();
   }
 
@@ -90,36 +71,50 @@ class _BottomNavState extends State<BottomNav> {
           ),
           BottomNavigationBarItem(
             label: t.notifications,
-            icon: Stack(
-              clipBehavior: Clip.none,
-              children: <Widget>[
-                Icon(Icons.notifications),
-                if (_notificationAmount > 0)
-                  Positioned(
-                    right: -3,
-                    top: -3,
-                    child: Container(
-                      padding: EdgeInsets.all(1),
-                      decoration: BoxDecoration(
-                        color: Theme.of(context).primaryColor,
-                        borderRadius: BorderRadius.circular(6),
-                      ),
-                      constraints: BoxConstraints(
-                        minWidth: 14,
-                        minHeight: 14,
-                      ),
-                      child: Text(
-                        "$_notificationAmount",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 11,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                    ),
-                  )
-              ],
-            ),
+            icon: StreamBuilder<Event>(
+                stream: FirebaseDatabase.instance
+                    .reference()
+                    .child("notifications/${widget.user.canonicalName}")
+                    .orderByChild("read")
+                    .equalTo(false)
+                    .onValue,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    Map data = snapshot.data.snapshot.value;
+
+                    return Stack(
+                      clipBehavior: Clip.none,
+                      children: <Widget>[
+                        Icon(Icons.notifications),
+                        if (data != null)
+                          Positioned(
+                            right: -3,
+                            top: -3,
+                            child: Container(
+                              padding: EdgeInsets.all(1),
+                              decoration: BoxDecoration(
+                                color: Theme.of(context).primaryColor,
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              constraints: BoxConstraints(
+                                minWidth: 14,
+                                minHeight: 14,
+                              ),
+                              child: Text(
+                                "${data.length}",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                ),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )
+                      ],
+                    );
+                  }
+                  return Container();
+                }),
           ),
           BottomNavigationBarItem(
             label: t.profile,
