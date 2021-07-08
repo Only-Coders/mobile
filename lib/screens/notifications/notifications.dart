@@ -18,6 +18,7 @@ class Notifications extends StatefulWidget {
 }
 
 class _NotificationsState extends State<Notifications> {
+  int itemCount = 0;
   final NotificationService _notificationService = NotificationService();
   final PagingController<int, FBNotification> _pagingController =
       PagingController(firstPageKey: 0);
@@ -33,10 +34,19 @@ class _NotificationsState extends State<Notifications> {
   Future<void> _fetchPage(int pageKey) async {
     try {
       final newItems = await _notificationService.getNotifications();
+      setState(() {
+        itemCount = newItems.length;
+      });
       _pagingController.appendLastPage(newItems);
     } catch (error) {
       _pagingController.error = error;
     }
+  }
+
+  @override
+  void dispose() {
+    _pagingController.dispose();
+    super.dispose();
   }
 
   @override
@@ -55,8 +65,7 @@ class _NotificationsState extends State<Notifications> {
         actions: [
           IconButton(
             splashRadius: 20,
-            onPressed: _pagingController.itemList != null &&
-                    _pagingController.itemList.length > 0
+            onPressed: itemCount > 0
                 ? () {
                     showModalBottomSheet(
                       context: context,
@@ -88,7 +97,7 @@ class _NotificationsState extends State<Notifications> {
                       },
                     );
                   }
-                : null,
+                : () {},
             icon: Icon(
               Icons.delete,
               color: Colors.white,
