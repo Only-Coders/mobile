@@ -85,20 +85,27 @@ class _LoginState extends State<Login> {
   Future<void> loginWithGithub(BuildContext context) async {
     try {
       UserCredential credentials = await _fbAuth.signInWithGitHub(context);
-      String fbToken = await credentials.user.getIdToken();
-      String token = await _auth.login(fbToken);
-      var payload = Jwt.parseJwt(token);
-      if (payload["complete"] != null) {
-        Provider.of<UserData.User>(context, listen: false).setUser(payload);
-        await Provider.of<UserData.User>(context, listen: false)
-            .saveUserOnPrefs();
-        Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
+      if (credentials.user.emailVerified) {
+        String fbToken = await credentials.user.getIdToken();
+        String token = await _auth.login(fbToken);
+        var payload = Jwt.parseJwt(token);
+        if (payload["complete"] != null) {
+          Provider.of<UserData.User>(context, listen: false).setUser(payload);
+          await Provider.of<UserData.User>(context, listen: false)
+              .saveUserOnPrefs();
+          Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
+        } else {
+          context.read<UserData.User>().setGithubUser({
+            "githubUser": credentials.additionalUserInfo.username,
+            "displayName": credentials.user.displayName,
+            "photoURL": credentials.user.photoURL
+          });
+          Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
+        }
       } else {
-        context.read<UserData.User>().setGoogleUser({
-          "displayName": credentials.user.displayName,
-          "photoURL": credentials.user.photoURL
-        });
-        Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
+        await credentials.user.sendEmailVerification();
+        _toast.showSuccess(
+            context, AppLocalizations.of(context).emailVerificationMessage);
       }
     } catch (e) {
       _toast.showError(context, AppLocalizations.of(context).serverError);

@@ -30,6 +30,7 @@ class _GeneralInformationSecondStepState
   final Toast _toast = Toast();
   final _auth = AuthService();
   final FirebaseStorage _firebaseStorage = FirebaseStorage();
+  final _userController = TextEditingController();
   File _image;
   bool isLoading = false;
   String platform = "GITHUB";
@@ -53,11 +54,20 @@ class _GeneralInformationSecondStepState
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       String photo = context.read<User>().imageURI;
+      String githubUser = context.read<User>().githubUser;
+      _userController.text = githubUser;
       setState(() {
         imageURI = photo;
+        userName = githubUser;
       });
     });
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _userController.dispose();
+    super.dispose();
   }
 
   @override
@@ -216,6 +226,7 @@ class _GeneralInformationSecondStepState
                         onChanged: (val) {
                           userName = val;
                         },
+                        controller: _userController,
                         style: TextStyle(color: Theme.of(context).accentColor),
                         decoration: InputDecoration(
                           border: OutlineInputBorder(

@@ -11,6 +11,7 @@ class User with ChangeNotifier {
   String fullName;
   bool complete;
   int eliminationDate;
+  String githubUser;
 
   User(String user) {
     if (user != null && user.isNotEmpty) {
@@ -23,6 +24,7 @@ class User with ChangeNotifier {
       this.fullName = u.fullName;
       this.complete = u.complete;
       this.eliminationDate = u.eliminationDate;
+      this.githubUser = "";
     }
   }
 
@@ -44,6 +46,12 @@ class User with ChangeNotifier {
 
   void setDefaultPrivacy(bool defaultPrivacy) {
     this.defaultPrivacy = defaultPrivacy;
+  }
+
+  void setGithubUser(Map<String, dynamic> githubInfo) {
+    githubUser = githubInfo["githubUser"];
+    fullName = githubInfo["displayName"];
+    imageURI = githubInfo["photoURL"];
   }
 
   void setGoogleUser(Map<String, dynamic> googleInfo) {
