@@ -113,7 +113,7 @@ class _BottomNavState extends State<BottomNav> {
                       ],
                     );
                   }
-                  return Container();
+                  return Icon(Icons.notifications);
                 }),
           ),
           BottomNavigationBarItem(
