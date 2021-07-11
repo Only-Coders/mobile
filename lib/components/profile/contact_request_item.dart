@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/models/person.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/person.dart';
 
 class ContactRequestItem extends StatefulWidget {
@@ -47,6 +48,14 @@ class _ContactRequestItemState extends State<ContactRequestItem> {
     var t = AppLocalizations.of(context);
 
     return ListTile(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profile(
+            canonicalName: widget.contact.canonicalName,
+          ),
+        ),
+      ),
       leading: CircleAvatar(
         radius: 30,
         backgroundImage: widget.contact.imageURI.isEmpty
