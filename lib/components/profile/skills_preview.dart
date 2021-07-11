@@ -5,6 +5,7 @@ import 'package:mobile/models/skill.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:mobile/services/skill.dart';
 import 'package:provider/provider.dart';
 
 class SkillsPreview extends StatefulWidget {
@@ -18,6 +19,7 @@ class SkillsPreview extends StatefulWidget {
 
 class _SkillsPreviewState extends State<SkillsPreview> {
   final PersonService _personService = PersonService();
+  final SkillService _skillService = SkillService();
   Future getSkills;
 
   void refreshSkillExperience() {
@@ -99,7 +101,13 @@ class _SkillsPreviewState extends State<SkillsPreview> {
                                       ),
                                       onDeleted: widget.canonicalName ==
                                               context.read<User>().canonicalName
-                                          ? () {}
+                                          ? () async {
+                                              await _skillService.removeSkill(
+                                                  skill.canonicalName);
+                                              setState(() {
+                                                skills.remove(skill);
+                                              });
+                                            }
                                           : null,
                                     ),
                                   ))

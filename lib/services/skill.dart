@@ -19,4 +19,8 @@ class SkillService {
     if (skill.canonicalName.isEmpty) skillJson.remove("canonicalName");
     await _httpClient.postRequest("/api/users/skills", skillJson);
   }
+
+  Future<void> removeSkill(String skillCanonicalName) async {
+    await _httpClient.deleteRequest("/api/users/skills/$skillCanonicalName");
+  }
 }
