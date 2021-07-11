@@ -8,7 +8,6 @@ import 'package:mobile/services/fb_auth.dart';
 import 'package:mobile/services/auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jwt_decode/jwt_decode.dart';
-import 'package:mobile/storage.dart';
 import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 
@@ -33,12 +32,16 @@ class _LoginState extends State<Login> {
         Provider.of<UserData.User>(context, listen: false).setUser(payload);
         await Provider.of<UserData.User>(context, listen: false)
             .saveUserOnPrefs();
+        await Provider.of<UserData.User>(context, listen: false)
+            .setLanguage(payload["language"]);
         Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
         context.read<UserData.User>().setGoogleUser({
           "displayName": "",
           "photoURL": "",
         });
+        await Provider.of<UserData.User>(context, listen: false)
+            .setLanguage(payload["language"]);
         Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
       }
     } on FirebaseAuthException catch (e) {
@@ -66,12 +69,16 @@ class _LoginState extends State<Login> {
         Provider.of<UserData.User>(context, listen: false).setUser(payload);
         await Provider.of<UserData.User>(context, listen: false)
             .saveUserOnPrefs();
+        await Provider.of<UserData.User>(context, listen: false)
+            .setLanguage(payload["language"]);
         Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
         context.read<UserData.User>().setGoogleUser({
           "displayName": credentials.user.displayName,
           "photoURL": credentials.user.photoURL
         });
+        await Provider.of<UserData.User>(context, listen: false)
+            .setLanguage(payload["language"]);
         Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
       }
     } catch (e) {
@@ -93,6 +100,8 @@ class _LoginState extends State<Login> {
           Provider.of<UserData.User>(context, listen: false).setUser(payload);
           await Provider.of<UserData.User>(context, listen: false)
               .saveUserOnPrefs();
+          await Provider.of<UserData.User>(context, listen: false)
+              .setLanguage(payload["language"]);
           Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
         } else {
           context.read<UserData.User>().setGithubUser({
@@ -100,6 +109,8 @@ class _LoginState extends State<Login> {
             "displayName": credentials.user.displayName,
             "photoURL": credentials.user.photoURL
           });
+          await Provider.of<UserData.User>(context, listen: false)
+              .setLanguage(payload["language"]);
           Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
         }
       } else {

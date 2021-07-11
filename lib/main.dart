@@ -23,7 +23,7 @@ import 'package:mobile/screens/profile/favorite_posts.dart';
 import 'package:mobile/screens/profile/my_contacts.dart';
 import 'package:mobile/screens/profile/my_followings.dart';
 import 'package:mobile/screens/profile/profile.dart';
-// import 'package:mobile/screens/profile/settings.dart';
+import 'package:mobile/screens/profile/settings.dart';
 import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/services/fb_messaging.dart';
 import 'package:mobile/theme/themes.dart';
@@ -79,28 +79,30 @@ Future<void> registerPushNotifications() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
 }
 
-Future<User> loadPrefs() async {
-  SharedPreferences prefs = await SharedPreferences.getInstance();
+Future<User> loadPrefs(SharedPreferences prefs) async {
   currentTheme.loadTheme(
       prefs.getBool("isDark") == null ? false : prefs.getBool("isDark"));
-  return User(prefs.getString("user"));
+  User user = User(prefs.getString("user"));
+  if (prefs.getString("language") != null)
+    user.setLanguage(prefs.getString("language"));
+  return user;
 }
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  User user = await loadPrefs();
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  User user = await loadPrefs(prefs);
   await registerPushNotifications();
   await setNotificationChannel();
-  runApp(App(
-    user: user,
-  ));
+  runApp(App(user: user, prefs: prefs));
 }
 
 class App extends StatefulWidget {
   final User user;
+  final SharedPreferences prefs;
 
-  const App({Key key, this.user}) : super(key: key);
+  const App({Key key, this.user, this.prefs}) : super(key: key);
 
   @override
   _AppState createState() => _AppState();
@@ -110,6 +112,9 @@ class _AppState extends State<App> {
   @override
   void initState() {
     super.initState();
+    widget.user.addListener(() {
+      setState(() {});
+    });
     currentTheme.addListener(() {
       setState(() {});
     });
@@ -129,6 +134,9 @@ class _AppState extends State<App> {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
+        locale: widget.prefs.getString("language") == null
+            ? null
+            : Locale(widget.user.language),
         supportedLocales: [
           const Locale("en"),
           const Locale("es"),
@@ -148,7 +156,7 @@ class _AppState extends State<App> {
           "/profile": (context) => Profile(),
           "/chats": (context) => Chats(user: widget.user),
           "/notifications": (context) => Notifications(),
-          // "/profile/settings": (context) => Settings(),
+          "/profile/settings": (context) => Settings(),
           "/profile/posts": (context) => ProfilePosts(),
           "/profile/favorites": (context) => FavoritePosts(),
           "/profile/contacts": (context) => MyContacts(),

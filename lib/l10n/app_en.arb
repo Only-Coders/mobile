@@ -135,5 +135,7 @@
   "typeAMessage": "Type a message...",
   "noMessages": "Mmm... Looks like there's no messages here",
   "noChats": "Mmm... Looks like there's no chats here",
-  "deleteAllNotifications": "Delete all notifications"
+  "deleteAllNotifications": "Delete all notifications",
+  "language": "Language",
+  "appearance": "Appearance"
 }

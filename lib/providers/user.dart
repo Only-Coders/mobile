@@ -12,6 +12,7 @@ class User with ChangeNotifier {
   bool complete;
   int eliminationDate;
   String githubUser;
+  String language = "es";
 
   User(String user) {
     if (user != null && user.isNotEmpty) {
@@ -42,6 +43,13 @@ class User with ChangeNotifier {
   Future<void> saveUserOnPrefs() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("user", json.encode(this.toJson()));
+  }
+
+  Future<void> setLanguage(String lang) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("language", lang);
+    language = lang;
+    notifyListeners();
   }
 
   void setDefaultPrivacy(bool defaultPrivacy) {
