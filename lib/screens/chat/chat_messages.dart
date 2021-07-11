@@ -111,7 +111,7 @@ class _ChatMessagesState extends State<ChatMessages> {
                       if (messages.isEmpty) {
                         return NoData(
                           message: t.noMessages,
-                          img: "assets/images/no-data.png",
+                          img: "assets/images/no-messages.png",
                         );
                       } else {
                         return ListView.builder(
@@ -129,7 +129,7 @@ class _ChatMessagesState extends State<ChatMessages> {
                   )
                 : NoData(
                     message: t.noMessages,
-                    img: "assets/images/no-data.png",
+                    img: "assets/images/no-messages.png",
                   ),
           ),
           ChatInput(

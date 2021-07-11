@@ -92,7 +92,7 @@ class _ChatsListState extends State<ChatsList> {
             if (chats.isEmpty)
               return NoData(
                 message: t.noChats,
-                img: "assets/images/no-data.png",
+                img: "assets/images/no-chats.png",
               );
 
             return ListView.separated(
