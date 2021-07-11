@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -8,6 +10,7 @@ import 'package:mobile/components/generic/server_error.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/person.dart';
 import 'package:mobile/models/post.dart';
+import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/services/person.dart';
 import 'package:mobile/services/post.dart';
@@ -24,6 +27,9 @@ class Feed extends StatefulWidget {
 
 class _FeedState extends State<Feed> {
   static const _pageSize = 10;
+  int chatNotifications = 0;
+  StreamSubscription<Event> streamSubscription;
+  Object _activeCallbackIdentity;
   final PostService _postService = PostService();
   final PersonService _personService = PersonService();
   final PagingController<int, Post> _pagingController =
@@ -31,6 +37,34 @@ class _FeedState extends State<Feed> {
 
   @override
   void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      // ignore: cancel_subscriptions
+      StreamSubscription<Event> stream = FirebaseDatabase.instance
+          .reference()
+          .child("users/${context.read<User>().canonicalName}/chats")
+          .onValue
+          .listen((event) {
+        (event.snapshot.value as Map).forEach((key, value) {
+          FirebaseDatabase.instance
+              .reference()
+              .child("chats/${value["key"]}/messages")
+              .orderByChild("read")
+              .equalTo(false)
+              .onValue
+              .listen((chatEvent) {
+            if (chatEvent.snapshot.value != null) {
+              if (mounted)
+                setState(() {
+                  chatNotifications = (chatEvent.snapshot.value as Map).length;
+                });
+            }
+          });
+        });
+      });
+      setState(() {
+        streamSubscription = stream;
+      });
+    });
     _pagingController.addPageRequestListener((pageKey) {
       _fetchPage(pageKey);
     });
@@ -40,22 +74,30 @@ class _FeedState extends State<Feed> {
   @override
   void dispose() {
     _pagingController.dispose();
+    _activeCallbackIdentity = null;
+    if (streamSubscription != null) streamSubscription.cancel();
     super.dispose();
   }
 
   Future<void> _fetchPage(int pageKey) async {
+    final callbackIdentity = Object();
+    _activeCallbackIdentity = callbackIdentity;
     try {
       int page = pageKey ~/ 10;
       final newItems = await _postService.getFeedPosts(page);
-      final isLastPage = newItems.length < _pageSize;
-      if (isLastPage) {
-        _pagingController.appendLastPage(newItems);
-      } else {
-        final nextPageKey = pageKey + newItems.length;
-        _pagingController.appendPage(newItems, nextPageKey);
+      if (callbackIdentity == _activeCallbackIdentity) {
+        final isLastPage = newItems.length < _pageSize;
+        if (isLastPage) {
+          _pagingController.appendLastPage(newItems);
+        } else {
+          final nextPageKey = pageKey + newItems.length;
+          _pagingController.appendPage(newItems, nextPageKey);
+        }
       }
     } catch (error) {
-      _pagingController.error = error;
+      if (callbackIdentity == _activeCallbackIdentity) {
+        _pagingController.error = error;
+      }
     }
   }
 
@@ -137,14 +179,43 @@ class _FeedState extends State<Feed> {
         actions: [
           Container(
             margin: EdgeInsets.only(right: 5),
-            child: IconButton(
-              splashRadius: 25,
-              onPressed: () => Navigator.of(context).pushNamed("/chats"),
-              icon: Icon(
-                Icons.message,
-                size: 30,
-                color: Colors.white,
-              ),
+            child: Stack(
+              clipBehavior: Clip.none,
+              children: [
+                IconButton(
+                  splashRadius: 25,
+                  onPressed: () => Navigator.of(context).pushNamed("/chats"),
+                  icon: Icon(
+                    Icons.message,
+                    size: 30,
+                    color: Colors.white,
+                  ),
+                ),
+                if (chatNotifications > 0)
+                  Positioned(
+                    right: 5,
+                    top: 5,
+                    child: Container(
+                      padding: EdgeInsets.all(1),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).primaryColor,
+                        borderRadius: BorderRadius.circular(6),
+                      ),
+                      constraints: BoxConstraints(
+                        minWidth: 14,
+                        minHeight: 14,
+                      ),
+                      child: Text(
+                        "$chatNotifications",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 11,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+              ],
             ),
           )
         ],

@@ -114,24 +114,45 @@ class _ChatsListState extends State<ChatsList> {
                       }
 
                       return ListTile(
-                        onTap: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ChatMessages(
-                                chat: chats[index],
-                                chatKey: chats[index].key,
-                                chatFrom: chats[index].toCanonicalName ==
-                                        context.read<User>().canonicalName
-                                    ? chats[index].from
-                                    : chats[index].to,
-                                chatFromImg: chats[index].toCanonicalName ==
-                                        context.read<User>().canonicalName
-                                    ? chats[index].fromImageURI
-                                    : chats[index].toImageURI,
-                                chatFromCanonicalName:
-                                    chats[index].toCanonicalName),
-                          ),
-                        ).then((value) => refreshWidget()),
+                        onTap: () async {
+                          if (chats[index].key != null) {
+                            DataSnapshot snapshot = await FirebaseDatabase
+                                .instance
+                                .reference()
+                                .child("chats/${chats[index].key}/messages")
+                                .get();
+                            if (snapshot.value != null) {
+                              Iterable<Future<void>> futures =
+                                  (snapshot.value as Map).entries.map((e) {
+                                return FirebaseDatabase.instance
+                                    .reference()
+                                    .child(
+                                        "chats/${chats[index].key}/messages/${e.key}")
+                                    .update({"read": true});
+                              });
+                              if (futures.isNotEmpty)
+                                await Future.wait(futures);
+                            }
+                          }
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ChatMessages(
+                                  chat: chats[index],
+                                  chatKey: chats[index].key,
+                                  chatFrom: chats[index].toCanonicalName ==
+                                          context.read<User>().canonicalName
+                                      ? chats[index].from
+                                      : chats[index].to,
+                                  chatFromImg: chats[index].toCanonicalName ==
+                                          context.read<User>().canonicalName
+                                      ? chats[index].fromImageURI
+                                      : chats[index].toImageURI,
+                                  chatFromCanonicalName:
+                                      chats[index].toCanonicalName),
+                            ),
+                          ).then((value) => refreshWidget());
+                        },
                         leading: CircleAvatar(
                           radius: 25,
                           backgroundImage: context.read<User>().canonicalName ==
@@ -150,14 +171,59 @@ class _ChatsListState extends State<ChatsList> {
                         subtitle: Text(lastMessage != null
                             ? lastMessage.text
                             : "Start a conversation"),
-                        trailing: Text(
-                          lastMessage != null
-                              ? DateFormatter().getVerboseDateTime(
-                                  new DateTime.fromMicrosecondsSinceEpoch(
-                                      lastMessage.time * 1000),
-                                )
-                              : "",
-                          style: TextStyle(fontSize: 11),
+                        trailing: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              lastMessage != null
+                                  ? DateFormatter().getVerboseDateTime(
+                                      new DateTime.fromMicrosecondsSinceEpoch(
+                                          lastMessage.time * 1000),
+                                    )
+                                  : "",
+                              style: TextStyle(fontSize: 11),
+                            ),
+                            StreamBuilder<Event>(
+                              stream: FirebaseDatabase.instance
+                                  .reference()
+                                  .child("chats/${chats[index].key}/messages")
+                                  .orderByChild("read")
+                                  .equalTo(false)
+                                  .onValue,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasData) {
+                                  int unreadMessages = 0;
+                                  if (snapshot.data.snapshot.value != null) {
+                                    unreadMessages =
+                                        (snapshot.data.snapshot.value as Map)
+                                            .length;
+                                  }
+                                  if (unreadMessages > 0)
+                                    return Container(
+                                      padding: EdgeInsets.all(5),
+                                      margin: EdgeInsets.only(top: 4),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).primaryColor,
+                                        borderRadius: BorderRadius.circular(25),
+                                      ),
+                                      constraints: BoxConstraints(
+                                        minWidth: 24,
+                                        minHeight: 16,
+                                      ),
+                                      child: Text(
+                                        "$unreadMessages",
+                                        style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 11,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    );
+                                }
+                                return Text("");
+                              },
+                            )
+                          ],
                         ),
                       );
                     }
