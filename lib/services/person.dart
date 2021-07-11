@@ -144,4 +144,9 @@ class PersonService {
         .map((notification) => OCNotification.fromJson(notification))
         .toList();
   }
+
+  Future<void> updateNotification(OCNotification notification) async {
+    await _httpClient.putRequest("/api/notifications-config/${notification.id}",
+        {"email": notification.email, "push": notification.push});
+  }
 }

@@ -137,5 +137,11 @@
   "noChats": "Mmm... Looks like there's no chats here",
   "deleteAllNotifications": "Delete all notifications",
   "language": "Language",
-  "appearance": "Appearance"
+  "appearance": "Appearance",
+  "newPostNotification": "New Post",
+  "newCommentNotification": "New Comment",
+  "newMentionNotification": "New Mention",
+  "newContactRequestNotification": "New Contact Request",
+  "newContactAceptedNotification": "New Contact Approved",
+  "newFollowerNotification": "New Follower"
 }

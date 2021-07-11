@@ -137,5 +137,11 @@
   "noChats": "Mmm ... Parece que no hay chats aquí",
   "deleteAllNotifications": "Eliminar las notificaciones",
   "language": "Idioma",
-  "appearance": "Apariencia"
+  "appearance": "Apariencia",
+  "newPostNotification": "Nueva publicacion",
+  "newCommentNotification": "Nuevo comentario",
+  "newMentionNotification": "Nueva mencion",
+  "newContactRequestNotification": "Nueva solicitud de contacto",
+  "newContactAceptedNotification": "Solicitud de contacto aceptada",
+  "newFollowerNotification": "Nuevo seguidor"
 }
