@@ -229,6 +229,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       StudyPreview(
                         canonicalName: user.canonicalName,
+                        refresh: refreshProfile,
                       ),
                       SkillsPreview(
                         canonicalName: user.canonicalName,

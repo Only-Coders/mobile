@@ -23,7 +23,7 @@ class Study {
 
   Map<String, dynamic> toJson() => {
         'name': institute != null ? institute.name : null,
-        'id': id,
+        'id': institute != null ? institute.id : null,
         'degree': degree,
         'since': since,
         'until': until,

@@ -270,7 +270,7 @@ class _EditStudyExperienceState extends State<EditStudyExperience> {
                 "id": instituteId,
                 "name": institute,
               },
-              "id": instituteId,
+              "id": widget.study.id,
               "degree": degree,
               "since": _startDate == null
                   ? widget.study.since

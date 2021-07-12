@@ -20,4 +20,17 @@ class StudyService {
     if (study.institute.id.isEmpty) studyJson.remove("id");
     await _httpClient.postRequest("/api/users/institutes", studyJson);
   }
+
+  Future<void> deleteStudy(String studyId) async {
+    await _httpClient.deleteRequest("/api/users/institutes/$studyId");
+  }
+
+  Future<void> updateStudy(Study study) async {
+    var studyJson = study.toJson();
+    if (study.institute.id.isEmpty) studyJson.remove("id");
+    await _httpClient.putRequest(
+      "/api/users/institutes/${study.id}",
+      studyJson,
+    );
+  }
 }

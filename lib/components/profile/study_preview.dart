@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/components/generic/no_data.dart';
 import 'package:mobile/components/generic/server_error.dart';
+import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/components/onboard/study_experience/add_study_experience.dart';
 import 'package:mobile/components/onboard/study_experience/edit_study_experience.dart';
 import 'package:mobile/models/study.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/person.dart';
 import "package:flutter_gen/gen_l10n/app_localizations.dart";
+import 'package:mobile/services/study.dart';
 import 'package:provider/provider.dart';
 import 'package:timelines/timelines.dart';
 
 class StudyPreview extends StatefulWidget {
   final String canonicalName;
+  final refresh;
 
-  const StudyPreview({Key key, this.canonicalName}) : super(key: key);
+  const StudyPreview({Key key, this.canonicalName, this.refresh})
+      : super(key: key);
 
   @override
   _StudyPreviewState createState() => _StudyPreviewState();
@@ -21,6 +25,8 @@ class StudyPreview extends StatefulWidget {
 
 class _StudyPreviewState extends State<StudyPreview> {
   final PersonService _personService = PersonService();
+  final StudyService _studyService = StudyService();
+  final Toast _toast = Toast();
   Future getStudies;
 
   void refreshStudyExperience() {
@@ -33,6 +39,15 @@ class _StudyPreviewState extends State<StudyPreview> {
       return "${splitedDate[1]}/${splitedDate[0]}";
     } else {
       return "Actual";
+    }
+  }
+
+  Future<void> addStudy(Study study) async {
+    try {
+      await _studyService.createStudy(study);
+      widget.refresh();
+    } catch (error) {
+      _toast.showError(context, AppLocalizations.of(context).serverError);
     }
   }
 
@@ -77,7 +92,7 @@ class _StudyPreviewState extends State<StudyPreview> {
                     onPressed: () => showDialog(
                       context: context,
                       builder: (_) => AddStudyExperience(
-                        addStudy: () {},
+                        addStudy: addStudy,
                       ),
                       barrierDismissible: true,
                     ),
@@ -189,7 +204,14 @@ class _StudyPreviewState extends State<StudyPreview> {
                                             builder: (_) => EditStudyExperience(
                                               study: studies[index],
                                               index: index,
-                                              updateStudy: () {},
+                                              updateStudy: (Study study,
+                                                  int index) async {
+                                                await _studyService
+                                                    .updateStudy(study);
+                                                setState(() {
+                                                  studies[index] = study;
+                                                });
+                                              },
                                             ),
                                             barrierDismissible: true,
                                           ),
@@ -200,7 +222,13 @@ class _StudyPreviewState extends State<StudyPreview> {
                                         IconButton(
                                           splashRadius: 20,
                                           iconSize: 20,
-                                          onPressed: () {},
+                                          onPressed: () async {
+                                            await _studyService
+                                                .deleteStudy(studies[index].id);
+                                            setState(() {
+                                              studies.removeAt(index);
+                                            });
+                                          },
                                           icon: Icon(Icons.delete),
                                         )
                                     ],
