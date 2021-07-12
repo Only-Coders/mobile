@@ -5,6 +5,7 @@ import 'package:mobile/components/generic/toast.dart';
 import 'package:mobile/components/post/post_item.dart';
 import 'package:mobile/models/comment.dart';
 import 'package:mobile/models/post.dart';
+import 'package:mobile/models/reaction.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/post.dart';
 import 'package:mobile/theme/themes.dart';
@@ -14,8 +15,15 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class NewComment extends StatefulWidget {
   final Post post;
   final bool isNewComment;
+  final int aprrovedAmount;
+  final int rejectedAmount;
 
-  const NewComment({Key key, @required this.post, this.isNewComment})
+  const NewComment(
+      {Key key,
+      @required this.post,
+      this.isNewComment,
+      this.aprrovedAmount,
+      this.rejectedAmount})
       : super(key: key);
 
   @override
@@ -164,6 +172,12 @@ class _NewCommentState extends State<NewComment> {
   void initState() {
     getComments = _postService.getComments(widget.post.id);
     post = widget.post;
+    post.reactions[0] = Reaction(
+        reaction: post.reactions[0].reaction,
+        quantity: post.reactions[0].quantity + widget.aprrovedAmount);
+    post.reactions[1] = Reaction(
+        reaction: post.reactions[1].reaction,
+        quantity: post.reactions[1].quantity + widget.rejectedAmount);
     if (widget.isNewComment) showNewComment();
     super.initState();
   }

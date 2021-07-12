@@ -38,6 +38,7 @@ class PostItem extends StatefulWidget {
 class _PostItemState extends State<PostItem> {
   final PostService _postService = PostService();
   final PostParser _postParser = PostParser();
+  Post post;
   bool disabledApprove = false;
   bool disabledReject = false;
   int bronceMedals = 0;
@@ -106,6 +107,14 @@ class _PostItemState extends State<PostItem> {
       this.disabledApprove = false;
       this.disabledReject = false;
     });
+  }
+
+  @override
+  void initState() {
+    setState(() {
+      post = widget.post;
+    });
+    super.initState();
   }
 
   @override
@@ -407,7 +416,7 @@ class _PostItemState extends State<PostItem> {
                             ),
                             label: Text(
                               (widget.post.reactions[0].quantity +
-                                      approvedAmount)
+                                      this.approvedAmount)
                                   .toString(),
                             ),
                           ),
@@ -443,7 +452,7 @@ class _PostItemState extends State<PostItem> {
                             ),
                             label: Text(
                               (widget.post.reactions[1].quantity +
-                                      rejectedAmount)
+                                      this.rejectedAmount)
                                   .toString(),
                             ),
                           ),
@@ -490,6 +499,8 @@ class _PostItemState extends State<PostItem> {
                               MaterialPageRoute(
                                 builder: (context) => NewComment(
                                   post: widget.post,
+                                  rejectedAmount: this.rejectedAmount,
+                                  aprrovedAmount: this.approvedAmount,
                                   isNewComment: true,
                                 ),
                               ),

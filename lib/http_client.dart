@@ -3,8 +3,7 @@ import 'package:mobile/services/auth.dart';
 import 'storage.dart';
 
 class HttpClient {
-  // final String _baseUrl = "https://api.onlycoders.tech";
-  final String _baseUrl = "http://main:9000";
+  final String _baseUrl = "https://api.onlycoders.tech";
   Dio _dio;
 
   HttpClient() {
