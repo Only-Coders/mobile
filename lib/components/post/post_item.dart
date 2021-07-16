@@ -467,6 +467,8 @@ class _PostItemState extends State<PostItem> {
                               MaterialPageRoute(
                                 builder: (context) => NewComment(
                                   post: widget.post,
+                                  rejectedAmount: this.rejectedAmount,
+                                  aprrovedAmount: this.approvedAmount,
                                   isNewComment: false,
                                 ),
                               ),
