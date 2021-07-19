@@ -149,4 +149,8 @@ class PersonService {
     await _httpClient.putRequest("/api/notifications-config/${notification.id}",
         {"email": notification.email, "push": notification.push});
   }
+
+  Future<void> removeFcmToken(String deviceId) async {
+    await _httpClient.deleteRequest("/api/users/fcm-token/$deviceId");
+  }
 }

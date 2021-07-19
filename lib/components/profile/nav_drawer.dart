@@ -1,9 +1,13 @@
+import 'dart:io';
+
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mobile/components/profile/cancel_delete_account.dart';
 import 'package:mobile/components/profile/delete_account.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/services/auth.dart';
+import 'package:mobile/services/person.dart';
 import 'package:provider/provider.dart';
 
 class NavDrawer extends StatelessWidget {
@@ -12,6 +16,7 @@ class NavDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AuthService _authService = AuthService();
+    final PersonService _personService = PersonService();
     var t = AppLocalizations.of(context);
     User user = Provider.of<User>(context);
 
@@ -122,6 +127,17 @@ class NavDrawer extends StatelessWidget {
                   ),
                 ),
                 onTap: () async {
+                  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+                  String id = "";
+                  if (Platform.isAndroid) {
+                    AndroidDeviceInfo androidInfo =
+                        await deviceInfo.androidInfo;
+                    id = androidInfo.id;
+                  } else {
+                    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+                    id = iosDeviceInfo.identifierForVendor;
+                  }
+                  await _personService.removeFcmToken(id);
                   await _authService.logout();
                 },
               ),
