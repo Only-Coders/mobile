@@ -46,15 +46,15 @@ jobs:
           files: |
             build/app/outputs/apk/release/app-release.apk
 
-      - name: rsync deployments
-        uses: burnett01/rsync-deployments@4.1
-        with:
-          switches: -avzr --delete
-          path: build/app/outputs/apk/release/app-release.apk
-          remote_path: /usr/share/caddy/app.apk
-          remote_host: onlycoders.tech
-          remote_user: mzunino
-          remote_key: ${{ secrets.DEPLOY_KEY }}
+      # - name: rsync deployments
+      #   uses: burnett01/rsync-deployments@4.1
+      #   with:
+      #     switches: -avzr --delete
+      #     path: build/app/outputs/apk/release/app-release.apk
+      #     remote_path: /usr/share/caddy/app.apk
+      #     remote_host: onlycoders.tech
+      #     remote_user: mzunino
+      #     remote_key: ${{ secrets.DEPLOY_KEY }}
 
       - name: Slack Notification
         if: always()
@@ -64,5 +64,5 @@ jobs:
           SLACK_ICON: https://img.icons8.com/doodle/2x/android--v2.png
           SLACK_TITLE: "Build & Deploy :rocket:"
           SLACK_USERNAME: Mobile
-          SLACK_MESSAGE: ":bearded_person: Build: ${{ github.event.head_commit.message }}\n :package: Get the <https://onlycoders.tech/app.apk|APK> "
+          SLACK_MESSAGE: ":bearded_person: Build: ${{ github.event.head_commit.message }}\n :package: Get the <https://github.com/Only-Coders/mobile/releases/download/latest-android/app-release.apk|APK> "
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
