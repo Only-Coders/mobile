@@ -1,8 +1,6 @@
-import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:mobile/http_client.dart';
 import 'package:mobile/navigation.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:mobile/screens/auth/forgot_password.dart';
@@ -26,26 +24,11 @@ import 'package:mobile/screens/profile/profile.dart';
 import 'package:mobile/screens/profile/settings.dart';
 import 'package:mobile/screens/tags/tag_posts.dart';
 import 'package:mobile/services/fb_messaging.dart';
+import 'package:mobile/services/notifications.dart';
 import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-
-Future<void> saveDeviceToken(String token) async {
-  final HttpClient _httpClient = HttpClient();
-  DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  String id = "";
-  if (Platform.isAndroid) {
-    AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
-    id = androidInfo.id;
-  } else {
-    IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
-    id = iosDeviceInfo.identifierForVendor;
-  }
-  await _httpClient
-      .postRequest("/api/users/fcm-token", {"fcmToken": token, "deviceId": id});
-}
 
 Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
   print("Got a message in the background");
@@ -53,9 +36,11 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 }
 
 void deviceTokenListener() async {
+  NotificationService _notificationService = NotificationService();
   String token = await FirebaseMessaging.instance.getToken();
-  await saveDeviceToken(token);
-  FirebaseMessaging.instance.onTokenRefresh.listen(saveDeviceToken);
+  await _notificationService.saveDeviceToken(token);
+  FirebaseMessaging.instance.onTokenRefresh
+      .listen(_notificationService.saveDeviceToken);
 }
 
 Future<void> setNotificationChannel() async {

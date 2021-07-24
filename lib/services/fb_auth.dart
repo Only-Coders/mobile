@@ -35,7 +35,7 @@ class FBAuthService {
       idToken: googleAuth.idToken,
     );
 
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    return FirebaseAuth.instance.signInWithCredential(credential);
   }
 
   Future<UserCredential> signInWithGitHub(BuildContext context) async {
@@ -46,11 +46,11 @@ class FBAuthService {
             'https://onlycoders-cc609.firebaseapp.com/__/auth/handler');
 
     final result = await gitHubSignIn.signIn(context);
+    if (result.token == null) throw "Sign In attempt has been cancelled";
 
     final githubAuthCredential = GithubAuthProvider.credential(result.token);
 
-    return await FirebaseAuth.instance
-        .signInWithCredential(githubAuthCredential);
+    return _auth.signInWithCredential(githubAuthCredential);
   }
 
   Future<void> resetPassword(String email) async {

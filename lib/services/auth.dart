@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:mobile/http_client.dart';
 import 'package:mobile/models/token.dart';
 import 'package:mobile/navigation.dart';
@@ -60,7 +61,18 @@ class AuthService {
 
   Future<void> refreshToken() async {
     try {
-      var response = await _httpClient.postRequest("/api/auth/refresh", {});
+      Dio _dioClient = Dio(
+        BaseOptions(
+          baseUrl: "https://api.onlycoders.tech",
+        ),
+      );
+      String refreshToken = await UserStorage.getToken();
+      Options options = Options();
+      if (refreshToken != null) {
+        options = Options(headers: {"Authorization": "Bearer" + refreshToken});
+      }
+      var response = await _dioClient.post("/api/auth/refresh",
+          data: {}, options: options);
       RegExp rgx = new RegExp(r'\w+=(?<token>.*); Path');
       Token data = Token.fromJson(response.data);
       String token = data.token +
@@ -71,6 +83,7 @@ class AuthService {
       await UserStorage.setToken(token);
     } catch (error) {
       logout();
+      throw error;
     }
   }
 }

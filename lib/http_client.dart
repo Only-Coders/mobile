@@ -22,8 +22,7 @@ class HttpClient {
           return handler.next(options);
         },
         onError: (error, handler) async {
-          if (error.response.statusCode != 401 ||
-              error.response.requestOptions.path == "/api/auth/refresh") {
+          if (error.response.statusCode != 401) {
             return handler.next(error);
           }
           _dio.interceptors.requestLock.lock();
@@ -31,11 +30,18 @@ class HttpClient {
           _dio.interceptors.errorLock.lock();
 
           AuthService _authService = AuthService();
-          await _authService.refreshToken();
+          try {
+            await _authService.refreshToken();
+            _dio.interceptors.requestLock.unlock();
+            _dio.interceptors.responseLock.unlock();
+            _dio.interceptors.errorLock.unlock();
+          } catch (e) {
+            _dio.interceptors.requestLock.unlock();
+            _dio.interceptors.responseLock.unlock();
+            _dio.interceptors.errorLock.unlock();
+            throw e;
+          }
 
-          _dio.interceptors.requestLock.unlock();
-          _dio.interceptors.responseLock.unlock();
-          _dio.interceptors.errorLock.unlock();
           return handler.resolve(await _retry(error.requestOptions));
         },
       ),

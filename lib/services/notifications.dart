@@ -1,7 +1,10 @@
+import 'dart:io';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_database/firebase_database.dart';
 import 'package:mobile/models/fb_notification.dart';
 import 'package:mobile/providers/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../http_client.dart';
 
 class NotificationService {
   final fb = FirebaseDatabase.instance;
@@ -38,5 +41,20 @@ class NotificationService {
       return b.createdAt.compareTo(a.createdAt);
     });
     return notifications;
+  }
+
+  Future<void> saveDeviceToken(String token) async {
+    final HttpClient _httpClient = HttpClient();
+    DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
+    String id = "";
+    if (Platform.isAndroid) {
+      AndroidDeviceInfo androidInfo = await deviceInfo.androidInfo;
+      id = androidInfo.id;
+    } else {
+      IosDeviceInfo iosDeviceInfo = await deviceInfo.iosInfo;
+      id = iosDeviceInfo.identifierForVendor;
+    }
+    await _httpClient.postRequest(
+        "/api/users/fcm-token", {"fcmToken": token, "deviceId": id});
   }
 }

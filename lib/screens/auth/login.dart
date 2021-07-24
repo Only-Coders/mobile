@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mobile/components/auth/auth_form.dart';
@@ -8,6 +9,7 @@ import 'package:mobile/services/fb_auth.dart';
 import 'package:mobile/services/auth.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:jwt_decode/jwt_decode.dart';
+import 'package:mobile/services/notifications.dart';
 import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 
@@ -19,6 +21,7 @@ class Login extends StatefulWidget {
 class _LoginState extends State<Login> {
   final _fbAuth = FBAuthService(FirebaseAuth.instance);
   final _auth = AuthService();
+  final _notifcationService = NotificationService();
   final _toast = Toast();
   bool isLoading = false;
 
@@ -34,6 +37,8 @@ class _LoginState extends State<Login> {
             .saveUserOnPrefs();
         await Provider.of<UserData.User>(context, listen: false)
             .setLanguage(payload["language"]);
+        String messagingToken = await FirebaseMessaging.instance.getToken();
+        _notifcationService.saveDeviceToken(messagingToken);
         Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
         context.read<UserData.User>().setGoogleUser({
@@ -42,6 +47,8 @@ class _LoginState extends State<Login> {
         });
         await Provider.of<UserData.User>(context, listen: false)
             .setLanguage(payload["language"]);
+        String messagingToken = await FirebaseMessaging.instance.getToken();
+        _notifcationService.saveDeviceToken(messagingToken);
         Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
       }
     } on FirebaseAuthException catch (e) {
@@ -71,6 +78,8 @@ class _LoginState extends State<Login> {
             .saveUserOnPrefs();
         await Provider.of<UserData.User>(context, listen: false)
             .setLanguage(payload["language"]);
+        String messagingToken = await FirebaseMessaging.instance.getToken();
+        _notifcationService.saveDeviceToken(messagingToken);
         Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
       } else {
         context.read<UserData.User>().setGoogleUser({
@@ -79,6 +88,8 @@ class _LoginState extends State<Login> {
         });
         await Provider.of<UserData.User>(context, listen: false)
             .setLanguage(payload["language"]);
+        String messagingToken = await FirebaseMessaging.instance.getToken();
+        _notifcationService.saveDeviceToken(messagingToken);
         Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
       }
     } catch (e) {
@@ -102,6 +113,8 @@ class _LoginState extends State<Login> {
               .saveUserOnPrefs();
           await Provider.of<UserData.User>(context, listen: false)
               .setLanguage(payload["language"]);
+          String messagingToken = await FirebaseMessaging.instance.getToken();
+          _notifcationService.saveDeviceToken(messagingToken);
           Navigator.pushNamedAndRemoveUntil(context, "/feed", (_) => false);
         } else {
           context.read<UserData.User>().setGithubUser({
@@ -111,6 +124,8 @@ class _LoginState extends State<Login> {
           });
           await Provider.of<UserData.User>(context, listen: false)
               .setLanguage(payload["language"]);
+          String messagingToken = await FirebaseMessaging.instance.getToken();
+          _notifcationService.saveDeviceToken(messagingToken);
           Navigator.pushNamedAndRemoveUntil(context, "/onboard", (_) => false);
         }
       } else {
@@ -119,7 +134,9 @@ class _LoginState extends State<Login> {
             context, AppLocalizations.of(context).emailVerificationMessage);
       }
     } catch (e) {
-      _toast.showError(context, AppLocalizations.of(context).serverError);
+      if (e != "Sign In attempt has been cancelled") {
+        _toast.showError(context, AppLocalizations.of(context).serverError);
+      }
     }
   }
 
