@@ -40,13 +40,13 @@ class _ChatInputState extends State<ChatInput> {
     return Container(
       child: Row(
         children: [
-          IconButton(
-            onPressed: null,
-            splashRadius: 20,
-            icon: Icon(
-              Icons.image,
-            ),
-          ),
+          // IconButton(
+          //   onPressed: null,
+          //   splashRadius: 20,
+          //   icon: Icon(
+          //     Icons.image,
+          //   ),
+          // ),
           Flexible(
             child: Container(
               padding: EdgeInsets.all(8),
