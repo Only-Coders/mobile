@@ -37,9 +37,15 @@ jobs:
 
       # Get flutter dependencies.
       - run: flutter pub get
+      
+      - name: Decoding android/key.properties
+        run: echo "${{ secrets.KEYPROP_PROD }}" | base64 --decode > android/key.properties
+
+      - name: Decoding android/neumodore_key.jks
+        run: echo "${{ secrets.KEYJKS_PROD }}" | base64 --decode > android/key.jks
 
       - name: Build
-        run: |
+        run: |    
           echo "CLIENT_ID=$OAUTH_GITHUB_CLIENT_ID" >> .env
           echo "CLIENT_SECRET=$OAUTH_GITHUB_SECRET_KEY" >> .env
           flutter build apk
