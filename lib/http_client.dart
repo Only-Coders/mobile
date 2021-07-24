@@ -22,7 +22,7 @@ class HttpClient {
           return handler.next(options);
         },
         onError: (error, handler) async {
-          if (error.response.statusCode != 401 &&
+          if (error.response.statusCode != 401 ||
               error.response.requestOptions.path == "/api/auth/refresh") {
             return handler.next(error);
           }
