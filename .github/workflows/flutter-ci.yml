@@ -7,6 +7,10 @@ on:
     branches:
       - develop
 
+env:
+  OAUTH_GITHUB_CLIENT_ID: ${{ secrets.FB_SECRET_KEY }}
+  OAUTH_GITHUB_SECRET_KEY: ${{ secrets.OAUTH_GITHUB_SECRET_KEY }}
+  
 # on: push    # Default will running for every branch.
 
 jobs:
