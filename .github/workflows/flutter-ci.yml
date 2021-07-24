@@ -48,7 +48,7 @@ jobs:
         run: |    
           echo "CLIENT_ID=$OAUTH_GITHUB_CLIENT_ID" >> .env
           echo "CLIENT_SECRET=$OAUTH_GITHUB_SECRET_KEY" >> .env
-          flutter build apk
+          flutter build apk --release
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
