@@ -34,8 +34,10 @@ jobs:
       # Get flutter dependencies.
       - run: flutter pub get
 
-      # Build apk.
-      - run: flutter build apk
+      - name: Build
+        run: |
+          echo "OAUTH_GITHUB_SECRET_KEY=$OAUTH_GITHUB_SECRET_KEY" > .env
+          flutter build apk
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
