@@ -1,6 +1,8 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+
 class Constants {
   static const bucket =
       "https://storage.googleapis.com/onlycoders-cc609.appspot.com/";
-  static const clientId = "17023bf00dfe77112d4b";
-  static const clientSecret = "879e91b2df2d4f39c09f60b2f1c76e0ec6e1ab04";
+  static var clientId = dotenv.env["CLIENT_ID"];
+  static var clientSecret = dotenv.env["CLIENT_SECRET"];
 }

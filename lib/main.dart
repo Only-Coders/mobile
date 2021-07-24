@@ -30,6 +30,7 @@ import 'package:mobile/theme/themes.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> saveDeviceToken(String token) async {
   final HttpClient _httpClient = HttpClient();
@@ -90,6 +91,7 @@ Future<User> loadPrefs(SharedPreferences prefs) async {
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   await Firebase.initializeApp();
   SharedPreferences prefs = await SharedPreferences.getInstance();
   User user = await loadPrefs(prefs);
